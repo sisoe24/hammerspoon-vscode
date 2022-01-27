@@ -1,0 +1,12 @@
+version = 1
+
+test_patterns = ["src/test/suite/*test.ts"]
+
+exclude_patterns = [
+    "src/test/suite/index.ts",
+    "src/test/runTest.ts",
+]
+
+[[analyzers]]
+name = "javascript"
+enabled = true
