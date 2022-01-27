@@ -25,10 +25,14 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         document: vscode.TextDocument,
         position: vscode.Position
     ): vscode.ProviderResult<vscode.SignatureHelp> {
+        logger.cleanFile();
         logger.debug("-*- Init HelpProvider -*-");
+
         this.position = position;
 
         const linePrefix = document.lineAt(position).text.substring(0, position.character);
+        logger.debug("linePrefix:", linePrefix);
+
         this.setArgsCursorPosition(linePrefix, document);
 
         /**
@@ -50,7 +54,7 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         /**
          * Show doc hover when line has caller:method
          */
-        const methodExpression = /(?<!\.)\b(\w+):(\w+)(?=\($)/.exec(linePrefix);
+        const methodExpression = /(?<!\.)\b(\w+):(\w+)(?=\()/.exec(linePrefix);
         if (methodExpression) {
             return this.extractMethodExpression(methodExpression[1], methodExpression[2]);
         }
