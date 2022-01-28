@@ -99,9 +99,9 @@ suite("Hs Helper", () => {
 
     test("Helper for `activate` on `app:activate(`", async () => {
         const contentFile = testUtils.formatContent(`
-            local tab = {app = hs.application()}
-            local window = tab.app:getWindow()
-            `);
+        local tab = {app = hs.application()}
+        local window = tab.app:getWindow()
+        `);
 
         await testUtils.createDemoContent(demoFile, contentFile);
 
@@ -111,6 +111,31 @@ suite("Hs Helper", () => {
         const provider = await helper.provideSignatureHelp(
             editor.document,
             new vscode.Position(1, 33)
+        );
+
+        assert.ok(provider);
+        assert.strictEqual(provider.signatures[0].label, "(title) -> hs.window object");
+        assert.strictEqual(provider.signatures[0].parameters[0].label, "title");
+        assert.strictEqual(
+            provider.signatures[0].parameters[0].documentation,
+            "the desired window's title string as per `hs.window:title()`"
+        );
+    });
+
+    test("Helper for `activate` on `app[1]:activate(`", async () => {
+        const contentFile = testUtils.formatContent(`
+        local tab = {hs.application()}
+        local window = tab[1]:getWindow()
+        `);
+
+        await testUtils.createDemoContent(demoFile, contentFile);
+
+        const editor = await testUtils.focusDemoFile(demoFile);
+        const helper = new hsHelper.HsSignatureHelpProvider();
+
+        const provider = await helper.provideSignatureHelp(
+            editor.document,
+            new vscode.Position(1, 32)
         );
 
         assert.ok(provider);

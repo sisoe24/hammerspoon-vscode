@@ -189,6 +189,25 @@ suite("Hs Hover ", () => {
         assert.strictEqual(hover.hsConstructor, "hs.application");
     });
 
+    test("Hover over `getWindow` of: `table[1]:getWindow`", async () => {
+        const contentFile = testUtils.formatContent(`
+        local table = { hs.application() }
+        local window = table[1]:getWindow()
+        `);
+
+        await testUtils.createDemoContent(demoFile, contentFile);
+
+        const editor = await testUtils.focusDemoFile(demoFile);
+        const hover = new hsHover.HsHoverProvider();
+        const provider = await hover.provideHover(editor.document, new vscode.Position(1, 26));
+
+        assert.ok(provider);
+        assert.strictEqual(
+            provider.contents.toString(),
+            testUtils.getDoc("hs.application", "getWindow")
+        );
+    });
+
     test("Hover over `app` of: `local window = app`", async () => {
         const contentFile = testUtils.formatContent(`
         local app = hs.application()
