@@ -27,6 +27,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
         document: vscode.TextDocument,
         position: vscode.Position
     ): vscode.ProviderResult<vscode.Hover> {
+        logger.cleanFile();
         logger.debug("-*- Init HoverProvider -*-");
 
         this.hsConstructor = "";
@@ -44,6 +45,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
         }
 
         let linePrefix = document.lineAt(position).text.substring(0, hoverWord.end.character);
+
+        // clean parenthesis
+        linePrefix = linePrefix.replace(/\(.*?\)/g, "");
         logger.debug("LinePrefix:", linePrefix);
 
         /**
@@ -69,11 +73,12 @@ export class HsHoverProvider implements vscode.HoverProvider {
                 this.isVariableInitialization = true;
 
                 // clean parenthesis
-                linePrefix = declaration[0].replace(/(?<=\().*?(?=\))/g, "");
+                linePrefix = declaration[0].replace(/\(.*?\)/g, "");
                 logger.debug("New linePrefix", linePrefix);
 
-                // XXX: not sure if I should clean the parenthesis here
-                word = declaration[0];
+                // if it fails to match any of the above regex, then will try
+                // to match if is a variable declaration.
+                word = linePrefix;
             }
         }
 
@@ -91,7 +96,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
          * Show doc hover when line is a method with a call expression:
          * `caller:method():method`
          */
-        const methodCallExpression = /(?<!\.)\b(\w+):(?:(\w+)[^:]+:)(\w+)/.exec(linePrefix);
+        const methodCallExpression = /(?<!\.)\b(\w+):(\w+):(\w+)/.exec(linePrefix);
         if (methodCallExpression) {
             return this.extractMethodCallExpression(methodCallExpression);
         }
@@ -141,7 +146,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
         logger.debug("Extract HS Module:", base, identifier);
 
         // clean parenthesis and arguments if any
-        base = base.replace(/\(.*?\):/g, "");
+        base = base.replace(":", "");
 
         if (this.isVariableInitialization) {
             return this.getConstructor(base, identifier);
