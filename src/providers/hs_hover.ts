@@ -110,6 +110,15 @@ export class HsHoverProvider implements vscode.HoverProvider {
         }
 
         /**
+         * Show doc hover when method call is from indexable table:
+         * local window = app[1]:getWindow()
+         */
+        const indexTable = /(\w+)((?:\[(\d+)\])+):(\w+)/.exec(linePrefix);
+        if (indexTable) {
+            return this.extractIndexTable(indexTable);
+        }
+
+        /**
          * Show doc hover when line has table.key:method
          */
         const tableMethodExpression = /(\w+)\.(.+?\b)?(\w+):(\w+)/.exec(linePrefix);
@@ -211,6 +220,38 @@ export class HsHoverProvider implements vscode.HoverProvider {
             if (this.isVariableInitialization) {
                 return this.getConstructor(declaration, identifier);
             }
+            return this.getHoverDocs(declaration, identifier);
+        }
+
+        return null;
+    }
+
+    /**
+     * Show documentation of method inside indexable table.
+     *
+     * Examples:
+     * * `table[1]:` will try to resolve table at index 1 and check if is a valid
+     * hs statement
+     *
+     * @param statement text to parse for the expression
+     * @returns the documentation hover or null.
+     */
+    private extractIndexTable(tableMatch: RegExpMatchArray): vscode.Hover | null {
+        logger.debug("Extract Table Index Expression:", tableMatch);
+
+        const multiDimensional = tableMatch[2].match(/\d+/g) ?? [1];
+        const depthLevel = multiDimensional.length;
+        const index = multiDimensional[depthLevel - 1];
+
+        const declaration = lua.findDeclaration({
+            name: tableMatch[1],
+            tableIndex: Number(index),
+            tableDepthLevel: depthLevel,
+            line: this.position.line,
+        });
+
+        if (declaration) {
+            const identifier = tableMatch[4];
             return this.getHoverDocs(declaration, identifier);
         }
 
