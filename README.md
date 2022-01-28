@@ -1,3 +1,7 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6897046c215944daa78d15189ecaaa82)](https://www.codacy.com/gh/sisoe24/hammerspoon-vscode/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sisoe24/hammerspoon-vscode&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/6897046c215944daa78d15189ecaaa82)](https://www.codacy.com/gh/sisoe24/hammerspoon-vscode/dashboard?utm_source=github.com&utm_medium=referral&utm_content=sisoe24/hammerspoon-vscode&utm_campaign=Badge_Coverage)
+[![DeepSource](https://deepsource.io/gh/sisoe24/hammerspoon-vscode.svg/?label=active+issues&show_trend=true&token=l76-w7k_5dsHJqrTU2kueH4F)](https://deepsource.io/gh/sisoe24/hammerspoon-vscode/?ref=repository-badge)
+
 # 1. Hammerspoon-vscode README
 
 Visual Studio Code Hammerspoon extension for autocomplete and more.
@@ -14,7 +18,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 
 ## 1.1. Features
 
-- Hammerspoon data suggestions.
+- Hammerspoon code suggestions.
 - Hover information for types and documentation.
 - Signature help for functions arguments.
 
@@ -22,7 +26,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 
 A cheap attempt to create an Intellisense environment for the Hammerspoon framework.
 
-This is done by creating a symbol table of the Lua script and by then parsing the Hammerspoon documentation in search for the information. This is far from perfect and it will fail under some circumstances (multi nested definitions, complex scripts, "classes" etc.) but it gets the job done for the most basic ones.
+This is done by creating a symbol table of the Lua script and by then parsing the Hammerspoon documentation in search for the information. This is far from perfect and it will fail under some circumstances (multi nested method calls, complex scripts, "classes" etc.) but it gets the job done for the most basic ones.
 
 ## 1.3. Available Commands
 
@@ -37,7 +41,7 @@ By default the extension does not provide any shortcut, but every command can be
 
 ### 1.3.1. `hammerspoon.updateDocs`
 
-This will update the internal files of which the extension will use for the suggestions. The update its made by parsing the `docs.json` inside the Hammerspoon application path.
+If a new Hammerspoon release introduces new methods, the command will update its internal file for the suggestions. The update its made by parsing the `docs.json` inside the Hammerspoon application path.
 
 ### 1.3.2. `hammerspoon.reloadConfiguration`
 
@@ -45,9 +49,9 @@ This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must
 
 ## 1.4. Known Issues
 
-- If script contains syntax errors, will cause the extension to not work (If you don't use it already, I suggest downloading the [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension)
+- If script contains syntax errors, the extension will not work (If you don't use it already, I suggest the [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension)
 - Methods will return only if is an Hammerspoon data type. (eg. `hs.application`, `hs.window` etc.)
-- Some methods will return an Hammerspoon data type even if it could potentially could be something else:
+- Some methods will return an Hammerspoon data type even if it could potentially be something else.
   Examples:
 
   ```lua
@@ -55,9 +59,7 @@ This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must
   local window = app:mainWindow()
   ```
 
-  Although `mainWindow` could be `nil` or an `hs.window` object, the extension will
-  always assume that is going to be a window object, therefore aiding to suggest
-  methods for the `hs.window` object.
+  Although `mainWindow` could be `nil` or an `hs.window` object, the extension will always assume to be a `hs.window`.
 
 - If a method returns anything other than a valid Hammerspoon data type (eg. `string`, `table`, `bool` etc.), it will only affect the hovering information and no suggestions will be provided.
   Examples:
@@ -67,9 +69,10 @@ This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must
   ```
 
   Hovering over `apps` will show: `list of hs.application objects` but no suggestions will be provided
-  for it. This also happens when something returns `app` or `window`. Those will be treated as simple hover information.
+  for it. This also happens with returns like `app` or `window`. Those will be treated as simple hover information.
 
-- Although Lua 5.4 is not technically supported, your script could contain the `<const>` and `<close>` new keywords.
+- Although Lua 5.4 is not technically supported, your script can contain the `<const>` and `<close>` new keywords.
+- And probably more...
 
 ## 1.5. TODO
 
