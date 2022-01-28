@@ -283,6 +283,11 @@ export class HsHoverProvider implements vscode.HoverProvider {
 
         if (declaration) {
             const identifier = tableMatch[4];
+
+            if (this.isVariableInitialization) {
+                return this.getConstructor(declaration, identifier);
+            }
+
             return this.getHoverDocs(declaration, identifier);
         }
 

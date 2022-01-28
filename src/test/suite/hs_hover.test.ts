@@ -189,6 +189,38 @@ suite("Hs Hover ", () => {
         assert.strictEqual(hover.hsConstructor, "hs.application");
     });
 
+    test("Hover over `window` of: `local window = table.app:getWindow()`", async () => {
+        const contentFile = testUtils.formatContent(`
+        local table = { app = hs.application() }
+        local window = table.app:getWindow()
+        `);
+
+        await testUtils.createDemoContent(demoFile, contentFile);
+
+        const editor = await testUtils.focusDemoFile(demoFile);
+        const hover = new hsHover.HsHoverProvider();
+        const provider = await hover.provideHover(editor.document, new vscode.Position(1, 11));
+
+        assert.ok(provider);
+        assert.strictEqual(hover.hsConstructor, "hs.window");
+    });
+
+    test("Hover over `window` of: `local window = app:getWindow():centerOnScreen()`", async () => {
+        const contentFile = testUtils.formatContent(`
+        local app = hs.application()
+        local window = app:getWindow():centerOnScreen()
+        `);
+
+        await testUtils.createDemoContent(demoFile, contentFile);
+
+        const editor = await testUtils.focusDemoFile(demoFile);
+        const hover = new hsHover.HsHoverProvider();
+        const provider = await hover.provideHover(editor.document, new vscode.Position(1, 11));
+
+        assert.ok(provider);
+        assert.strictEqual(hover.hsConstructor, "hs.window");
+    });
+
     test("Hover over `getWindow` of: `table[1]:getWindow`", async () => {
         const contentFile = testUtils.formatContent(`
         local table = { hs.application() }
