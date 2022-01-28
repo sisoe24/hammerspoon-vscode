@@ -69,7 +69,8 @@ export class HsHoverProvider implements vscode.HoverProvider {
                 this.isVariableInitialization = true;
 
                 // clean parenthesis
-                linePrefix = declaration[0].replace(/\(|\)/g, "");
+                linePrefix = declaration[0].replace(/(?<=\().*?(?=\))/g, "");
+                logger.debug("New linePrefix", linePrefix);
 
                 // XXX: not sure if I should clean the parenthesis here
                 word = declaration[0];
@@ -90,7 +91,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
          * Show doc hover when line is a method with a call expression:
          * `caller:method():method`
          */
-        const methodCallExpression = /(?<!\.)\b(\w+):(?:(\w+)[^:]+:)(\w+)$/.exec(linePrefix);
+        const methodCallExpression = /(?<!\.)\b(\w+):(?:(\w+)[^:]+:)(\w+)/.exec(linePrefix);
         if (methodCallExpression) {
             return this.extractMethodCallExpression(methodCallExpression);
         }
@@ -173,6 +174,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
         if (declaration) {
             const constructor = hs.getConstructor(declaration, methodCallExpression[2]);
             if (constructor) {
+                if (this.isVariableInitialization) {
+                    return this.getConstructor(constructor, methodCallExpression[3]);
+                }
+
                 return this.getHoverDocs(constructor, methodCallExpression[3]);
             }
         }
