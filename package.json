@@ -20,8 +20,26 @@
         "title": "Update completion documentation.",
         "shortTitle": "HS Update Docs",
         "category": "Hammerspoon"
+      },
+      {
+        "command": "hammerspoon.reloadConfiguration",
+        "title": "Reload Hammerspoon configuration.",
+        "category": "Hammerspoon",
+        "icon": {
+          "dark": "images/sync-light.svg",
+          "light": "images/sync-dark.svg"
+        }
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == lua",
+          "command": "hammerspoon.reloadConfiguration",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
