@@ -57,7 +57,7 @@ export class HSCompletionProvider implements vscode.CompletionItemProvider {
          * local app = { hs.application() }
          * local window = app[1]:
          */
-        const indexTable = /(\w+)((?:\[(\d+)\])+)/.exec(linePrefix);
+        const indexTable = /(\w+)((?:\[(\d+)\])+):$/.exec(linePrefix);
         if (indexTable) {
             return this.extractIndexTable(indexTable);
         }
@@ -67,7 +67,7 @@ export class HSCompletionProvider implements vscode.CompletionItemProvider {
          * local app = { foo = hs.application() }
          * local window = app.foo:
          */
-        const tableExpression = /(\w+)\.(.+?\b)?(\w+):/.exec(linePrefix);
+        const tableExpression = /(\w+)\.(.+?\b)?(\w+):$/.exec(linePrefix);
         if (tableExpression) {
             return this.extractTableMethodExpression(tableExpression);
         }
