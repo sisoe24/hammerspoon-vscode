@@ -13,3 +13,5 @@ other/**
 demo/**
 .nyc_output/
 coverage/
+todo.md
+.deepsource.toml
