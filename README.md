@@ -10,7 +10,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
   - [1.1. Features](#11-features)
   - [1.2. Description](#12-description)
   - [1.3. Available Commands](#13-available-commands)
-    - [1.3.1. `hammerspoon.updateDocs`](#131-hammerspoonupdatedocs)
+    - [1.3.1. `hammerspoon.updateDatabase`](#131-hammerspoonupdatedatabase)
     - [1.3.2. `hammerspoon.reloadConfiguration`](#132-hammerspoonreloadconfiguration)
   - [1.4. Known Issues](#14-known-issues)
   - [1.5. TODO](#15-todo)
@@ -22,6 +22,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 - Hammerspoon code suggestions.
 - Hover information for types and documentation.
 - Signature help for functions arguments.
+- Reload Hammerspoon configuration command.
 
 ## 1.2. Description
 
@@ -35,14 +36,14 @@ All commands are available by opening the Command Palette (`Command+Shift+P` on 
 
 | Command Name                                    | Command ID                        | Description                      | Shortcut |
 | ----------------------------------------------- | --------------------------------- | -------------------------------- | -------- |
-| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDocs`          | Generate new completion data     |          |
+| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data     |          |
 | `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration |          |
 
 By default the extension does not provide any shortcut, but every command can be assigned to one. (see [Key Bindings for Visual Studio Code](https://code.visualstudio.com/docs/getstarted/keybindings) for more information)
 
-### 1.3.1. `hammerspoon.updateDocs`
+### 1.3.1. `hammerspoon.updateDatabase`
 
-If a new Hammerspoon release introduces new methods, the command will update its internal file for the suggestions. The update its made by parsing the `docs.json` inside the Hammerspoon application path.
+If a new Hammerspoon release introduces new methods, the command can be used to update the internal database for the suggestions.
 
 ### 1.3.2. `hammerspoon.reloadConfiguration`
 
