@@ -27,7 +27,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "hammerspoon.updateDocs",
+        "command": "hammerspoon.updateDatabase",
         "title": "Update completion documentation.",
         "shortTitle": "HS Update Docs",
         "category": "Hammerspoon"

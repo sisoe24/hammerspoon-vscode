@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.updateDocs", () => {
+        vscode.commands.registerCommand("hammerspoon.updateDatabase", () => {
             createNewDocs();
         })
     );
