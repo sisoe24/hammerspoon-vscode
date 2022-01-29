@@ -14,7 +14,8 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
     - [1.3.2. `hammerspoon.reloadConfiguration`](#132-hammerspoonreloadconfiguration)
   - [1.4. Known Issues](#14-known-issues)
   - [1.5. TODO](#15-todo)
-  - [1.6. Screenshot](#16-screenshot)
+  - [1.6. Acknowledgement](#16-acknowledgement)
+  - [1.7. Screenshot](#17-screenshot)
 
 ## 1.1. Features
 
@@ -81,4 +82,10 @@ This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must
 - [ ] Type annotations.
 - [ ] Expand suggestions for non Hammerspoon data type returns.
 
-## 1.6. Screenshot
+## 1.6. Acknowledgement
+
+The symbol table is created with [luaparse](https://github.com/fstirlitz/luaparse).
+
+## 1.7. Screenshot
+
+<img title="ExtensionSample" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/sample.gif" width="80%"/>

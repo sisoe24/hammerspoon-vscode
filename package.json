@@ -1,7 +1,7 @@
 {
   "name": "hammerspoon",
   "displayName": "Hammerspoon",
-  "description": "",
+  "description": "Visual Studio Code Hammerspoon extension for autocomplete and more",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.63.0"
@@ -9,6 +9,15 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "hammerspoon",
+    "lua"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sisoe24/hammerspoon-vscode"
+  },
+  "icon": "images/hammerspoon_icon.png",
   "activationEvents": [
     "onStartupFinished"
   ],
