@@ -88,4 +88,4 @@ The symbol table is created with [luaparse](https://github.com/fstirlitz/luapars
 
 ## 1.7. Screenshot
 
-<img title="ExtensionSample" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/sample.gif" width="80%"/>
+<img title="ExtensionSample" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/sample.gif"/>
