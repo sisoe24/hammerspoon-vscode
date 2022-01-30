@@ -91,4 +91,10 @@ The symbol table is created with [luaparse](https://github.com/fstirlitz/luapars
 
 ## 1.7. Screenshot
 
+Extension Overview
+
 <img title="ExtensionSample" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/sample.gif"/>
+
+Hammerspoon Reload configuration
+
+<img title="HsReload" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/hs_reload.gif"/>
