@@ -47,7 +47,9 @@ If a new Hammerspoon release introduces new methods, the command can be used to 
 
 ### 1.3.2. `hammerspoon.reloadConfiguration`
 
-This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must be installed and called at the beginning of your `init.lua` file. ([read more](http://www.hammerspoon.org/docs/hs.ipc.html))
+This will reload the Hammerspoon internal configuration. **NOTE**: `hs.ipc` must be installed and called at the beginning of your `init.lua` file. ([read more](http://www.hammerspoon.org/docs/hs.ipc.html)).
+
+This command can also be access via a button in the Editor Toolbar.
 
 ## 1.4. Known Issues
 
