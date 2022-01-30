@@ -1,6 +1,8 @@
 import { appendFileSync, writeFileSync } from "fs";
 import * as path from "path";
 
+export const logPath = path.join(path.resolve(__dirname, ".."), "log");
+
 /**
  * Base Logger class for writing message to file or console.
  */
@@ -13,15 +15,15 @@ export class Logger {
         this.logName = logName;
 
         logFile = logFile ? logFile : "log";
-        this.logFile = path.join(path.resolve(__dirname, "../"), "src", "log", `${logFile}.log`);
+        this.logFile = path.join(logPath, `${logFile}.log`);
     }
 
     /**
      * Justify text to the left.
-     * 
-     * @param text text from where to start the justification 
+     *
+     * @param text text from where to start the justification
      * @param length optional length count. default is 10
-     * @returns 
+     * @returns
      */
     private ljust(text: string, length = 10): string {
         const diff = length - text.length;
@@ -30,9 +32,9 @@ export class Logger {
 
     /**
      * Check if log should print to `stdout`.
-     * 
+     *
      * @param items optional items to log
-     * @returns 
+     * @returns
      */
     private toConsole(items: any[]): any[] {
         for (let i = 0; i < items.length; i++) {
