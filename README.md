@@ -12,9 +12,7 @@
 
 Visual Studio Code Hammerspoon extension for autocomplete and more.
 
-| Overview                         | Reload Configuration               |
-| -------------------------------- | ---------------------------------- |
-| ![Overview](images/overview.gif) | ![ HsReload](images/hsReload.gif) |
+![Overview](images/overview.gif)
 
 - [1. Hammerspoon-vscode README](#1-hammerspoon-vscode-readme)
   - [1.1. Features](#11-features)
@@ -57,6 +55,9 @@ By default the extension does not provide any shortcut, but every command can be
   > NOTE: `hs.ipc` module is required for this command to work. To install it, execute `hs.ipc.cliInstall()` in your Hammerspoon environment and call it at the beginning of your `init.lua` with `require('hs.ipc')` ([read module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)). Also, if you are on an Apple silicon Mac, you might need to follow [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
 
   This command will reload the Hammerspoon internal configuration. It can also be accessed via a button in the Editor Toolbar.
+
+  ![HsReload](images/hsReload.gif)
+
 
 ## 1.4. Known Issues
 
