@@ -12,16 +12,17 @@
 
 Visual Studio Code Hammerspoon extension for autocomplete and more.
 
+| Overview                         | Reload Configuration               |
+| -------------------------------- | ---------------------------------- |
+| ![Overview](images/overview.gif) | ![ HsReload](images/hsReload.gif) |
+
 - [1. Hammerspoon-vscode README](#1-hammerspoon-vscode-readme)
   - [1.1. Features](#11-features)
   - [1.2. Description](#12-description)
   - [1.3. Available Commands](#13-available-commands)
-    - [1.3.1. `hammerspoon.updateDatabase`](#131-hammerspoonupdatedatabase)
-    - [1.3.2. `hammerspoon.reloadConfiguration`](#132-hammerspoonreloadconfiguration)
   - [1.4. Known Issues](#14-known-issues)
   - [1.5. TODO](#15-todo)
   - [1.6. Acknowledgement](#16-acknowledgement)
-  - [1.7. Screenshot](#17-screenshot)
 
 ## 1.1. Features
 
@@ -40,22 +41,22 @@ This is done by creating a symbol table of the Lua script and by then parsing th
 
 All commands are available by opening the Command Palette (`Command+Shift+P` on macOS and `Ctrl+Shift+P` on Windows/Linux) and typing in one of the following Command Name:
 
-| Command Name                                    | Command ID                        | Description                      | Shortcut |
-| ----------------------------------------------- | --------------------------------- | -------------------------------- | -------- |
-| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data     |          |
-| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration |          |
+| Command Name                                    | Command ID                        | Description                      |
+| ----------------------------------------------- | --------------------------------- | -------------------------------- |
+| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data     |
+| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration |
 
 By default the extension does not provide any shortcut, but every command can be assigned to one. (see [Key Bindings for Visual Studio Code](https://code.visualstudio.com/docs/getstarted/keybindings) for more information)
 
-### 1.3.1. `hammerspoon.updateDatabase`
+- `hammerspoon.updateDatabase`
 
-If a new Hammerspoon release introduces new methods, the command can be used to update the internal database for the suggestions.
+  If a new Hammerspoon release introduces new methods, the command can be used to update the internal database for the suggestions.
 
-### 1.3.2. `hammerspoon.reloadConfiguration`
+- `hammerspoon.reloadConfiguration`
 
-> NOTE: `hs.ipc` module is required for this command to work. To install it, execute `hs.ipc.cliInstall()` in your Hammerspoon environment and call it at the beginning of your `init.lua` with `require('hs.ipc')` ([read module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)). Also, if you are on an Apple silicon Mac, you might need to follow [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
+  > NOTE: `hs.ipc` module is required for this command to work. To install it, execute `hs.ipc.cliInstall()` in your Hammerspoon environment and call it at the beginning of your `init.lua` with `require('hs.ipc')` ([read module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)). Also, if you are on an Apple silicon Mac, you might need to follow [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
 
-This command will reload the Hammerspoon internal configuration. It can also be accessed via a button in the Editor Toolbar.
+  This command will reload the Hammerspoon internal configuration. It can also be accessed via a button in the Editor Toolbar.
 
 ## 1.4. Known Issues
 
@@ -94,13 +95,3 @@ This command will reload the Hammerspoon internal configuration. It can also be 
 ## 1.6. Acknowledgement
 
 The symbol table is created with [luaparse](https://github.com/fstirlitz/luaparse).
-
-## 1.7. Screenshot
-
-Extension Overview
-
-<img title="ExtensionSample" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/sample.gif"/>
-
-Hammerspoon Reload configuration
-
-<img title="HsReload" src="https://raw.githubusercontent.com/sisoe24/hammerspoon-vscode/main/images/hs_reload.gif"/>
