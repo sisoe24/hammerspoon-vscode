@@ -63,25 +63,16 @@ By default the extension does not provide any shortcut, but every command can be
 
 - If script contains syntax errors, the extension will not work (If you don't use it already, I suggest the [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension)
 - Methods will return only if is an Hammerspoon data type. (eg. `hs.application`, `hs.window` etc.)
-- Some methods will return an Hammerspoon data type even if it could potentially be something else.
-  Examples:
+- Some methods will return an Hammerspoon data type even if it could potentially be something else:
 
-  ```lua
-  local app = hs.application()
-  local window = app:mainWindow()
-  ```
+  ![returnType1](/images/return_type1.jpg)
 
-  Although `mainWindow` could be `nil` or an `hs.window` object, the extension will always assume to be a `hs.window`.
+  Although `mainWindow` could be `hs.window` or `nil`, the extension will always assume to be a `hs.window`.
 
-- If a method returns anything other than a valid Hammerspoon data type (eg. `string`, `table`, `bool` etc.), it will only affect the hovering information and no suggestions will be provided.
-  Examples:
+- If a method returns anything other than a valid Hammerspoon data type (eg. `string`, `table`, `bool` etc.), it will only affect the hovering information and no suggestions will be provided:
+  ![returnType2](/images/return_type2.jpg)
 
-  ```lua
-  local apps = hs.application.runningApplications()
-  ```
-
-  Hovering over `apps` will show: `list of hs.application objects` but no suggestions will be provided
-  for it. This also happens with returns like `app` or `window`. Those will be treated as simple hover information.
+  Hovering over `windows` will show: `list of hs.window objects` but no suggestions will be provided for it. Those will be treated as simple hover information.
 
 - Although Lua 5.4 is not technically supported, your script can contain the `<const>` and `<close>` new keywords.
 - And probably more...
