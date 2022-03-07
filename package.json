@@ -65,8 +65,8 @@
           "type": "object",
           "markdownDescription": "Generate extra HTML/Markdown of the Spoon documentation.\n\nRequires path of the Hammerspoon source code directory and its python interpreter path. More info on the README.",
           "default": {
-            "source-code-path": "",
-            "source-code-python-interpreter-path": ""
+            "repository-path": "",
+            "interpreter-path": ""
           }
         }
       }

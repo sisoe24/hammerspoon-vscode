@@ -81,8 +81,8 @@ async function generateExtraDocs(dir: string): Promise<void | null> {
         [key: string]: string;
     };
 
-    const hsSourcePath = hsSourceRoot["source-code-path"];
-    const hsSourcePythonPath = hsSourceRoot["source-code-python-interpreter-path"];
+    const hsSourcePath = hsSourceRoot["repository-path"];
+    const hsSourcePythonPath = hsSourceRoot["interpreter-path"];
     if (!hsSourcePath || !hsSourcePythonPath) {
         return null;
     }
