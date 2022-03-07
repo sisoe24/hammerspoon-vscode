@@ -13,7 +13,7 @@ import * as utils from "./utils";
  * @param cmd the command the execute.
  * @returns A promise<boolean> after 200ms of timeout if resolves.
  */
-async function execCommand(cmd: string): Promise<boolean> {
+export async function execCommand(cmd: string): Promise<boolean> {
     let result: boolean;
     cp.exec(cmd, (err, stdout, stderr) => {
         if (stderr) {
@@ -42,7 +42,7 @@ async function execCommand(cmd: string): Promise<boolean> {
  * @param path string like file system path.
  * @returns `true` if it does, `false` otherwise. When false will show a user error.
  */
-function pathExists(path: string): boolean {
+export function pathExists(path: string): boolean {
     if (!fs.existsSync(path)) {
         vscode.window.showErrorMessage(`Path: ${path} appears to be invalid`);
         return false;
@@ -58,7 +58,7 @@ function pathExists(path: string): boolean {
  *
  * @param dir Directory of the current active file.
  */
-async function generateDocsJson(dir: string): Promise<void> {
+export async function generateDocsJson(dir: string): Promise<void> {
     const result = await execCommand(
         `cd ${dir} && hs -c "hs.doc.builder.genJSON(\\"$(pwd)\\")" | grep -v "^--" > docs.json`
     );
@@ -76,7 +76,7 @@ async function generateDocsJson(dir: string): Promise<void> {
  *
  * @param dir Directory of the current active file.
  */
-async function generateExtraDocs(dir: string): Promise<void | null> {
+export async function generateExtraDocs(dir: string): Promise<void | null> {
     const hsSourceRoot = utils.hammerspoonConfig("spoons.extraDocumentation") as {
         [key: string]: string;
     };
@@ -86,6 +86,7 @@ async function generateExtraDocs(dir: string): Promise<void | null> {
     if (!hsSourcePath || !hsSourcePythonPath) {
         return null;
     }
+
     if (!pathExists(hsSourcePath) || !pathExists(hsSourcePythonPath)) {
         return null;
     }
@@ -113,7 +114,7 @@ export function generateSpoonDoc(): void {
  *
  * @returns the Spoon directory path.
  */
-function getSpoonRootDir(): string {
+export function getSpoonRootDir(): string {
     const spoonsRootDir = utils.hammerspoonConfig("spoons.path") as string;
     return spoonsRootDir.replace("~", os.homedir());
 }
@@ -124,7 +125,7 @@ function getSpoonRootDir(): string {
  * @param path the path where to create.
  * @returns true if path was created, false otherwise.
  */
-function createSpoonDir(path: string): boolean {
+export function createSpoonDir(path: string): boolean {
     if (fs.existsSync(path)) {
         vscode.window.showWarningMessage("Spoon directory already exists.");
         return false;
@@ -133,7 +134,7 @@ function createSpoonDir(path: string): boolean {
     return true;
 }
 
-type PlaceHolders = {
+export type PlaceHolders = {
     [key: string]: string;
 };
 
@@ -143,14 +144,15 @@ type PlaceHolders = {
  * @param spoonDir path where to create the spoon template.
  * @param placeholders placeholders object to replace inside the `init.lua` template.
  */
-function createSpoonTemplate(spoonDir: string, placeholders: PlaceHolders): void {
+export function createSpoonTemplate(spoonDir: string, placeholders: PlaceHolders): string {
     let spoonSample = fs.readFileSync(`${utils.languagePath}/spoon_sample.lua`, "utf-8");
 
     for (const [key, value] of Object.entries(placeholders)) {
         spoonSample = spoonSample.replace(RegExp(key, "g"), value);
     }
-
-    fs.writeFileSync(`${spoonDir}/init.lua`, spoonSample);
+    const spoonInit = `${spoonDir}/init.lua`;
+    fs.writeFileSync(spoonInit, spoonSample);
+    return spoonInit;
 }
 
 /**
@@ -159,7 +161,7 @@ function createSpoonTemplate(spoonDir: string, placeholders: PlaceHolders): void
  *
  * @returns a placeholders object.
  */
-async function askUser(): Promise<PlaceHolders> {
+export async function askUser(): Promise<PlaceHolders> {
     const placeholders: PlaceHolders = {
         _spoonName_: "Spoon name without the .spoon extension",
         _description_: "Spoon Description",
