@@ -9,6 +9,7 @@ import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
+import { createSpoon, generateSpoonDoc } from "./spoons";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
@@ -39,6 +40,18 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(() => {
             lua.updateAst();
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.createSpoon", () => {
+            createSpoon();
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.generateSpoonDoc", () => {
+            generateSpoonDoc();
         })
     );
 
