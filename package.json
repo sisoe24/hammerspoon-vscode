@@ -33,6 +33,16 @@
         "category": "Hammerspoon"
       },
       {
+        "command": "hammerspoon.createSpoon",
+        "title": "Create Spoon",
+        "category": "Hammerspoon"
+      },
+      {
+        "command": "hammerspoon.generateSpoonDoc",
+        "title": "Generate Spoon documentation",
+        "category": "Hammerspoon"
+      },
+      {
         "command": "hammerspoon.reloadConfiguration",
         "title": "Reload Hammerspoon configuration.",
         "category": "Hammerspoon",
@@ -42,6 +52,19 @@
         }
       }
     ],
+    "configuration": {
+      "title": "Hammerspoon",
+      "properties": {
+        "hammerspoon.spoons.extraDocumentation": {
+          "type": "object",
+          "markdownDescription": "Generate extra HTML/Markdown of the Spoon documentation.\n\nRequires path of the Hammerspoon source code directory and its python interpreter path. More info on the README.",
+          "default": {
+            "source-code-path": "/path/to/hammerspoon_source_directory",
+            "source-code-python-interpreter-path": "/path/to/hammerspoon_source_python_interpreter"
+          }
+        }
+      }
+    },
     "menus": {
       "editor/title": [
         {
