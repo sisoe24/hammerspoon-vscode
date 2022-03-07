@@ -81,7 +81,7 @@ typing in one of the following Command Name:
 - `Hammerspoon: Spoons Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
 
   In order to generate the extra documentation (HTML/Markdown), you must have access
-  to the Hammerspoon source code repository and its python packages.
+  to the Hammerspoon source code repository with its python dependency.
 
   From Hammerspoon official [documentation](https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md#generating):
 
@@ -89,17 +89,30 @@ typing in one of the following Command Name:
   > - Install the required Python dependencies (e.g. `pip install --user -r requirements.txt` in the Hammerspoon repo)
 
   With that done, the settings takes two options:
-  - `source-code-path`: a `string` of the Hammerspoon source code repo path.
-  - `source-code-python-path`: a `string` of the Hammerspoon source code repo Python interpreter path.
+  - `repository-path`: The Hammerspoon source code repository path.
+  - `interpreter-path`: The Hammerspoon source code repository Python interpreter path.
 
   Example:
 
   ```json
   "hammerspoon.spoons.extraDocumentation": {
-      "source-code-path": "/Users/virgil/Developer/SourceCode/hammerspoon",
-      "source-code-python-interpreter-path": "/Users/virgil/Developer/SourceCode/hammerspoon/.venv/bin/python"
+      "repository-path": "/Users/virgil/Developer/SourceCode/hammerspoon",
+      "interpreter-path": "/Users/virgil/Developer/SourceCode/hammerspoon/.venv/bin/python"
   }
   ```
+
+- `Hammerspoon: Spoons Path` - `hammerspoon.spoon.path`
+
+  Path where to create the Spoons. Defaults to `~/.hammerspoon/Spoons`. If a custom path is specified, remember to add it to your `init.lua`.
+
+  From Hammerspoon official [documentation](https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md#loading-a-spoon):
+
+  >Note that `hs.loadSpoon()` uses package.path to find Spoons. Hence you can have it look for Spoons in other paths by adding those paths to package.path as follows:
+  >
+  > ```lua
+  > -- Look for Spoons in ~/.hammerspoon/MySpoons as well
+  > package.path = package.path .. ";" ..  hs.configdir .. "/MySpoons/?.spoon/init.lua"
+  > ```
 
 ## 1.5. Known Issues
 
