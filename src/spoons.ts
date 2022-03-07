@@ -1,11 +1,11 @@
-import * as vscode from "vscode";
+import * as os from "os";
 import * as fs from "fs";
 import * as path from "path";
-import * as os from "os";
-
 import * as cp from "child_process";
+
+import * as vscode from "vscode";
+
 import * as utils from "./utils";
-import { title } from "process";
 
 /**
  * Execute a shell command.
