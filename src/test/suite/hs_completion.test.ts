@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as assert from "assert";
 
 import * as testUtils from "./test_utils";
-import * as hsCompletion from "../../providers/hs_completion";
+import * as hsCompletion from "../../providers/hs_module_completion";
 
 const demoFile = "hs_completion_demo.lua";
 
@@ -30,7 +30,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(0, 3)
@@ -43,7 +43,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(0, 3)
@@ -58,7 +58,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile, 1);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(0, 9)
@@ -73,7 +73,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile, 1);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(0, 24)
@@ -93,7 +93,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(1, 23)
@@ -113,7 +113,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(1, 24)
@@ -133,7 +133,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(1, 33)
@@ -153,7 +153,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(1, 19)
@@ -173,7 +173,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(1, 19)
@@ -193,7 +193,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(2, 21)
@@ -214,7 +214,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(2, 19)
@@ -237,7 +237,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(3, 19)
@@ -265,7 +265,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(6, 28)
@@ -289,7 +289,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(5, 27)
@@ -310,7 +310,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(2, 27)
@@ -334,7 +334,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(5, 25)
@@ -355,7 +355,7 @@ suite("HS Completion", () => {
 
         const editor = await testUtils.focusDemoFile(demoFile);
 
-        const completion = new hsCompletion.HSCompletionProvider();
+        const completion = new hsCompletion.HSModulesCompletionProvider();
         const provider = await completion.provideCompletionItems(
             editor.document,
             new vscode.Position(2, 34)

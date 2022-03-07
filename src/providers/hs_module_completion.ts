@@ -12,7 +12,7 @@ const hsModules = hs.hsModules();
 /**
  * Hammerspoon completion provider class.
  */
-export class HSCompletionProvider implements vscode.CompletionItemProvider {
+export class HSModulesCompletionProvider implements vscode.CompletionItemProvider {
     position: vscode.Position = new vscode.Position(0, 0);
 
     /**
@@ -27,7 +27,7 @@ export class HSCompletionProvider implements vscode.CompletionItemProvider {
         position: vscode.Position
     ): vscode.ProviderResult<vscode.CompletionItem[]> {
         logger.cleanFile();
-        logger.debug(" -*- Init HSCompletionProvider -*-");
+        logger.debug(" -*- Init HSModulesCompletionProvider -*-");
 
         this.position = position;
 
@@ -135,7 +135,7 @@ export class HSCompletionProvider implements vscode.CompletionItemProvider {
      * * `table[1]:` will try to resolve table at index 1 and check if is a valid
      * hs statement. if yes will return its method suggestions.
      *
-     * @param statement text to parse for the expression
+     * @param tableMatch text to parse for the expression
      * @returns a list of module suggestions or null
      */
     private extractIndexTable(tableMatch: RegExpMatchArray): vscode.CompletionItem[] | null {
@@ -166,7 +166,7 @@ export class HSCompletionProvider implements vscode.CompletionItemProvider {
      * * `table.foo:` will try to resolve table `foo` key and check if is a valid
      * hs statement. if yes will return its method suggestions.
      *
-     * @param statement RegExpMatchArray of the match expression
+     * @param tableMatch RegExpMatchArray of the match expression
      * @returns a list of module suggestions or null
      */
     private extractTableMethodExpression(

@@ -3,7 +3,7 @@ import * as lua from "./lua_parser";
 import * as cp from "child_process";
 import * as fs from "fs";
 
-import { HSCompletionProvider } from "./providers/hs_completion";
+import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
@@ -15,7 +15,12 @@ export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
 
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider("lua", new HSCompletionProvider(), ".", ":")
+        vscode.languages.registerCompletionItemProvider(
+            "lua",
+            new HSModulesCompletionProvider(),
+            ".",
+            ":"
+        )
     );
 
     context.subscriptions.push(
