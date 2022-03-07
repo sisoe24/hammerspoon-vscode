@@ -40,7 +40,8 @@
       {
         "command": "hammerspoon.generateSpoonDoc",
         "title": "Generate Spoon documentation",
-        "category": "Hammerspoon"
+        "category": "Hammerspoon",
+        "enablement": "resourceFilename == init.lua"
       },
       {
         "command": "hammerspoon.reloadConfiguration",
@@ -55,12 +56,17 @@
     "configuration": {
       "title": "Hammerspoon",
       "properties": {
+        "hammerspoon.spoons.path": {
+          "type": "string",
+          "markdownDescription": "Default path of the Spoons directory",
+          "default": "~/.hammerspoon/Spoons"
+        },
         "hammerspoon.spoons.extraDocumentation": {
           "type": "object",
           "markdownDescription": "Generate extra HTML/Markdown of the Spoon documentation.\n\nRequires path of the Hammerspoon source code directory and its python interpreter path. More info on the README.",
           "default": {
-            "source-code-path": "/path/to/hammerspoon_source_directory",
-            "source-code-python-interpreter-path": "/path/to/hammerspoon_source_python_interpreter"
+            "source-code-path": "",
+            "source-code-python-interpreter-path": ""
           }
         }
       }
