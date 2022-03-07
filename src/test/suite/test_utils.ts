@@ -9,37 +9,6 @@ export const demoPath = path.join(root, "demo");
 export const hsDocsPath = path.join(path.resolve(__dirname, "../../.."), "language", "hs_docs");
 
 /**
- * Get the package.json command names.
- *
- * @returns an array with all of the configurations options names.
- */
-export function packageCommands(): string[] {
-    const _packageCommands = JSON.parse(packageFile).contributes.commands;
-
-    const commands: string[] = [];
-    for (const command of _packageCommands) {
-        commands.push(command.command);
-    }
-    return commands;
-}
-
-/**
- * Get the package.json configuration names.
- *
- * @returns an array with all of the configurations options names.
- */
-export function packageConfigurations(): string[] {
-    const _packageConfigs = JSON.parse(packageFile).contributes.configuration.properties;
-
-    const configurations: string[] = [];
-    for (const config of Object.keys(_packageConfigs)) {
-        configurations.push(config.replace("pythonEasyPrint.", ""));
-    }
-
-    return configurations;
-}
-
-/**
  * Some tests will need to wait for vscode to register the actions. An example will
  * be creating/killing terminals and configuration update.
  *
@@ -58,7 +27,7 @@ export const sleep = (milliseconds: number): Promise<unknown> => {
  * @param value - the new value for the property.
  */
 export async function updateConfig(name: string, value: unknown): Promise<void> {
-    const config = vscode.workspace.getConfiguration("pythonEasyPrint");
+    const config = vscode.workspace.getConfiguration("hammerspoon");
     await config.update(name, value, vscode.ConfigurationTarget.Workspace);
 }
 
