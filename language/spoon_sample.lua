@@ -1,20 +1,19 @@
---- === SpoonName ===
+--- === _spoonName_ ===
 ---
---- Simulate a mouse click at specific point in some Application.
+--- _description_
 ---
 --- Download:
-
 local obj = {}
 obj.__index = obj
 
 -- Metadata
-obj.name = "SpoonName"
+obj.name = "_spoonName_"
 obj.version = "0.0.1"
-obj.author = "author <email>"
+obj.author = "_author_ <email>"
 obj.homepage = ""
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
---- SpoonName:helloWorld()
+--- _spoonName_:helloWorld()
 --- Method
 --- Hello World Spoon Sample
 ---
@@ -27,7 +26,7 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 --- Notes:
 ---  * None
 function obj:helloWorld(name)
-    print(string.format('Hello %s from %s', name, self.name))
+  print(string.format('Hello %s from %s', name, self.name))
 end
 
 return obj
