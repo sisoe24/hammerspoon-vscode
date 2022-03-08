@@ -34,12 +34,12 @@ export function getSpoonsDirectory() {
 
         spoonDir.forEach((spoon) => {
             if (spoon.endsWith(".spoon")) {
-                items.push(
-                    new vscode.CompletionItem(
-                        spoon.replace(".spoon", ""),
-                        vscode.CompletionItemKind.Value
-                    )
-                );
+                spoon = spoon.replace(".spoon", "");
+                const spoonItem = new vscode.CompletionItem(spoon, vscode.CompletionItemKind.Value);
+                spoonItem.detail = dir;
+                // TODO: could add spoonItem.documentation with the init.lua docs
+
+                items.push(spoonItem);
             }
         });
     }
