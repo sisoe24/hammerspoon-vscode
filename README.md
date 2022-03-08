@@ -65,7 +65,7 @@ typing in one of the following Command Name:
 
 - `Create Spoon`
 
-  Create a Spoon template in the Spoons directory. If Spoon directory is not present
+  Create a Spoon template in the Spoons directory. The Spoon directory is not present
   in workspace root, will show an error.
 
 - `Generate Spoon Documentation`
@@ -101,7 +101,7 @@ typing in one of the following Command Name:
   }
   ```
 
-- `Hammerspoon: Spoons Path` - `hammerspoon.spoon.path`
+- `Hammerspoon: Spoons Path` - `hammerspoon.spoons.path`
 
   Path where to create the Spoons. Defaults to `~/.hammerspoon/Spoons`. If a custom path is specified, remember to add it to your `init.lua`.
 
