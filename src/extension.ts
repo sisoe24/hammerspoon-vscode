@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.createSpoon", () => {
-            createSpoon();
+            void createSpoon();
         })
     );
 
@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.reloadConfiguration", () => {
-            utils.execCommand("hs -c 'hs.reload()'");
+            void utils.execCommand("hs -c 'hs.reload()'");
         })
     );
 }

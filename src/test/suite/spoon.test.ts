@@ -11,7 +11,7 @@ import * as spoons from "../../spoons";
 const hsPath = `${testUtils.demoPath}/.hammerspoon/Spoons`;
 const newSpoon = `${hsPath}/test.spoon`;
 
-suiteSetup("CleanUp .hammerspoon content", async () => {
+suiteSetup("CleanUp .hammerspoon content", () => {
     fs.rmSync(newSpoon, { force: true, recursive: true });
 });
 

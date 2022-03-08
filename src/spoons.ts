@@ -74,8 +74,8 @@ export function generateSpoonDoc(): void {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
         const filePath = path.dirname(editor.document.fileName);
-        generateDocsJson(filePath);
-        generateExtraDocs(filePath);
+        void generateDocsJson(filePath);
+        void generateExtraDocs(filePath);
     }
 }
 
