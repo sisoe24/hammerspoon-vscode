@@ -80,7 +80,7 @@ typing in one of the following Command Name:
 
 - `Hammerspoon: Spoons Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
 
-  In order to generate the extra documentation (HTML/Markdown), you must have access
+  In order to generate the extra documentation (HTML/Markdown), you need to have access
   to the Hammerspoon source code repository with its python dependency.
 
   From Hammerspoon official [documentation](https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md#generating):
