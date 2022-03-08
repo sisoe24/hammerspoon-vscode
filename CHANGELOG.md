@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.1] - 2022-03-08
+
+### Fixed
+
+- Fix a bug when hovering over a variable inside a call statement that showed the function documentation.
+
 ## [0.1.0] - 2022-03-07
 
 ### Added
