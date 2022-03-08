@@ -65,7 +65,7 @@ typing in one of the following Command Name:
 
 - `Create Spoon`
 
-  Create a Spoon template in the Spoons directory. The Spoon directory is not present
+  Create a Spoon template in the Spoons directory. If the Spoon directory is not present
   in workspace root, will show an error.
 
 - `Generate Spoon Documentation`
