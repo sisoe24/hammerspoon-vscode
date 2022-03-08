@@ -87,6 +87,21 @@ suite("Hs Hover ", () => {
         assert.strictEqual(provider.contents.toString(), testUtils.getDoc("hs.window", "setSize"));
     });
 
+    test("Hover over `app` inside: `hs.loadSpoon(app)`", async () => {
+        const contentFile = testUtils.formatContent(`
+        local app = hs.application() 
+        hs.loadSpoon(app)
+        `);
+        await testUtils.createDemoContent(demoFile, contentFile);
+
+        const editor = await testUtils.focusDemoFile(demoFile);
+        const hover = new hsHover.HsHoverProvider();
+        const provider = await hover.provideHover(editor.document, new vscode.Position(1, 15));
+
+        assert.ok(provider);
+        assert.strictEqual(hover.hsConstructor, "hs.application");
+    });
+
     test("Hover over `app` of: `local app = hs.application()`", async () => {
         await testUtils.createDemoContent(demoFile, "local app = hs.application()");
 
