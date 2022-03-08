@@ -87,7 +87,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
          * `local app = hs.application()`
          * `local window = hs.application():mainWindow()`
          */
-        const hsModule = /(hs(?:.+)?(?::|\.))(\w+)/.exec(linePrefix);
+        const hsModule = /(hs(?:.+)?(?::|\.))(\w+)$/.exec(linePrefix);
         if (hsModule) {
             return this.extractHsModule(hsModule[1], hsModule[2]);
         }
@@ -129,7 +129,7 @@ export class HsHoverProvider implements vscode.HoverProvider {
         /**
          * Show doc hover when line is table expression: foo.bar.foo
          */
-        const tableExpression = /(\w+)\.(.+?\b)?(\w+)$/.exec(linePrefix);
+        const tableExpression = /(\w+)\.([^\(]+\b)?(\w+)$/.exec(linePrefix);
         if (tableExpression) {
             return this.extractTableExpression(tableExpression);
         }
