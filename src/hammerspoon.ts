@@ -6,7 +6,7 @@ import * as os from "os";
 import * as vscode from "vscode";
 import { getSpoonRootDir } from "./spoons";
 
-const hsDocsPath = path.join(path.resolve(__dirname, ".."), "language", "hs_docs");
+const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
 
 const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
     variable: vscode.CompletionItemKind.Variable,

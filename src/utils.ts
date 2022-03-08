@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
-export const languagePath = path.resolve(__dirname, "../language");
+export const languagePath = path.resolve(__dirname, "../resources");
 
 /**
  * Get configuration property value.

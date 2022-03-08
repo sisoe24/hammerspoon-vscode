@@ -6,7 +6,7 @@ export const root = path.resolve(__dirname, "../../../");
 export const packageFile = readFileSync(path.join(root, "package.json"), "utf-8");
 
 export const demoPath = path.join(root, "demo");
-export const hsDocsPath = path.join(path.resolve(__dirname, "../../.."), "language", "hs_docs");
+export const hsDocsPath = path.join(path.resolve(__dirname, "../../.."), "resources", "hs_docs");
 
 /**
  * Some tests will need to wait for vscode to register the actions. An example will

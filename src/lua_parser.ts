@@ -15,7 +15,7 @@ const logger = new Logger("lua_parser", "lua_parser");
 let astChunk: lua.Chunk;
 
 export const luaKeywords = JSON.parse(
-    readFileSync(path.join(path.resolve(__dirname, ".."), "language", "keywords.json"), "utf-8")
+    readFileSync(path.join(path.resolve(__dirname, ".."), "resources", "keywords.json"), "utf-8")
 );
 
 type HsDefinition = {
@@ -166,7 +166,7 @@ class LuaParser {
         if (item.type === "MemberExpression") {
             this.expressionMembers.push(item.identifier.name);
             const base = item.base;
-        
+
             if (base.type === "Identifier") {
                 if (base.name === "hs") {
                     this.expressionMembers.push(base.name);
