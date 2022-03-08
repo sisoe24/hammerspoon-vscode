@@ -15,7 +15,10 @@ const logger = new Logger("lua_parser", "lua_parser");
 let astChunk: lua.Chunk;
 
 export const luaKeywords = JSON.parse(
-    readFileSync(path.join(path.resolve(__dirname, ".."), "resources", "keywords.json"), "utf-8")
+    readFileSync(
+        path.join(path.resolve(__dirname, ".."), "resources", "lua_keywords.json"),
+        "utf-8"
+    )
 );
 
 type HsDefinition = {
