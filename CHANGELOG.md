@@ -1,8 +1,14 @@
 # Change Log
 
-All notable changes to the "hammerspoon" extension will be documented in this file.
+## [0.1.0] - 2022-03-07
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### Added
+
+- Create Spoon command.
+- Create Spoon documentation command.
+- New setting for default Spoon directory location.
+- New setting for generating extra documentation (HTML/Markdown) for the Spoon.
+- New provider for string completion (currently only works for `hs.loadSpoon()`)
 
 ## [0.0.1] - 2022-01-30
 
