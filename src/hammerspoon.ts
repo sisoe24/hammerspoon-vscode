@@ -34,10 +34,16 @@ export function getSpoonsDirectory() {
 
         spoonDir.forEach((spoon) => {
             if (spoon.endsWith(".spoon")) {
+                const file = fs.readFileSync(`${dir}/${spoon}/init.lua`, "utf-8");
                 spoon = spoon.replace(".spoon", "");
+
                 const spoonItem = new vscode.CompletionItem(spoon, vscode.CompletionItemKind.Value);
                 spoonItem.detail = dir;
-                // TODO: could add spoonItem.documentation with the init.lua docs
+
+                const matchDoc = /^---.+?(?=local)/s.exec(file);
+                if (matchDoc) {
+                    spoonItem.documentation = matchDoc[0];
+                }
 
                 items.push(spoonItem);
             }
