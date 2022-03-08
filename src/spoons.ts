@@ -1,40 +1,10 @@
 import * as os from "os";
 import * as fs from "fs";
 import * as path from "path";
-import * as cp from "child_process";
 
 import * as vscode from "vscode";
 
 import * as utils from "./utils";
-
-/**
- * Execute a shell command.
- *
- * @param cmd the command the execute.
- * @returns A promise<boolean> after 200ms of timeout if resolves.
- */
-export async function execCommand(cmd: string): Promise<boolean> {
-    let result: boolean;
-    cp.exec(cmd, (err, stdout, stderr) => {
-        if (stderr) {
-            result = false;
-            vscode.window.showErrorMessage("stderr: " + stderr);
-            return null;
-        }
-        if (err) {
-            result = false;
-            vscode.window.showErrorMessage("error: " + err);
-            return null;
-        }
-        result = true;
-    });
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(result);
-        }, 200);
-    });
-}
 
 /**
  * Check if path exists.
@@ -59,7 +29,7 @@ export function pathExists(path: string): boolean {
  * @param dir Directory of the current active file.
  */
 export async function generateDocsJson(dir: string): Promise<void> {
-    const result = await execCommand(
+    const result = await utils.execCommand(
         `cd ${dir} && hs -c "hs.doc.builder.genJSON(\\"$(pwd)\\")" | grep -v "^--" > docs.json`
     );
 
@@ -94,7 +64,7 @@ export async function generateExtraDocs(dir: string): Promise<void | null> {
     const hsDocScript = `${hsSourcePath}/scripts/docs`;
     const cmd = `${hsSourcePythonPath} ${hsDocScript}/bin/build_docs.py --templates ${hsDocScript}/templates/ --output_dir . --json --html --markdown --standalone .`;
 
-    await execCommand(`cd ${dir} && ${cmd}`);
+    await utils.execCommand(`cd ${dir} && ${cmd}`);
 }
 
 /**

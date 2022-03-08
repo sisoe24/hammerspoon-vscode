@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import * as cp from "child_process";
 
 export const languagePath = path.resolve(__dirname, "../resources");
 
@@ -20,4 +21,34 @@ export function hammerspoonConfig(property: string): unknown {
     }
 
     return subConfig;
+}
+
+/**
+ * Execute a shell command.
+ *
+ * @param cmd the command the execute.
+ * @returns A promise<boolean> after 200ms of timeout if resolves.
+ */
+export async function execCommand(cmd: string): Promise<boolean> {
+    let result = false;
+
+    cp.exec(cmd, (err, stdout, stderr) => {
+        if (stderr) {
+            result = false;
+            vscode.window.showErrorMessage(stderr);
+            return null;
+        }
+        if (err) {
+            result = false;
+            vscode.window.showErrorMessage(err.message);
+            return null;
+        }
+        result = true;
+    });
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(result);
+        }, 200);
+    });
 }

@@ -1,10 +1,10 @@
 import * as assert from "assert";
-import * as vscode from "vscode";
 
 import * as fs from "fs";
 import * as os from "os";
 
 import * as testUtils from "./test_utils";
+import * as utils from "../../utils";
 import * as spoons from "../../spoons";
 
 // const demoFile = "tests/hs_hover_demo.lua";
@@ -118,7 +118,7 @@ suite("Spoon Docs", () => {
 
 suite("Spoon misc", () => {
     test("Execute command with error", async () => {
-        const result = await spoons.execCommand("abc -c");
+        const result = await utils.execCommand("abc -c");
         assert.ok(!result);
     });
 });
