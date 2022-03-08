@@ -1,7 +1,10 @@
 import path = require("path");
-import { existsSync, readFileSync, readdirSync } from "fs";
+
+import * as fs from "fs";
+import * as os from "os";
 
 import * as vscode from "vscode";
+import { getSpoonRootDir } from "./spoons";
 
 const hsDocsPath = path.join(path.resolve(__dirname, ".."), "language", "hs_docs");
 
@@ -16,6 +19,34 @@ const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
 };
 
 /**
+ * Show the Spoons directories suggestion.
+ *
+ * @returns a list of completion suggestions
+ */
+export function getSpoonsDirectory() {
+    const items: vscode.CompletionItem[] = [];
+
+    // getSpoonRootDir might be the same as the default, so use a Set to avoid duplicate
+    const spoonsDir = new Set([getSpoonRootDir(), `${os.homedir()}/.hammerspoon/Spoons`]);
+
+    for (const dir of spoonsDir) {
+        const spoonDir = fs.readdirSync(dir);
+
+        spoonDir.forEach((spoon) => {
+            if (spoon.endsWith(".spoon")) {
+                items.push(
+                    new vscode.CompletionItem(
+                        spoon.replace(".spoon", ""),
+                        vscode.CompletionItemKind.Value
+                    )
+                );
+            }
+        });
+    }
+    return items;
+}
+
+/**
  * Get the list of all hs modules.
  *
  * @returns list of all hs modules
@@ -23,7 +54,7 @@ const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
 export function hsModules(): string[] {
     const modules: string[] = [];
 
-    readdirSync(hsDocsPath, { withFileTypes: true })
+    fs.readdirSync(hsDocsPath, { withFileTypes: true })
         .filter((dirent) => dirent.isFile())
         .map((dirent) => dirent.name)
         .forEach((file) => {
@@ -47,11 +78,11 @@ function parseModule(name: string): {
     name = name.endsWith(".") ? name : name + ".";
     const file = path.join(hsDocsPath, name + "json");
 
-    if (!existsSync(file)) {
+    if (!fs.existsSync(file)) {
         return null;
     }
 
-    return JSON.parse(readFileSync(file, "utf-8"));
+    return JSON.parse(fs.readFileSync(file, "utf-8"));
 }
 
 /**
@@ -140,8 +171,8 @@ function parseReturn(text: string): string | null {
  * Example 2: `hs.application` will be a module and `new` will be the property. This
  * will return the return of the method
  *
- * @param name name of the module
- * @param property name of the module method/attribute/function/property
+ * @param base name of the module
+ * @param identifier name of the module method/attribute/function/property
  * @returns the hs constructor or null.
  */
 export function getConstructor(base: string, identifier: string): string | null {

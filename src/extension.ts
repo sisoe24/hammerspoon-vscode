@@ -4,6 +4,7 @@ import * as cp from "child_process";
 import * as fs from "fs";
 
 import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
+import { HSStringCompletionProvider } from "./providers/hs_string_completion";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
@@ -20,6 +21,15 @@ export function activate(context: vscode.ExtensionContext): void {
             new HSModulesCompletionProvider(),
             ".",
             ":"
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(
+            "lua",
+            new HSStringCompletionProvider(),
+            '"',
+            "'"
         )
     );
 
