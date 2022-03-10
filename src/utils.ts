@@ -67,7 +67,15 @@ export function execSync(cmd: string): string | null {
     try {
         result = cp.execSync(cmd, { encoding: "utf-8" });
     } catch (error) {
-        vscode.window.showErrorMessage(error.message);
+        let msg = "";
+
+        if (error instanceof Error) {
+            msg = error.message;
+        } else {
+            msg = `Some unknown error has occurred when running: ${cmd}`;
+        }
+
+        vscode.window.showErrorMessage(msg);
         return null;
     }
     return result;
