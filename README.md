@@ -18,6 +18,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
   - [1.1. Features](#11-features)
   - [1.2. Description](#12-description)
   - [1.3. Available Commands](#13-available-commands)
+    - [1.3.1. Notes](#131-notes)
   - [1.4. Extension settings](#14-extension-settings)
   - [1.5. Known Issues](#15-known-issues)
   - [1.6. Requirements](#16-requirements)
@@ -29,8 +30,11 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 - Hammerspoon code suggestions.
 - Hover information for types and documentation.
 - Signature help for functions arguments.
-- Reload Hammerspoon configuration command.
-- Spoon utilities.
+- Reload Hammerspoon configuration command. (Requires `hs.ipc`. See [Requirements](#16-requirements))
+- Spoon utilities:
+  - Create Spoon template.
+  - Generate Spoon documentation. (Requires `hs.ipc`. See [Requirements](#16-requirements))
+- Hammerspoon console output to Visual Studio Code output window. (Requires `hs.ipc`. See [Requirements](#16-requirements))
 
 ## 1.2. Description
 
@@ -56,29 +60,19 @@ typing in one of the following Command Name:
 | `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon |
 | `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data           |
 
-- `Reload Hammerspoon configuration`
+### 1.3.1. Notes
 
-  Reload the Hammerspoon internal configuration. It can also be accessed via a
-  button in the Editor Toolbar. (Requires `hs.ipc`. See [Requirements](#16-requirements))
+- Reloading the Hammerspoon configuration can also be accessed via a button in the Editor Toolbar.
 
   ![HsReload](images/hsReload.gif)
 
-- `Create Spoon`
-
-  Create a Spoon template in the Spoons directory. If the Spoon directory is not present
-  in workspace root, will show an error.
-
-- `Generate Spoon Documentation`
-
-  Generate documentation for the `init.lua` spoon file. (Requires `hs.ipc`. See [Requirements](#16-requirements))
-
-- `Update completion documentation`
-
-  Update the internal database for code suggestions.
+- The Spoon template will be created in the `Hammerspoon: Spoons: Path` configuration
+value which defaults to `.hammerspoon/Spoons`.
+- When generating documentation for the Spoon, editor current active file must be a `init.lua` for the command to appear.
 
 ## 1.4. Extension settings
 
-- `Hammerspoon: Spoons Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
+- `Spoons: Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
 
   In order to generate the extra documentation (HTML/Markdown), you need to have access
   to the Hammerspoon source code repository with its python dependency.
@@ -101,7 +95,7 @@ typing in one of the following Command Name:
   }
   ```
 
-- `Hammerspoon: Spoons Path` - `hammerspoon.spoons.path`
+- `Spoons: Path` - `hammerspoon.spoons.path`
 
   Path where to create the Spoons. Defaults to `~/.hammerspoon/Spoons`. If a custom path is specified, remember to add it to your `init.lua`.
 
@@ -113,6 +107,13 @@ typing in one of the following Command Name:
   > -- Look for Spoons in ~/.hammerspoon/MySpoons as well
   > package.path = package.path .. ";" ..  hs.configdir .. "/MySpoons/?.spoon/init.lua"
   > ```
+
+- `Console: Focus Output Window` - `hammerspoon.console.focusOutputWindow`
+
+  When reloading Hammerspoon from extension command, focus directly on the output window.
+
+  > Tip: I always have `hs.console.clearConsole()` at the top of the `init.lua` since
+  > it gets pretty messy understanding where starts what.
 
 ## 1.5. Known Issues
 
@@ -142,7 +143,7 @@ typing in one of the following Command Name:
 
 - Some commands depend on the `hs.ipc` module. To install it, execute `hs.ipc.cliInstall()`
  in your Hammerspoon environment and call it at the beginning of your `init.lua`
- with `require('hs.ipc')` ([read module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)).
+ with `require('hs.ipc')` (more on [module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)).
  If you are on an Apple silicon Mac, you might need to follow
  [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
   
