@@ -287,9 +287,40 @@ export function getHelperData(
  *
  * @returns Hammerspoon console output text.
  */
-async function getHsConsoleOutput(): Promise<string> {
-    await utils.execCommand("hs -c 'hs.reload()'", 500);
-    return execSync("hs -c 'hs.console.getConsole()'", { encoding: "utf-8" });
+async function getHsConsoleOutput(): Promise<string | null> {
+    await utils.execAsync("hs -c 'hs.reload()'", 500);
+    const output = utils.execSync("hs -c 'hs.console.getConsole()'");
+    if (output) {
+        return output;
+    }
+    return null;
+}
+
+/**
+ * Filter output console based on extension setting: `console.filterOutput`.
+ *
+ * @param consoleOutput hammerspoon console text.
+ * @param regexFilters an array of string regex to perform the matches.
+ */
+function filterOutput(consoleOutput: string, regexFilters: string[]): void {
+    const lines = consoleOutput.match(/^\d.+?(?=^\d)/gms);
+    if (!lines) {
+        return;
+    }
+
+    let output = "";
+    for (const line of lines) {
+        for (const regex of regexFilters) {
+            const matches = RegExp(regex, "s").exec(line);
+            if (matches) {
+                for (const match of matches) {
+                    output += match;
+                }
+            }
+        }
+    }
+
+    outputWindow.append(output);
 }
 
 /**
@@ -301,36 +332,20 @@ async function getHsConsoleOutput(): Promise<string> {
 export async function outputConsole(): Promise<void> {
     outputWindow.clear();
 
+    const consoleOutput = await getHsConsoleOutput();
+    if (!consoleOutput) {
+        return;
+    }
+
     if (utils.hammerspoonConfig("console.focusOutputWindow")) {
         outputWindow.show();
     }
 
-    const consoleOutput: string = await getHsConsoleOutput();
-
-    const regexFilter = utils.hammerspoonConfig("console.filterOutput") as string[];
-    if (!regexFilter) {
+    const regexFilters = utils.hammerspoonConfig("console.filterOutput") as string[];
+    if (!regexFilters) {
         outputWindow.append(consoleOutput);
         return;
     }
 
-    // match console line from first number to first number of next line
-    const lines = consoleOutput.match(/^\d.+?(?=^\d)/gms);
-    if (!lines) {
-        return;
-    }
-
-    let filteredOutput = "";
-    for (const line of lines) {
-        for (const regex of regexFilter) {
-            const matches = RegExp(regex, "s").exec(line);
-
-            if (matches) {
-                for (const match of matches) {
-                    filteredOutput += match;
-                }
-            }
-        }
-    }
-
-    outputWindow.append(filteredOutput);
+    filterOutput(consoleOutput, regexFilters);
 }
