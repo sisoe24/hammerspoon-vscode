@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.2.0] - 2022-03-10
+
+### Added
+
+- Receive Hammerspoon console output to vscode output window.
+- Filter output based on regex patterns from extension settings.
+
 ## [0.1.1] - 2022-03-08
 
 ### Fixed
