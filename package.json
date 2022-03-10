@@ -61,6 +61,10 @@
           "markdownDescription": "Focus on output window when reloading Hammerspoon from extension.",
           "default": true
         },
+        "hammerspoon.console.filterOutput": {
+          "type": "array",
+          "markdownDescription": "Filter output lines based on regex match"
+        },
         "hammerspoon.spoons.path": {
           "type": "string",
           "markdownDescription": "Default path of the Spoons directory",
