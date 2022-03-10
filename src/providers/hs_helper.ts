@@ -225,6 +225,8 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param document vscode text editor document object.
      */
     private setArgsCursorPosition(linePrefix: string, document: vscode.TextDocument): void {
+        // BUG: fails when there is a anonymous function inside parenthesis :
+        // `foo(foo, function() foo end)
         const parenthesisIndex = /\((?!.+\()/.exec(linePrefix);
 
         if (parenthesisIndex && parenthesisIndex.index) {
