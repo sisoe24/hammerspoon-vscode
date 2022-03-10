@@ -56,6 +56,11 @@
     "configuration": {
       "title": "Hammerspoon",
       "properties": {
+        "hammerspoon.console.focusOutputWindow": {
+          "type": "boolean",
+          "markdownDescription": "Focus on output window when reloading Hammerspoon from extension.",
+          "default": true
+        },
         "hammerspoon.spoons.path": {
           "type": "string",
           "markdownDescription": "Default path of the Spoons directory",
