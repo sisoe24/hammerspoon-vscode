@@ -115,6 +115,25 @@ value which defaults to `.hammerspoon/Spoons`.
   > Tip: I always have `hs.console.clearConsole()` at the top of the `init.lua` since
   > it gets pretty messy understanding where starts what.
 
+- `Console: Filter Output` -`hammerspoon.console.filterOutput`
+
+  An array of regex patterns to filter out the Hammerspoon console lines of text when sending the output to vscode.
+
+  Example:
+
+  ```json
+  {
+    "hammerspoon.console.filterOutput": [
+      "➡.+",
+      "ERROR:.+"
+    ]
+  }
+  ```
+
+  ![FilterOutput](/images/filter_output.jpg)
+
+  > Tip: I use the extension [Python EasyPrint](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.python-easy-print) (which works also on Lua) to quickly print debug lines. The print statement always start with a unicode char `➡`, which I can use in the regex filter.
+
 ## 1.5. Known Issues
 
 - If script contains syntax errors, the extension will not work (If you don't use it
