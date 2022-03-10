@@ -13,8 +13,7 @@ import * as cp from "child_process";
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
-
-const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
+import { outputConsole } from "./hammerspoon";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
@@ -81,20 +80,8 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.reloadConfiguration", async () => {
-            outputWindow.clear();
-            const focusOutput = utils.hammerspoonConfig("console.focusOutputWindow");
-
-            if (focusOutput) {
-                outputWindow.show();
-            }
-
-            await utils.execCommand("hs -c 'hs.reload()'");
-            const output = cp.execSync("hs -c 'hs.console.getConsole()'", { encoding: "utf-8" });
-
-            if (output) {
-                outputWindow.append(output);
-            }
+        vscode.commands.registerCommand("hammerspoon.reloadConfiguration", () => {
+            outputConsole();
         })
     );
 }

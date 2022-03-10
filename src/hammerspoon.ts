@@ -5,8 +5,11 @@ import * as os from "os";
 
 import * as vscode from "vscode";
 import { getSpoonRootDir } from "./spoons";
+import * as utils from "./utils";
+import { execSync } from "child_process";
 
 const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
+const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 
 const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
     variable: vscode.CompletionItemKind.Variable,
@@ -275,4 +278,59 @@ export function getHelperData(
     }
 
     return helper;
+}
+
+/**
+ * Get Hammerspoon console output.
+ *
+ * Before grabbing the output, hammerspoon configuration will be reloaded.
+ *
+ * @returns Hammerspoon console output text.
+ */
+async function getHsConsoleOutput(): Promise<string> {
+    await utils.execCommand("hs -c 'hs.reload()'");
+    return execSync("hs -c 'hs.console.getConsole()'", { encoding: "utf-8" });
+}
+
+/**
+ * Output Hammerspoon console to vscode output window.
+ *
+ * The function might attempt to filter the output based on the settings value.
+ *
+ */
+export async function outputConsole(): Promise<void> {
+    outputWindow.clear();
+
+    if (utils.hammerspoonConfig("console.focusOutputWindow")) {
+        outputWindow.show();
+    }
+
+    const consoleOutput: string = await getHsConsoleOutput();
+
+    const regexFilter = utils.hammerspoonConfig("console.filterOutput") as string[];
+    if (!regexFilter) {
+        outputWindow.append(consoleOutput);
+        return;
+    }
+
+    // match console line from first number to first number of next line
+    const lines = consoleOutput.match(/^\d.+?(?=^\d)/gms);
+    if (!lines) {
+        return;
+    }
+
+    let filteredOutput = "";
+    for (const line of lines) {
+        for (const regex of regexFilter) {
+            const matches = RegExp(regex, "s").exec(line);
+
+            if (matches) {
+                for (const match of matches) {
+                    filteredOutput += match;
+                }
+            }
+        }
+    }
+
+    outputWindow.append(filteredOutput);
 }
