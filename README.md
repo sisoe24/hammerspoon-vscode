@@ -68,7 +68,7 @@ typing in one of the following Command Name:
 
 - The Spoon template will be created in the `Hammerspoon: Spoons: Path` configuration
 value which defaults to `.hammerspoon/Spoons`.
-- When generating documentation for the Spoon, editor current active file must be a `init.lua` for the command to appear.
+- When generating documentation for the Spoon, editor current active file must be a `init.lua`.
 
 ## 1.4. Extension settings
 

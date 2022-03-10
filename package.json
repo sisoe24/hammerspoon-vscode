@@ -40,8 +40,7 @@
       {
         "command": "hammerspoon.generateSpoonDoc",
         "title": "Generate Spoon documentation",
-        "category": "Hammerspoon",
-        "enablement": "resourceFilename == init.lua"
+        "category": "Hammerspoon"
       },
       {
         "command": "hammerspoon.reloadConfiguration",

@@ -73,6 +73,12 @@ export function generateSpoonDoc(): void {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
         const filePath = path.dirname(editor.document.fileName);
+
+        if (!filePath.endsWith("init.lua")) {
+            vscode.window.showWarningMessage("Active file must be a init.lua");
+            return;
+        }
+
         void generateDocsJson(filePath);
         void generateExtraDocs(filePath);
     }
