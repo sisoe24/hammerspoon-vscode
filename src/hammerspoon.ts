@@ -1,12 +1,11 @@
-import path = require("path");
-
 import * as fs from "fs";
 import * as os from "os";
+import * as path from "path";
 
 import * as vscode from "vscode";
-import { getSpoonRootDir } from "./spoons";
+
 import * as utils from "./utils";
-import { execSync } from "child_process";
+import { getSpoonRootDir } from "./spoons";
 
 const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
 const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
@@ -287,7 +286,7 @@ export function getHelperData(
  *
  * @returns Hammerspoon console output text.
  */
-async function getHsConsoleOutput(): Promise<string | null> {
+export async function getHsConsoleOutput(): Promise<string | null> {
     await utils.execAsync("hs -c 'hs.reload()'", 500);
     const output = utils.execSync("hs -c 'hs.console.getConsole()'");
     if (output) {
@@ -302,10 +301,10 @@ async function getHsConsoleOutput(): Promise<string | null> {
  * @param consoleOutput hammerspoon console text.
  * @param regexFilters an array of string regex to perform the matches.
  */
-function filterOutput(consoleOutput: string, regexFilters: string[]): void {
+export function filterOutput(consoleOutput: string, regexFilters: string[]): string | null {
     const lines = consoleOutput.match(/^\d.+?(?=^\d)/gms);
     if (!lines) {
-        return;
+        return null;
     }
 
     let output = "";
@@ -321,6 +320,7 @@ function filterOutput(consoleOutput: string, regexFilters: string[]): void {
     }
 
     outputWindow.append(output);
+    return output;
 }
 
 /**
