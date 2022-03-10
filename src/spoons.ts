@@ -29,11 +29,10 @@ export function pathExists(path: string): boolean {
  * @param dir Directory of the current active file.
  */
 export async function generateDocsJson(dir: string): Promise<void> {
-    const result = await utils.execCommand(
+    const result = utils.execSync(
         `cd ${dir} && hs -c "hs.doc.builder.genJSON(\\"$(pwd)\\")" | grep -v "^--" > docs.json`
     );
-
-    if (result) {
+    if (result !== null) {
         vscode.window.showInformationMessage("Documentation created!");
     }
 }
@@ -64,7 +63,7 @@ export async function generateExtraDocs(dir: string): Promise<void | null> {
     const hsDocScript = `${hsSourcePath}/scripts/docs`;
     const cmd = `${hsSourcePythonPath} ${hsDocScript}/bin/build_docs.py --templates ${hsDocScript}/templates/ --output_dir . --json --html --markdown --standalone .`;
 
-    await utils.execCommand(`cd ${dir} && ${cmd}`);
+    utils.execSync(`cd ${dir} && ${cmd}`);
 }
 
 /**

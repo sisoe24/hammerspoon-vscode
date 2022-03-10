@@ -24,13 +24,13 @@ export function hammerspoonConfig(property: string): unknown {
 }
 
 /**
- * Execute a shell command.
+ * Execute async shell command.
  *
  * @param cmd the command the execute.
  * @param timeout optional timeout in ms for the promise to resolve: defaults to 200ms.
  * @returns A promise<boolean> after 200ms of timeout if resolves.
  */
-export async function execCommand(cmd: string, timeout = 200): Promise<boolean> {
+export async function execAsync(cmd: string, timeout = 200): Promise<boolean> {
     let result = false;
 
     cp.exec(cmd, (err, stdout, stderr) => {
@@ -52,4 +52,23 @@ export async function execCommand(cmd: string, timeout = 200): Promise<boolean> 
             resolve(result);
         }, timeout);
     });
+}
+
+/**
+ * Execute sync shell command.
+ *
+ * If command fails, will show a popup error message.
+ *
+ * @param cmd the command the execute.
+ * @returns A string with stdout if any, or null if error.
+ */
+export function execSync(cmd: string): string | null {
+    let result = "";
+    try {
+        result = cp.execSync(cmd, { encoding: "utf-8" });
+    } catch (error) {
+        vscode.window.showErrorMessage(error.message);
+        return null;
+    }
+    return result;
 }
