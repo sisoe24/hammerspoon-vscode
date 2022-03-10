@@ -288,7 +288,7 @@ export function getHelperData(
  * @returns Hammerspoon console output text.
  */
 async function getHsConsoleOutput(): Promise<string> {
-    await utils.execCommand("hs -c 'hs.reload()'");
+    await utils.execCommand("hs -c 'hs.reload()'", 500);
     return execSync("hs -c 'hs.console.getConsole()'", { encoding: "utf-8" });
 }
 

@@ -27,9 +27,10 @@ export function hammerspoonConfig(property: string): unknown {
  * Execute a shell command.
  *
  * @param cmd the command the execute.
+ * @param timeout optional timeout in ms for the promise to resolve: defaults to 200ms.
  * @returns A promise<boolean> after 200ms of timeout if resolves.
  */
-export async function execCommand(cmd: string): Promise<boolean> {
+export async function execCommand(cmd: string, timeout = 200): Promise<boolean> {
     let result = false;
 
     cp.exec(cmd, (err, stdout, stderr) => {
@@ -49,6 +50,6 @@ export async function execCommand(cmd: string): Promise<boolean> {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(result);
-        }, 200);
+        }, timeout);
     });
 }
