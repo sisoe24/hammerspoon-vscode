@@ -118,7 +118,7 @@ suite("Spoon Docs", () => {
 
 suite("Spoon misc", () => {
     test("Execute command with error", async () => {
-        const result = await utils.execCommand("abc -c");
+        const result = await utils.execAsync("abc -c");
         assert.ok(!result);
     });
 });
