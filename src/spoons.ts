@@ -69,17 +69,16 @@ export async function generateExtraDocs(dir: string): Promise<void | null> {
 /**
  * Generate Hammerspoon Spoon documentation from a `spoon/init.lua`.
  */
-export function generateSpoonDoc(): void {
+export function generateSpoonDoc(): null | void {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
         const fileName = editor.document.fileName;
         if (!fileName.endsWith("init.lua")) {
             vscode.window.showWarningMessage("Active file must be a init.lua");
-            return;
+            return null;
         }
 
         const filePath = path.dirname(fileName);
-        // TODO: should stop if generateDocsJson fails
         void generateDocsJson(filePath);
         void generateExtraDocs(filePath);
     }
