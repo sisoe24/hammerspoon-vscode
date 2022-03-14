@@ -3,6 +3,7 @@ import * as path from "path";
 import * as cp from "child_process";
 
 export const languagePath = path.resolve(__dirname, "../resources");
+export const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 
 /**
  * Get configuration property value.
@@ -24,27 +25,39 @@ export function hammerspoonConfig(property: string): unknown {
 }
 
 /**
+ * Append text to vscode console
+ *
+ * @param text text to append in console
+ */
+function writeToConsole(text: string): void {
+    outputWindow.clear();
+    outputWindow.show();
+    outputWindow.appendLine(text);
+}
+
+/**
  * Execute async shell command.
  *
  * @param cmd the command the execute.
  * @param timeout optional timeout in ms for the promise to resolve: defaults to 200ms.
  * @returns A promise<boolean> after 200ms of timeout if resolves.
  */
-export async function execAsync(cmd: string, timeout = 200): Promise<boolean> {
-    let result = false;
+export async function execAsync(cmd: string, timeout = 200): Promise<string> {
+    let result = "";
 
     cp.exec(cmd, (err, stdout, stderr) => {
+        if (stdout) {
+            result = stdout;
+            writeToConsole(stdout);
+        }
         if (stderr) {
-            result = false;
             vscode.window.showErrorMessage(stderr);
             return null;
         }
         if (err) {
-            result = false;
             vscode.window.showErrorMessage(err.message);
             return null;
         }
-        result = true;
     });
 
     return new Promise((resolve) => {
