@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.2] - 2022-03-14
+
+### Fixed
+
+- Popup info box now shows properly when creating a spoon documentation.
+
 ## [0.3.1] - 2022-03-14
 
 ### Fixed
