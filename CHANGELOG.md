@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Fixed Show Console command not working.
 - Show more descriptive error for some `hs.ipc` commands when they fail.
 
 ## [0.3.0] - 2022-03-14
