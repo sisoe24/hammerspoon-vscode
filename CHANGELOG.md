@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.3.0] - 2022-03-14
+
+### Added
+
+- New command to show Hammerspoon console.
+
+### Fixed
+
+- Fixed bug where editor would not recognize `init.lua` as valid file
+when generating documentation for the Spoon.
+
 ## [0.2.0] - 2022-03-10
 
 ### Added
