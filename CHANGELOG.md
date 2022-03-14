@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.1] - 2022-03-14
+
+### Fixed
+
+- Show more descriptive error for some `hs.ipc` commands when they fail.
+
 ## [0.3.0] - 2022-03-14
 
 ### Added
