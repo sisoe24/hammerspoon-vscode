@@ -87,7 +87,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.showConsole", () => {
-            utils.execSync("hs -c 'hs.showConsole()'");
+            utils.execSync("hs -c 'hs.openConsole()'");
         })
     );
 }
