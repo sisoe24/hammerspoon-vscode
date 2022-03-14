@@ -84,6 +84,12 @@ export function activate(context: vscode.ExtensionContext): void {
             outputConsole();
         })
     );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.showConsole", () => {
+            utils.execSync("hs -c 'hs.showConsole()'");
+        })
+    );
 }
 
 // this method is called when your extension is deactivated

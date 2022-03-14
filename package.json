@@ -43,6 +43,11 @@
         "category": "Hammerspoon"
       },
       {
+        "command": "hammerspoon.showConsole",
+        "title": "Show Hammerspoon Console",
+        "category": "Hammerspoon"
+      },
+      {
         "command": "hammerspoon.reloadConfiguration",
         "title": "Reload Hammerspoon configuration.",
         "category": "Hammerspoon",
