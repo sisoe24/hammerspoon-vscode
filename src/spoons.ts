@@ -72,13 +72,13 @@ export async function generateExtraDocs(dir: string): Promise<void | null> {
 export function generateSpoonDoc(): void {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
-        const filePath = path.dirname(editor.document.fileName);
-
-        if (!filePath.endsWith("init.lua")) {
+        const fileName = editor.document.fileName;
+        if (!fileName.endsWith("init.lua")) {
             vscode.window.showWarningMessage("Active file must be a init.lua");
             return;
         }
 
+        const filePath = path.dirname(fileName);
         void generateDocsJson(filePath);
         void generateExtraDocs(filePath);
     }
