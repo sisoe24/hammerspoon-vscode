@@ -8,7 +8,6 @@ import * as utils from "./utils";
 import { getSpoonRootDir } from "./spoons";
 
 const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
-const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 
 const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
     variable: vscode.CompletionItemKind.Variable,
@@ -319,7 +318,7 @@ export function filterOutput(consoleOutput: string, regexFilters: string[]): str
         }
     }
 
-    outputWindow.append(output);
+    utils.outputWindow.append(output);
     return output;
 }
 
@@ -330,7 +329,7 @@ export function filterOutput(consoleOutput: string, regexFilters: string[]): str
  *
  */
 export async function outputConsole(): Promise<void> {
-    outputWindow.clear();
+    utils.outputWindow.clear();
 
     const consoleOutput = await getHsConsoleOutput();
     if (!consoleOutput) {
@@ -338,12 +337,12 @@ export async function outputConsole(): Promise<void> {
     }
 
     if (utils.hammerspoonConfig("console.focusOutputWindow")) {
-        outputWindow.show();
+        utils.outputWindow.show();
     }
 
     const regexFilters = utils.hammerspoonConfig("console.filterOutput") as string[];
     if (!regexFilters) {
-        outputWindow.append(consoleOutput);
+        utils.outputWindow.append(consoleOutput);
         return;
     }
 
