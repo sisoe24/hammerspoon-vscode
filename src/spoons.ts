@@ -32,7 +32,7 @@ export async function generateDocsJson(dir: string): Promise<void> {
     const result = await utils.execAsync(
         `cd ${dir} && hs -c "hs.doc.builder.genJSON(\\"$(pwd)\\")" | grep -v "^--" > docs.json`
     );
-    if (result) {
+    if (result !== null) {
         vscode.window.showInformationMessage("Documentation created!");
     }
 }
