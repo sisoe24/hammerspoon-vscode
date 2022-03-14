@@ -10,6 +10,7 @@ import * as spoons from "../../spoons";
 // const demoFile = "tests/hs_hover_demo.lua";
 const hsPath = `${testUtils.demoPath}/.hammerspoon/Spoons`;
 const newSpoon = `${hsPath}/test.spoon`;
+const spoonInit = `${newSpoon}/init.lua`;
 
 suiteSetup("CleanUp .hammerspoon content", () => {
     fs.rmSync(newSpoon, { force: true, recursive: true });
@@ -53,11 +54,17 @@ suite("Spoons Creation", () => {
     });
 
     test("Created Spoon should have placeholders substituted", () => {
-        const spoonFile = fs.readFileSync(`${newSpoon}/init.lua`, "utf-8");
+        const spoonFile = fs.readFileSync(spoonInit, "utf-8");
         for (const [key, value] of Object.entries(placeholders)) {
             assert.ok(RegExp(value, "g").test(spoonFile));
             assert.ok(!RegExp(key, "g").test(spoonFile));
         }
+    });
+
+    test("Generate Spoon but file is not init.lua", async () => {
+        await testUtils.focusDemoFile("tests/hs_hover_demo.lua");
+        const result = spoons.generateSpoonDoc();
+        assert.strictEqual(result, null);
     });
 
     test.skip("Ask user", async () => {
