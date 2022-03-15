@@ -341,7 +341,7 @@ export async function outputConsole(): Promise<void> {
     }
 
     const regexFilters = utils.hammerspoonConfig("console.filterOutput") as string[];
-    if (!regexFilters) {
+    if (!regexFilters.length) {
         utils.outputWindow.append(consoleOutput);
         return;
     }
