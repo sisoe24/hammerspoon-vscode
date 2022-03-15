@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.3] - 2022-03-13
+
+### Fixed
+
+- Fixed hammerspoon not showing when no filter were provided.
+
 ## [0.3.2] - 2022-03-14
 
 ### Fixed
