@@ -38,7 +38,7 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
          * Suggest module completion when line is a hammerspoon statement:
          * `local app = hs.`
          */
-        const hsModule = /hs\.(?:\w+\.?)*$/.exec(linePrefix);
+        const hsModule = /hs\.(?:\w+\.?)?$/.exec(linePrefix);
         if (hsModule) {
             return this.getModuleSuggestion(hsModule[0]);
         }
@@ -200,6 +200,7 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
      * @returns a list of module suggestions or null
      */
     private getMethodSuggestion(base: string, identifier: string): vscode.CompletionItem[] | null {
+        console.log("🚀 ~ base", base);
         logger.debug("Get Method Suggestion:", base, identifier);
 
         const constructor = hs.getConstructor(base, identifier);
