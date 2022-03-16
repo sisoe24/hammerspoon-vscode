@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.4] - 2022-03-15
+
+### Fixed
+
+- Fixed potential catastrophic backtracking regex for hs base modules.
+
 ## [0.3.3] - 2022-03-13
 
 ### Fixed
