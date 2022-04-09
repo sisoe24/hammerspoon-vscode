@@ -8,7 +8,6 @@ import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
 import * as utils from "./utils";
-import * as cp from "child_process";
 
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
