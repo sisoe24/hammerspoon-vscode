@@ -23,7 +23,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
   - [1.5. Known Issues](#15-known-issues)
   - [1.6. Requirements](#16-requirements)
   - [1.7. TODO](#17-todo)
-  - [1.8. Acknowledgement](#18-acknowledgement)
+  - [1.8. Acknowledgment](#18-acknowledgment)
 
 ## 1.1. Features
 
@@ -38,17 +38,18 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 
 ## 1.2. Description
 
-A cheap and dirty attempt to create an Intellisense environment for the Hammerspoon framework.
+This extension is a cheap and dirty attempt to create an IntelliSense environment for Hammerspoon.
 
-This is done by creating a symbol table of the Lua script and by then parsing the
-Hammerspoon documentation in search for the data. This is far from perfect
-and it will fail under some circumstances (multi nested method calls, complex scripts,
-"classes" etc.) but it gets the job done for the most basic ones.
+The way it works is by creating a symbol table of the script. Then the extension
+parses Hammerspoon documentation in search of the object information.
+
+This method is far from perfect and it likely will fail under some circumstances
+(multi nested method calls, complex scripts, "classes" etc.) but it gets the job
+done for the most basic ones.
 
 ## 1.3. Available Commands
 
-By default the extension does not provide any shortcut, but every command can be assigned to one.
-(see [Key Bindings for Visual Studio Code](https://code.visualstudio.com/docs/getstarted/keybindings) for more information).
+By default, the extension does not provide any shortcut. But you can assign each command to one. (see Key Bindings for Visual Studio Code for more information).
 
 All commands are available by opening the Command Palette `Command+Shift+P` and
 typing in one of the following Command Name:
@@ -63,19 +64,19 @@ typing in one of the following Command Name:
 
 ### 1.3.1. Notes
 
-- Reloading the Hammerspoon configuration can also be accessed via a button in the Editor Toolbar.
+- `Hammerspoon: Reload Hammerspoon configuration` command can be executed via a button in the Editor Toolbar.
 
   ![HsReload](images/hsReload.gif)
 
-- The Spoon template will be created in the `Hammerspoon: Spoons: Path` configuration
+- The Spoon template will get created in the `Hammerspoon: Spoons: Path` configuration
 value which defaults to `.hammerspoon/Spoons`.
-- When generating documentation for the Spoon, editor current active file must be a `init.lua`.
+- When generating documentation for the Spoon, the editor's current active file must be a `init.lua`.
 
 ## 1.4. Extension settings
 
 - `Spoons: Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
 
-  In order to generate the extra documentation (HTML/Markdown), you need to have access
+  To generate the extra documentation (HTML/Markdown), you need to have access
   to the Hammerspoon source code repository with its python dependency.
 
   From Hammerspoon official [documentation](https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md#generating):
@@ -83,9 +84,9 @@ value which defaults to `.hammerspoon/Spoons`.
   > - Clone <https://github.com/Hamerspoon/hammerspoon>
   > - Install the required Python dependencies (e.g. `pip install --user -r requirements.txt` in the Hammerspoon repo)
 
-  With that done, the settings takes two options:
+  With that done, the setting takes two options:
   - `repository-path`: The Hammerspoon source code repository path.
-  - `interpreter-path`: The Hammerspoon source code repository Python interpreter path.
+  - `interpreter-path`: The Python interpreter path of the Hammerspoon source code repository.
 
   Example:
 
@@ -98,7 +99,7 @@ value which defaults to `.hammerspoon/Spoons`.
 
 - `Spoons: Path` - `hammerspoon.spoons.path`
 
-  Path where to create the Spoons. Defaults to `~/.hammerspoon/Spoons`. If a custom path is specified, remember to add it to your `init.lua`.
+  The ath where to create the Spoons. Defaults to `~/.hammerspoon/Spoons`. If a custom path is specified, remember to add it to your `init.lua`.
 
   From Hammerspoon official [documentation](https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md#loading-a-spoon):
 
@@ -111,14 +112,14 @@ value which defaults to `.hammerspoon/Spoons`.
 
 - `Console: Focus Output Window` - `hammerspoon.console.focusOutputWindow`
 
-  When reloading Hammerspoon from extension command, focus directly on the output window.
+  When reloading Hammerspoon from the extension command, focus directly on the output window.
 
   > Tip: I always have `hs.console.clearConsole()` at the top of the `init.lua` since
   > it gets pretty messy understanding where starts what.
 
 - `Console: Filter Output` -`hammerspoon.console.filterOutput`
 
-  An array of regex patterns to filter out the Hammerspoon console lines of text when sending the output to vscode.
+  An array of regex patterns. Useful to filter out the Hammerspoon console output inside VScode.
 
   Example:
 
@@ -133,13 +134,13 @@ value which defaults to `.hammerspoon/Spoons`.
 
   ![FilterOutput](/images/filter_output.jpg)
 
-  > Tip: I use the extension [Python EasyPrint](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.python-easy-print) (which works also on Lua) to quickly print debug lines. The print statement always start with a unicode char `➡`, which I can use in the regex filter.
+  > Tip: I use the extension [Python EasyPrint](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.python-easy-print) (which also works on Lua) to quickly print debug statements. The print statement always starts with a Unicode char `➡`, which I can use in the regex filter.
 
 ## 1.5. Known Issues
 
-- If script contains syntax errors, the extension will not work (If you don't use it
+- If the script contains syntax errors, the extension will not work (If you don't use it
   already, I suggest the [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension)
-- Methods will return only if is an Hammerspoon data type. (eg. `hs.application`, `hs.window` etc.)
+- Methods will return a value only if the value is an Hammerspoon data type. (eg. `hs.application`, `hs.window` etc.)
 - Some methods will return an Hammerspoon data type even if it could potentially be something else:
 
   ![returnType1](/images/return_type1.jpg)
@@ -149,14 +150,13 @@ value which defaults to `.hammerspoon/Spoons`.
 
 - If a method returns anything other than a valid Hammerspoon data type
   (eg. `string`, `table`, `bool` etc.), it will only affect the hovering
-  information and no suggestions will be provided:
+  information, but suggestions will not be available.
 
   ![returnType2](/images/return_type2.jpg)
 
-  Hovering over `windows` will show: `list of hs.window objects` but no suggestions
-  will be provided for it. Those will be treated as simple hover information.
+  Hovering over `windows` will show: `list of hs.window objects` just as simple hover information.
 
-- Although Lua 5.4 is not technically supported, your script can contain the `<const>` and `<close>` new keywords.
+- Lua 5.4 is not technically supported, but your script can contain the `<const>` and `<close>` new keywords.
 - And probably more...
 
 ## 1.6. Requirements
@@ -174,6 +174,6 @@ value which defaults to `.hammerspoon/Spoons`.
 - [ ] Type annotations.
 - [ ] Expand suggestions for non Hammerspoon data type returns.
 
-## 1.8. Acknowledgement
+## 1.8. Acknowledgment
 
-The symbol table is created with [luaparse](https://github.com/fstirlitz/luaparse).
+[luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
