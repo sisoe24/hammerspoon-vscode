@@ -3,7 +3,7 @@
   "displayName": "Hammerspoon",
   "publisher": "virgilsisoe",
   "description": "Autocomplete, hover and function signature helper for the Hammerspoon framework.",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "engines": {
     "vscode": "^1.63.0"
   },
