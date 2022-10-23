@@ -28,7 +28,7 @@
     "commands": [
       {
         "command": "hammerspoon.connect",
-        "title": "Start server connection",
+        "title": "Toggle server connection",
         "category": "Hammerspoon"
       },
       {
