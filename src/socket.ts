@@ -36,13 +36,13 @@ function executeVscodeCommand(command: string) {
     let args = command.match(/(?:{)(.+)(?:})/) || [];
     if (args.length !== 0) {
         // clean command from args
-        command = command.replace(args[0], "").trim();
+        command = command.replace(args[0], "");
 
         // extract the args and clean them from spaces
         args = args[1].split(",").map((arg) => arg.trim());
         debugNetwork(`Command args: [${args}]`);
     }
-    vscode.commands.executeCommand(command, ...args).then(
+    vscode.commands.executeCommand(command.trim(), ...args).then(
         (resolve) => {
             debugNetwork("Command executed successfully");
         },
