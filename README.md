@@ -22,13 +22,14 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 - [1. Hammerspoon-vscode README](#1-hammerspoon-vscode-readme)
   - [1.1. Features](#11-features)
   - [1.2. Description](#12-description)
-  - [1.3. Available Commands](#13-available-commands)
-    - [1.3.1. Notes](#131-notes)
-  - [1.4. Extension settings](#14-extension-settings)
-  - [1.5. Known Issues](#15-known-issues)
-  - [1.6. Requirements](#16-requirements)
-  - [1.7. TODO](#17-todo)
-  - [1.8. Acknowledgment](#18-acknowledgment)
+  - [1.3. Socket connection](#13-socket-connection)
+  - [1.4. Available Commands](#14-available-commands)
+    - [1.4.1. Notes](#141-notes)
+  - [1.5. Extension settings](#15-extension-settings)
+  - [1.6. Known Issues](#16-known-issues)
+  - [1.7. Requirements](#17-requirements)
+  - [1.8. TODO](#18-todo)
+  - [1.9. Acknowledgment](#19-acknowledgment)
 
 ## 1.1. Features
 
@@ -36,6 +37,7 @@ Visual Studio Code Hammerspoon extension for autocomplete and more.
 - Hover information for types and documentation.
 - Signature help for functions arguments.
 - Reload Hammerspoon configuration command. (Requires `hs.ipc`. See [Requirements](#16-requirements))
+- Execute vscode commands from Hammerspoon via [socket connection](#).
 - Spoon utilities:
   - Create Spoon template.
   - Generate Spoon documentation. (Requires `hs.ipc`. See [Requirements](#16-requirements))
@@ -48,26 +50,51 @@ This extension is a cheap and dirty attempt to create an IntelliSense environmen
 The way it works is by creating a symbol table of the script. Then the extension
 parses Hammerspoon documentation in search of the object information.
 
-This method is far from perfect and it likely will fail under some circumstances
-(multi nested method calls, complex scripts, "classes" etc.) but it gets the job
-done for the most basic ones.
+This method will fail under some circumstances (multi nested method calls,
+complex scripts, "classes" etc.) but it gets the job done for the most basic ones.
 
-## 1.3. Available Commands
+## 1.3. Socket connection
+
+You can execute vscode commands from Hammerspoon by sending data via the `socket` module.
+
+```lua
+socket = hs.socket.new()
+socket:connect('localhost', 54321)
+socket:send('workbench.action.toggleZenMode')
+
+-- calling socket:disconnect() immediately will fail to register the message
+hs.timer.doAfter(1, function() socket:disconnect() end)
+```
+
+You can write arguments inside curly brackets and delimit them by a comma: `{arg1, arg2}`
+
+```lua
+socket:send('workbench.action.tasks.runTask {My Task}')
+```
+
+For the extension to accept incoming data, you need to start the server
+via the command: `Hammerspoon: Toggle server connection` or via the button in lower the
+status bar.
+
+> You can see some debugging information inside the Output window: Hammerspoon Network.
+
+## 1.4. Available Commands
 
 By default, the extension does not provide any shortcut. But you can assign each command to one. (see Key Bindings for Visual Studio Code for more information).
 
 All commands are available by opening the Command Palette `Command+Shift+P` and
 typing in one of the following Command Name:
 
-| Command Name                                    | Command ID                        | Description                            |
-| ----------------------------------------------- | --------------------------------- | -------------------------------------- |
-| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration       |
-| `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`         | Show Hammerspoon console               |
-| `Hammerspoon: Create Spoon`                     | `hammerspoon.createSpoon`         | Quick Spoon startup template           |
-| `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon |
-| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data           |
+| Command Name                                    | Command ID                        | Description                                                                   |
+| ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
+| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration                                              |
+| `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`         | Show Hammerspoon console                                                      |
+| `Hammerspoon: Toggle server connection`         | `hammerspoon.createSpoon`         | Toggle connection that allows incoming data to be executed as vscode commands |
+| `Hammerspoon: Create Spoon`                     | `hammerspoon.createSpoon`         | Quick Spoon startup template                                                  |
+| `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon                                        |
+| `Hammerspoon: Update completion documentation`  | `hammerspoon.updateDatabase`      | Generate new completion data                                                  |
 
-### 1.3.1. Notes
+### 1.4.1. Notes
 
 - `Hammerspoon: Reload Hammerspoon configuration` command can be executed via a button in the Editor Toolbar.
 
@@ -77,7 +104,7 @@ typing in one of the following Command Name:
 value which defaults to `.hammerspoon/Spoons`.
 - When generating documentation for the Spoon, the editor's current active file must be a `init.lua`.
 
-## 1.4. Extension settings
+## 1.5. Extension settings
 
 - `Spoons: Extra Documentation` - `hammerspoon.spoon.extraDocumentation`
 
@@ -141,7 +168,12 @@ value which defaults to `.hammerspoon/Spoons`.
 
   > Tip: I use the extension [Python EasyPrint](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.python-easy-print) (which also works on Lua) to quickly print debug statements. The print statement always starts with a Unicode char `➡`, which I can use in the regex filter.
 
-## 1.5. Known Issues
+- `Network: Port` - `hammerspoon.network.port`: `number`
+
+  A port to use for incoming connection when sending message from Hammerspoon.
+  Defaults to `54321`.
+
+## 1.6. Known Issues
 
 - If the script contains syntax errors, the extension will not work (If you don't use it
   already, I suggest the [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension)
@@ -164,7 +196,7 @@ value which defaults to `.hammerspoon/Spoons`.
 - Lua 5.4 is not technically supported, but your script can contain the `<const>` and `<close>` new keywords.
 - And probably more...
 
-## 1.6. Requirements
+## 1.7. Requirements
 
 - Some commands depend on the `hs.ipc` module. To install it, execute `hs.ipc.cliInstall()`
  in your Hammerspoon environment and call it at the beginning of your `init.lua`
@@ -172,13 +204,13 @@ value which defaults to `.hammerspoon/Spoons`.
  If you are on an Apple silicon Mac, you might need to follow
  [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
   
-## 1.7. TODO
+## 1.8. TODO
 
 - [ ] Show error/problems.
 - [ ] Declaration on different file.
 - [ ] Type annotations.
 - [ ] Expand suggestions for non Hammerspoon data type returns.
 
-## 1.8. Acknowledgment
+## 1.9. Acknowledgment
 
 [luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
