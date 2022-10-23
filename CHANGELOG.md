@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.4.0] - 2022-10-23
+
+### Added
+
+- TCP socket connection to allow command execution from Hammerspoon.
+
 ## [0.3.4] - 2022-03-15
 
 ### Fixed
