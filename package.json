@@ -27,6 +27,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "hammerspoon.connect",
+        "title": "Start server connection",
+        "category": "Hammerspoon"
+      },
+      {
         "command": "hammerspoon.updateDatabase",
         "title": "Update completion documentation.",
         "shortTitle": "HS Update Docs",
@@ -73,6 +78,11 @@
           "type": "string",
           "markdownDescription": "Default path of the Spoons directory",
           "default": "~/.hammerspoon/Spoons"
+        },
+        "hammerspoon.network.port": {
+          "type": "number",
+          "markdownDescription": "TCP Port where to listen from incoming connection from Hammerspoon",
+          "default": 54321
         },
         "hammerspoon.spoons.extraDocumentation": {
           "type": "object",
