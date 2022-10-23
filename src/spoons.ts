@@ -137,25 +137,62 @@ export function createSpoonTemplate(spoonDir: string, placeholders: PlaceHolders
  * @returns a placeholders object.
  */
 export async function askUser(): Promise<PlaceHolders> {
-    const placeholders: PlaceHolders = {
-        _spoonName_: "Spoon name without the .spoon extension",
-        _description_: "Spoon Description",
-        _author_: "Author",
-    };
+    const placeholders: PlaceHolders = {};
 
-    for (const [key, value] of Object.entries(placeholders)) {
-        const action = await vscode.window.showInputBox({
-            title: key,
-            placeHolder: value,
-        });
+    let spoonName = (await vscode.window.showInputBox({
+        title: "Spoon Name",
+        placeHolder: "Spoon name without the .spoon extension",
+    })) as string;
 
-        if (action) {
-            placeholders[key] = action;
-        } else {
-            placeholders[key] = key;
-        }
-    }
+    spoonName = spoonName.replace(" ", "") ? spoonName : "SpoonTemplate";
+
+    const spoonDescription = (await vscode.window.showInputBox({
+        title: "Description",
+        placeHolder: "Spoon Description",
+    })) as string;
+
+    placeholders._spoonName_ = spoonName;
+    placeholders._description_ = spoonDescription;
+    placeholders._author_ = os.userInfo().username;
     return placeholders;
+}
+
+async function openProjectFolder(destination: vscode.Uri) {
+    const openProjectFolder = (await vscode.window.showQuickPick(["Yes", "No"], {
+        title: "Open Project Folder?",
+    })) as string;
+
+    if (openProjectFolder === "Yes") {
+        vscode.commands.executeCommand("vscode.openFolder", destination);
+    }
+}
+
+/**
+ * Import NukeServerSocket inside the menu.py
+ *
+ * If file does not exists will create one and write to it, otherwise will append
+ * the statement at the end.
+ */
+export function writeStatement(statement: string): void {
+    const hsInit = path.join(os.homedir(), ".hammerspoon", "init.lua");
+
+    if (fs.existsSync(hsInit)) {
+        if (!fs.readFileSync(hsInit, "utf-8").match(statement)) {
+            fs.appendFileSync(hsInit, `\n${statement}\n`);
+        }
+    } else {
+        fs.writeFileSync(hsInit, statement);
+    }
+}
+
+async function requireSpoon(module: string) {
+    const loadNukeInit = (await vscode.window.showQuickPick(["Yes", "No"], {
+        title: "Load Spoon in init.lua?",
+    })) as string;
+
+    if (loadNukeInit === "Yes") {
+        writeStatement(`hs.loadSpoon('${module}')`);
+    }
 }
 
 /**
@@ -164,10 +201,13 @@ export async function askUser(): Promise<PlaceHolders> {
 export async function createSpoon(): Promise<void> {
     const placeholders = await askUser();
 
-    const spoonDir = `${getSpoonRootDir()}/${placeholders["_spoonName_"]}.spoon`;
+    const spoonDir = `${getSpoonRootDir()}/${placeholders._spoonName_}.spoon`;
 
     if (createSpoonDir(spoonDir)) {
         createSpoonTemplate(spoonDir, placeholders);
         vscode.window.showInformationMessage("Spoon created");
     }
+
+    await requireSpoon(placeholders._spoonName_);
+    await openProjectFolder(vscode.Uri.file(spoonDir));
 }
