@@ -81,7 +81,7 @@
         },
         "hammerspoon.network.port": {
           "type": "number",
-          "markdownDescription": "TCP Port where to listen from incoming connection from Hammerspoon",
+          "markdownDescription": "A TCP port where to listen to the incoming connection from Hammerspoon",
           "default": 54321
         },
         "hammerspoon.spoons.extraDocumentation": {
