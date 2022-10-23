@@ -33,12 +33,21 @@ export function createStatusBar() {
 }
 
 function executeVscodeCommand(command: string) {
-    vscode.commands.executeCommand(command).then(
+    let args = command.match(/(?:{)(.+)(?:})/) || [];
+    if (args.length !== 0) {
+        // clean command from args
+        command = command.replace(args[0], "").trim();
+
+        // extract the args and clean them from spaces
+        args = args[1].split(",").map((arg) => arg.trim());
+        debugNetwork(`Command args: [${args}]`);
+    }
+    vscode.commands.executeCommand(command, ...args).then(
         (resolve) => {
             debugNetwork("Command executed successfully");
         },
         (reject) => {
-            debugNetwork(`Command rejected: ${reject.message}`);
+            debugNetwork(`[ERROR] Command rejected: ${reject.message}`);
             vscode.window.showWarningMessage(reject.message);
         }
     );
@@ -66,7 +75,7 @@ function startServer() {
         });
 
         socket.on("error", function (err) {
-            debugNetwork(`Server error: ${err.message}`);
+            debugNetwork(`[ERROR] Server error: ${err.message}`);
             vscode.window.showWarningMessage(err.message);
         });
     });
@@ -77,6 +86,7 @@ export async function connectHammerspoon() {
         statusBarItem.tooltip = "";
         statusBarItem.text = hsDisconnect;
         server.close();
+        debugNetwork("Closing server.");
     } else {
         statusBarItem.text = hsConnect;
         startServer();
