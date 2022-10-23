@@ -13,9 +13,21 @@ import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { outputConsole } from "./hammerspoon";
+import { connectHammerspoon, createStatusBar } from "./socket";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
+
+    createStatusBar();
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(
+            "lua",
+            new HSModulesCompletionProvider(),
+            ".",
+            ":"
+        )
+    );
 
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(
@@ -57,6 +69,12 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(() => {
             lua.updateAst();
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.connect", () => {
+            connectHammerspoon();
         })
     );
 
