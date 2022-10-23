@@ -200,7 +200,6 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
      * @returns a list of module suggestions or null
      */
     private getMethodSuggestion(base: string, identifier: string): vscode.CompletionItem[] | null {
-        console.log("🚀 ~ base", base);
         logger.debug("Get Method Suggestion:", base, identifier);
 
         const constructor = hs.getConstructor(base, identifier);
