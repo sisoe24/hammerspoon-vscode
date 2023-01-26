@@ -7,8 +7,9 @@ import { hammerspoonConfig } from "./utils";
 const server = new net.Server();
 
 const statusBarItem = vscode.window.createStatusBarItem();
-const hsDisconnect = "$(debug-disconnect) Hammerspoon: Disconnected";
-const hsConnect = "$(vm-connect) Hammerspoon: Listening...";
+statusBarItem.tooltip = "Toggle socket connection for Hammerspoon";
+const hsDisconnect = "$(debug-disconnect) HS Socket: Off";
+const hsConnect = "$(vm-connect) HS Socket: On";
 
 const outputWindowNetwork = vscode.window.createOutputChannel("Hammerspoon Network");
 
@@ -57,7 +58,7 @@ function startServer() {
     // TODO: save port value in settings
     const port = hammerspoonConfig("network.port") as number;
 
-    statusBarItem.tooltip = `Toggle connection for Hammerspoon on localhost:${port}`;
+    statusBarItem.tooltip = `${statusBarItem.tooltip} - localhost:${port}`;
 
     // TODO: add custom host
     server.listen(port);
@@ -83,7 +84,6 @@ function startServer() {
 
 export async function connectHammerspoon() {
     if (server.listening) {
-        statusBarItem.tooltip = "";
         statusBarItem.text = hsDisconnect;
         server.close();
         debugNetwork("Closing server.");
