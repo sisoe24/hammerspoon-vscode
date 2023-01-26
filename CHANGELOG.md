@@ -1,5 +1,15 @@
 # Change Log
 
+## [0.4.1] - 2023-01-26
+
+### Changed
+
+- Shorten the status bar socket connection text.
+
+### Fixed
+
+- Remove duplicate suggestions.
+
 ## [0.4.0] - 2022-10-23
 
 ### Added
