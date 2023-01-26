@@ -108,7 +108,8 @@ suite("Spoon Docs", () => {
         assert.ok(!result);
     });
 
-    test("Generate extra docs ", async () => {
+    test.skip("Generate extra docs ", async () => {
+        // FIXME: hard coded path
         const hsSource = `${os.homedir()}/Developer/SourceCode/hammerspoon`;
 
         await testUtils.updateConfig("spoons.extraDocumentation", {
