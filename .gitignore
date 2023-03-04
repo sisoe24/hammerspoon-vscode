@@ -3,7 +3,6 @@ dist
 node_modules
 .vscode-test/
 *.vsix
-hs_docs
 docs
 
 .nyc_output/
