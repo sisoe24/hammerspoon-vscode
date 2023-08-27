@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getConfig } from "./config";
-import { runAsync, runSync } from "./run_cmd";
+import { runSync } from "./run_cmd";
 
 export const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 
@@ -15,6 +15,10 @@ function writeToConsole(text: string): void {
     outputWindow.appendLine(text);
 }
 
+const sleep = (milliseconds: number): Promise<unknown> => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
+
 /**
  * Get Hammerspoon console output.
  *
@@ -23,16 +27,22 @@ function writeToConsole(text: string): void {
  * @returns Hammerspoon console output text.
  */
 export async function getHsConsoleOutput(): Promise<string | null> {
-    await runAsync("hs -c 'hs.reload()'", 500);
+    // For some reason, this command, although it works, it does throw an error.
+    runSync("hs -c 'hs.reload()'", true);
+
+    // wait for hammerspoon to reload
+    await sleep(1000);
+
     const output = runSync("hs -c 'hs.console.getConsole()'");
-    if (output) {
-        return output;
+    if (!output) {
+        return null;
     }
-    return null;
+
+    return output;
 }
 
 /**
- * Filter output console based on extension setting: `console.filterOutput`.
+ * Filter output console based on extension setting: `hammerspoon.console.filterOutput`.
  *
  * @param consoleOutput hammerspoon console text.
  * @param regexFilters an array of string regex to perform the matches.
@@ -58,17 +68,16 @@ export function filterOutput(
         }
     }
 
-    outputWindow.append(output);
     return output;
 }
 
 /**
  * Output Hammerspoon console to vscode output window.
  *
- * The function might attempt to filter the output based on the settings value.
+ * The function will attempt to filter the output based on the settings value.
  *
  */
-export async function outputConsole(): Promise<void> {
+export async function hammerspoonToVscode(): Promise<void> {
     outputWindow.clear();
 
     const consoleOutput = await getHsConsoleOutput();
@@ -86,5 +95,10 @@ export async function outputConsole(): Promise<void> {
         return;
     }
 
-    filterOutput(consoleOutput, regexFilters);
+    const output = filterOutput(consoleOutput, regexFilters);
+    if (!output) {
+        return;
+    }
+
+    outputWindow.append(output);
 }
