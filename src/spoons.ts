@@ -70,13 +70,13 @@ export function generateExtraDocs(dir: string): void {
 /**
  * Generate Hammerspoon Spoon documentation from a `spoon/init.lua`.
  */
-export function generateSpoonDoc(): void {
+export function generateSpoonDoc(): void | false {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
         const fileName = editor.document.fileName;
         if (!fileName.endsWith("init.lua")) {
             vscode.window.showWarningMessage("Active file must be a init.lua");
-            return;
+            return false;
         }
 
         const filePath = path.dirname(fileName);
