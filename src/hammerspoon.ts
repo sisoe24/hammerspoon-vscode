@@ -4,7 +4,6 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import * as utils from "./utils";
 import { getSpoonRootDir } from "./spoons";
 
 const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
@@ -276,75 +275,4 @@ export function getHelperData(
     }
 
     return helper;
-}
-
-/**
- * Get Hammerspoon console output.
- *
- * Before grabbing the output, hammerspoon configuration will be reloaded.
- *
- * @returns Hammerspoon console output text.
- */
-export async function getHsConsoleOutput(): Promise<string | null> {
-    await utils.execAsync("hs -c 'hs.reload()'", 500);
-    const output = utils.execSync("hs -c 'hs.console.getConsole()'");
-    if (output) {
-        return output;
-    }
-    return null;
-}
-
-/**
- * Filter output console based on extension setting: `console.filterOutput`.
- *
- * @param consoleOutput hammerspoon console text.
- * @param regexFilters an array of string regex to perform the matches.
- */
-export function filterOutput(consoleOutput: string, regexFilters: string[]): string | null {
-    const lines = consoleOutput.match(/^\d.+?(?=^\d)/gms);
-    if (!lines) {
-        return null;
-    }
-
-    let output = "";
-    for (const line of lines) {
-        for (const regex of regexFilters) {
-            const matches = RegExp(regex, "s").exec(line);
-            if (matches) {
-                for (const match of matches) {
-                    output += match;
-                }
-            }
-        }
-    }
-
-    utils.outputWindow.append(output);
-    return output;
-}
-
-/**
- * Output Hammerspoon console to vscode output window.
- *
- * The function might attempt to filter the output based on the settings value.
- *
- */
-export async function outputConsole(): Promise<void> {
-    utils.outputWindow.clear();
-
-    const consoleOutput = await getHsConsoleOutput();
-    if (!consoleOutput) {
-        return;
-    }
-
-    if (utils.hammerspoonConfig("console.focusOutputWindow")) {
-        utils.outputWindow.show();
-    }
-
-    const regexFilters = utils.hammerspoonConfig("console.filterOutput") as string[];
-    if (!regexFilters.length) {
-        utils.outputWindow.append(consoleOutput);
-        return;
-    }
-
-    filterOutput(consoleOutput, regexFilters);
 }

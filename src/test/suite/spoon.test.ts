@@ -4,8 +4,8 @@ import * as fs from "fs";
 import * as os from "os";
 
 import * as testUtils from "./test_utils";
-import * as utils from "../../utils";
 import * as spoons from "../../spoons";
+import * as runCmd from "../../run_cmd";
 
 // const demoFile = "tests/hs_hover_demo.lua";
 const hsPath = `${testUtils.demoPath}/.hammerspoon/Spoons`;
@@ -126,7 +126,7 @@ suite("Spoon Docs", () => {
 
 suite("Spoon misc", () => {
     test("Execute command with error", async () => {
-        const result = await utils.execAsync("abc -c");
+        const result = await runCmd.runAsync("abc -c");
         assert.ok(!result);
     });
 });

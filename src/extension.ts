@@ -7,18 +7,26 @@ import { HSStringCompletionProvider } from "./providers/hs_string_completion";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
-import * as utils from "./utils";
 
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
-import { outputConsole } from "./hammerspoon";
 import { connectHammerspoon, createStatusBar } from "./socket";
+import { runSync } from "./run_cmd";
+import { outputConsole } from "./console";
+
+import * as hsexec from "./hs_exec";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
 
     createStatusBar();
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.executeSelection", () => {
+            hsexec.executeSelectedText();
+        })
+    );
 
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(
@@ -88,14 +96,17 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.reloadConfiguration", () => {
-            outputConsole();
-        })
+        vscode.commands.registerCommand(
+            "hammerspoon.reloadConfiguration",
+            () => {
+                outputConsole();
+            }
+        )
     );
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.showConsole", () => {
-            utils.execSync("hs -c 'hs.openConsole()'");
+            runSync("hs -c 'hs.openConsole()'");
         })
     );
 }

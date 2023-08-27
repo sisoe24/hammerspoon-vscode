@@ -4,7 +4,8 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import * as utils from "./utils";
+import { getConfig } from "./config";
+import { runAsync } from "./run_cmd";
 
 /**
  * Check if path exists.
@@ -29,7 +30,7 @@ export function pathExists(path: string): boolean {
  * @param dir Directory of the current active file.
  */
 export async function generateDocsJson(dir: string): Promise<void> {
-    const result = await utils.execAsync(
+    const result = await runAsync(
         `cd ${dir} && hs -c "hs.doc.builder.genJSON(\\"$(pwd)\\")" | grep -v "^--" > docs.json`
     );
     if (result !== null) {
@@ -46,7 +47,7 @@ export async function generateDocsJson(dir: string): Promise<void> {
  * @param dir Directory of the current active file.
  */
 export async function generateExtraDocs(dir: string): Promise<void | null> {
-    const hsSourceRoot = utils.hammerspoonConfig("spoons.extraDocumentation") as {
+    const hsSourceRoot = getConfig("spoons.extraDocumentation") as {
         [key: string]: string;
     };
 
@@ -63,7 +64,7 @@ export async function generateExtraDocs(dir: string): Promise<void | null> {
     const hsDocScript = `${hsSourcePath}/scripts/docs`;
     const cmd = `${hsSourcePythonPath} ${hsDocScript}/bin/build_docs.py --templates ${hsDocScript}/templates/ --output_dir . --json --html --markdown --standalone .`;
 
-    await utils.execAsync(`cd ${dir} && ${cmd}`);
+    await runAsync(`cd ${dir} && ${cmd}`);
 }
 
 /**
@@ -90,7 +91,7 @@ export function generateSpoonDoc(): null | void {
  * @returns the Spoon directory path.
  */
 export function getSpoonRootDir(): string {
-    const spoonsRootDir = utils.hammerspoonConfig("spoons.path") as string;
+    const spoonsRootDir = getConfig("spoons.path") as string;
     return spoonsRootDir.replace("~", os.homedir());
 }
 
@@ -119,8 +120,14 @@ export type PlaceHolders = {
  * @param spoonDir path where to create the spoon template.
  * @param placeholders placeholders object to replace inside the `init.lua` template.
  */
-export function createSpoonTemplate(spoonDir: string, placeholders: PlaceHolders): string {
-    let spoonSample = fs.readFileSync(`${utils.languagePath}/spoon_sample.lua`, "utf-8");
+export function createSpoonTemplate(
+    spoonDir: string,
+    placeholders: PlaceHolders
+): string {
+    let spoonSample = fs.readFileSync(
+        `${path.resolve(__dirname, "../resources")}/spoon_sample.lua`,
+        "utf-8"
+    );
 
     for (const [key, value] of Object.entries(placeholders)) {
         spoonSample = spoonSample.replace(RegExp(key, "g"), value);
@@ -158,9 +165,12 @@ export async function askUser(): Promise<PlaceHolders> {
 }
 
 async function openProjectFolder(destination: vscode.Uri) {
-    const openProjectFolder = (await vscode.window.showQuickPick(["Yes", "No"], {
-        title: "Open Project Folder?",
-    })) as string;
+    const openProjectFolder = (await vscode.window.showQuickPick(
+        ["Yes", "No"],
+        {
+            title: "Open Project Folder?",
+        }
+    )) as string;
 
     if (openProjectFolder === "Yes") {
         vscode.commands.executeCommand("vscode.openFolder", destination);

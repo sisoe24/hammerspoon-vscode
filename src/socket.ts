@@ -1,6 +1,7 @@
 import * as net from "net";
 import * as vscode from "vscode";
-import { hammerspoonConfig } from "./utils";
+
+import { getConfig } from "./config";
 
 // TODO: Test module
 
@@ -56,7 +57,7 @@ function executeVscodeCommand(command: string) {
 
 function startServer() {
     // TODO: save port value in settings
-    const port = hammerspoonConfig("network.port") as number;
+    const port = getConfig("network.port") as number;
 
     statusBarItem.tooltip = `${statusBarItem.tooltip} - localhost:${port}`;
 
