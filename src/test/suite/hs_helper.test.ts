@@ -22,7 +22,10 @@ suite("Hs Helper", () => {
     });
 
     test("Helper active parameter", async () => {
-        await testUtils.createDemoContent(demoFile, "local app = hs.window():setFrame({},)");
+        await testUtils.createDemoContent(
+            demoFile,
+            "local app = hs.window():setFrame({},)"
+        );
 
         const editor = await testUtils.focusDemoFile(demoFile);
         const helper = new hsHelper.HsSignatureHelpProvider();
@@ -33,12 +36,18 @@ suite("Hs Helper", () => {
         );
 
         assert.ok(provider);
-        assert.strictEqual(provider.signatures[0].label, "(rect[, duration]) -> hs.window object");
+        assert.strictEqual(
+            provider.signatures[0].label,
+            "(rect[, duration]) -> hs.window object"
+        );
         assert.strictEqual(provider.signatures[0].activeParameter, 1);
     });
 
     test("Helper for `activate` on `hs.application():activate()`", async () => {
-        await testUtils.createDemoContent(demoFile, "hs.application():activate()");
+        await testUtils.createDemoContent(
+            demoFile,
+            "hs.application():activate()"
+        );
 
         const editor = await testUtils.focusDemoFile(demoFile);
         const helper = new hsHelper.HsSignatureHelpProvider();
@@ -49,7 +58,10 @@ suite("Hs Helper", () => {
         );
 
         assert.ok(provider);
-        assert.strictEqual(provider.signatures[0].label, "([allWindows]) -> bool");
+        assert.strictEqual(
+            provider.signatures[0].label,
+            "([allWindows]) -> bool"
+        );
     });
 
     test("Helper for `setSize` on `app:mainWindow():setSize()`", async () => {
@@ -114,7 +126,10 @@ suite("Hs Helper", () => {
         );
 
         assert.ok(provider);
-        assert.strictEqual(provider.signatures[0].label, "(title) -> hs.window object");
+        assert.strictEqual(
+            provider.signatures[0].label,
+            "(title) -> hs.window object"
+        );
         assert.strictEqual(provider.signatures[0].parameters[0].label, "title");
         assert.strictEqual(
             provider.signatures[0].parameters[0].documentation,
@@ -139,7 +154,10 @@ suite("Hs Helper", () => {
         );
 
         assert.ok(provider);
-        assert.strictEqual(provider.signatures[0].label, "(title) -> hs.window object");
+        assert.strictEqual(
+            provider.signatures[0].label,
+            "(title) -> hs.window object"
+        );
         assert.strictEqual(provider.signatures[0].parameters[0].label, "title");
         assert.strictEqual(
             provider.signatures[0].parameters[0].documentation,

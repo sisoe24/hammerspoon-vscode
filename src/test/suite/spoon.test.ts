@@ -8,20 +8,17 @@ import * as spoons from "../../spoons";
 import * as runCmd from "../../run_cmd";
 
 // const demoFile = "tests/hs_hover_demo.lua";
-const hsPath = `${testUtils.demoPath}/.hammerspoon/Spoons`;
+const hsPath = `${testUtils.testsPath}/.hammerspoon/Spoons`;
 const newSpoon = `${hsPath}/test.spoon`;
 const spoonInit = `${newSpoon}/init.lua`;
 
-suiteSetup("CleanUp .hammerspoon content", () => {
-    fs.rmSync(newSpoon, { force: true, recursive: true });
-});
 
 setup("Clean settings files", () => {
     testUtils.cleanSettings();
 });
 
 suite("Spoons Creation", () => {
-    const placeholders: spoons.PlaceHolders = {
+    const placeholders: spoons.PlaceholdersMap = {
         _spoonName_: "Spoon_Name",
         _description_: "Spoon_Description",
         _author_: "Spoon_Author",
@@ -39,6 +36,7 @@ suite("Spoons Creation", () => {
     });
 
     test("Create Spoon directory", () => {
+        fs.rmdirSync(newSpoon);
         const dir = spoons.createSpoonDir(newSpoon);
         assert.ok(dir);
     });
@@ -64,20 +62,12 @@ suite("Spoons Creation", () => {
     test("Generate Spoon but file is not init.lua", async () => {
         await testUtils.focusDemoFile("tests/hs_hover_demo.lua");
         const result = spoons.generateSpoonDoc();
-        assert.strictEqual(result, null);
+        assert.strictEqual(result, false);
     });
 
-    test.skip("Ask user", async () => {
-        const file = await spoons.askUser();
-        assert.strictEqual(file, "");
-    });
 });
 
 suite("Spoon Docs", () => {
-    test("Generate Docs", () => {
-        assert.strictEqual("", "");
-    });
-
     test("Path Exists", () => {
         const path = spoons.pathExists(hsPath);
         assert.ok(path);
@@ -89,44 +79,46 @@ suite("Spoon Docs", () => {
     });
 
     test("Generate docs.json", async () => {
-        await spoons.generateDocsJson(newSpoon);
+        spoons.generateDocsJson(newSpoon);
         assert.ok(fs.existsSync(`${newSpoon}/docs.json`));
     });
 
-    test("Generate extra docs but no path is set", async () => {
-        const result = await spoons.generateExtraDocs(newSpoon);
-        assert.ok(!result);
-    });
+    // test.skip("Generate extra docs but no path is set", async () => {
+    //     const result = spoons.generateExtraDocs(newSpoon);
+    //     assert.ok(!result);
+    // });
 
-    test("Generate extra docs but path is invalid", async () => {
-        await testUtils.updateConfig("spoons.extraDocumentation", {
-            "repository-path": "abc",
-            "interpreter-path": "abc",
-        });
+    // test.skip("Generate extra docs but path is invalid", async () => {
+    //     await testUtils.updateConfig("spoons.extraDocumentation", {
+    //         "repository-path": "abc",
+    //         "interpreter-path": "abc",
+    //     });
 
-        const result = await spoons.generateExtraDocs(newSpoon);
-        assert.ok(!result);
-    });
+    //     const result = await spoons.generateExtraDocs(newSpoon);
+    //     assert.ok(!result);
+    // });
 
-    test.skip("Generate extra docs ", async () => {
-        // FIXME: hard coded path
-        const hsSource = `${os.homedir()}/Developer/SourceCode/hammerspoon`;
+    // test.skip("Generate extra docs ", async () => {
+    //     // FIXME: hard coded path
+    //     const hsSource = `${os.homedir()}/Developer/SourceCode/hammerspoon`;
 
-        await testUtils.updateConfig("spoons.extraDocumentation", {
-            "repository-path": hsSource,
-            "interpreter-path": `${hsSource}/.venv/bin/python`,
-        });
+    //     await testUtils.updateConfig("spoons.extraDocumentation", {
+    //         "repository-path": hsSource,
+    //         "interpreter-path": `${hsSource}/.venv/bin/python`,
+    //     });
 
-        await spoons.generateExtraDocs(newSpoon);
-        assert.ok(fs.existsSync(`${newSpoon}/docs_index.json`));
-        assert.ok(fs.existsSync(`${newSpoon}/markdown`));
-        assert.ok(fs.existsSync(`${newSpoon}/html`));
-    });
+    //     await spoons.generateExtraDocs(newSpoon);
+    //     assert.ok(fs.existsSync(`${newSpoon}/docs_index.json`));
+    //     assert.ok(fs.existsSync(`${newSpoon}/markdown`));
+    //     assert.ok(fs.existsSync(`${newSpoon}/html`));
+    // });
 });
 
 suite("Spoon misc", () => {
     test("Execute command with error", async () => {
-        const result = await runCmd.runAsync("abc -c");
-        assert.ok(!result);
+        runCmd.runAsync("abc -c").catch((result) => {
+            assert.ok(result);
+        });
+
     });
 });

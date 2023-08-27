@@ -1,12 +1,19 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { readFileSync, createWriteStream } from "fs";
+import { readFileSync, createWriteStream, mkdirSync, rmdirSync } from "fs";
 
 export const root = path.resolve(__dirname, "../../../");
-export const packageFile = readFileSync(path.join(root, "package.json"), "utf-8");
+export const packageFile = readFileSync(
+    path.join(root, "package.json"),
+    "utf-8"
+);
 
-export const demoPath = path.join(root, "demo");
-export const hsDocsPath = path.join(path.resolve(__dirname, "../../.."), "resources", "hs_docs");
+export const testsPath = path.join(root, ".tests");
+export const hsDocsPath = path.join(
+    path.resolve(__dirname, "../../.."),
+    "resources",
+    "hs_docs"
+);
 
 /**
  * Some tests will need to wait for vscode to register the actions. An example will
@@ -26,7 +33,10 @@ export const sleep = (milliseconds: number): Promise<unknown> => {
  * @param name - name of the configuration property to update.
  * @param value - the new value for the property.
  */
-export async function updateConfig(name: string, value: unknown): Promise<void> {
+export async function updateConfig(
+    name: string,
+    value: unknown
+): Promise<void> {
     const config = vscode.workspace.getConfiguration("hammerspoon");
     await config.update(name, value, vscode.ConfigurationTarget.Workspace);
 }
@@ -46,7 +56,7 @@ export async function focusDemoFile(
     startChar = 0,
     endChar = 0
 ): Promise<vscode.TextEditor> {
-    const filepath = path.join(demoPath, filename);
+    const filepath = path.join(testsPath, filename);
     const document = await vscode.workspace.openTextDocument(filepath);
 
     const startSelection = new vscode.Position(line, startChar);
@@ -56,11 +66,26 @@ export async function focusDemoFile(
         endSelection = new vscode.Position(line, endChar);
     }
     const editor = await vscode.window.showTextDocument(document, {
-        selection: new vscode.Selection(startSelection, endSelection || startSelection),
+        selection: new vscode.Selection(
+            startSelection,
+            endSelection || startSelection
+        ),
     });
 
     return editor;
 }
+
+export function createDemoFolder(): void {
+    mkdirSync(testsPath, { recursive: true });
+    mkdirSync(path.join(testsPath, ".vscode"), { recursive: true });
+    mkdirSync(path.join(testsPath, ".hammerspoon", "Spoons"), { recursive: true });
+    mkdirSync(path.join(testsPath, "tests"), { recursive: true });
+}
+
+export function cleanDemoFolder(): void {
+    rmdirSync(testsPath, { recursive: true });
+}
+
 
 /**
  * Create a demo file and write the content to it.
@@ -71,8 +96,11 @@ export async function focusDemoFile(
  * @param filename name of the file demo to write the content to.
  * @param content  the content to write.
  */
-export async function createDemoContent(filename: string, content: string): Promise<void> {
-    const filepath = path.join(demoPath, filename);
+export async function createDemoContent(
+    filename: string,
+    content: string
+): Promise<void> {
+    const filepath = path.join(testsPath, filename);
 
     const file = createWriteStream(filepath);
     file.write(content);
