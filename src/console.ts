@@ -4,17 +4,6 @@ import { runSync } from "./run_cmd";
 
 export const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 
-/**
- * Append text to vscode console
- *
- * @param text text to append in console
- */
-function writeToConsole(text: string): void {
-    outputWindow.clear();
-    outputWindow.show();
-    outputWindow.appendLine(text);
-}
-
 const sleep = (milliseconds: number): Promise<unknown> => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
