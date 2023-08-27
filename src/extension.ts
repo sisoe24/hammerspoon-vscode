@@ -13,7 +13,7 @@ import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
 import { runSync } from "./run_cmd";
-import { outputConsole } from "./console";
+import { hammerspoonToVscode } from "./console";
 
 import * as hsexec from "./hs_exec";
 
@@ -99,7 +99,7 @@ export function activate(context: vscode.ExtensionContext): void {
         vscode.commands.registerCommand(
             "hammerspoon.reloadConfiguration",
             () => {
-                outputConsole();
+                hammerspoonToVscode();
             }
         )
     );
