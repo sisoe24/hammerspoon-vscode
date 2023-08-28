@@ -15,18 +15,10 @@ import { connectHammerspoon, createStatusBar } from "./socket";
 import { runSync } from "./run_cmd";
 import { hammerspoonToVscode } from "./console";
 
-import * as hsexec from "./hs_exec";
-
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
 
     createStatusBar();
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.executeSelection", () => {
-            hsexec.executeSelectedText();
-        })
-    );
 
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(

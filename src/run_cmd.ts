@@ -65,8 +65,6 @@ export function runSync(cmd: string, suppressError = false): string | null {
         } else {
             msg = `Some unknown error has occurred when running: ${cmd}`;
         }
-
-
         vscode.window.showErrorMessage(msg);
         return null;
     }
