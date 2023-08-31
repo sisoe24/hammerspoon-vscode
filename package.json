@@ -60,6 +60,11 @@
           "dark": "images/sync-light.svg",
           "light": "images/sync-dark.svg"
         }
+      },
+      {
+        "command": "hammerspoon.executeSelectedText",
+        "title": "Execute selected text in hammerspoon console",
+        "category": "Hammerspoon"
       }
     ],
     "configuration": {
@@ -100,6 +105,13 @@
           "when": "resourceLangId == lua",
           "command": "hammerspoon.reloadConfiguration",
           "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "hammerspoon.executeSelectedText",
+          "group": "navigation",
+          "when": "editorTextFocus"
         }
       ]
     }
