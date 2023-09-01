@@ -17,7 +17,7 @@ export function runAsync(cmd: string, timeout = 1000): Promise<string> {
             clearTimeout(timer);
 
             if (wasKilled) {
-                return reject("killed");
+                return reject(new Error("killed"));
             }
 
             if (stdout) {
