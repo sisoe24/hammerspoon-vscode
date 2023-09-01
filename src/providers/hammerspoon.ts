@@ -4,9 +4,13 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { getSpoonRootDir } from "./spoons";
+import { getSpoonRootDir } from "../spoons";
 
-const hsDocsPath = path.join(path.resolve(__dirname, ".."), "resources", "hs_docs");
+const hsDocsPath = path.join(
+    path.resolve(__dirname, "../.."),
+    "resources",
+    "hs_docs"
+);
 
 const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
     variable: vscode.CompletionItemKind.Variable,
@@ -27,17 +31,26 @@ export function getSpoonsDirectory() {
     const items: vscode.CompletionItem[] = [];
 
     // getSpoonRootDir might be the same as the default, so use a Set to avoid duplicate
-    const spoonsDir = new Set([getSpoonRootDir(), `${os.homedir()}/.hammerspoon/Spoons`]);
+    const spoonsDir = new Set([
+        getSpoonRootDir(),
+        `${os.homedir()}/.hammerspoon/Spoons`,
+    ]);
 
     for (const dir of spoonsDir) {
         const spoonDir = fs.readdirSync(dir);
 
         spoonDir.forEach((spoon) => {
             if (spoon.endsWith(".spoon")) {
-                const file = fs.readFileSync(`${dir}/${spoon}/init.lua`, "utf-8");
+                const file = fs.readFileSync(
+                    `${dir}/${spoon}/init.lua`,
+                    "utf-8"
+                );
                 spoon = spoon.replace(".spoon", "");
 
-                const spoonItem = new vscode.CompletionItem(spoon, vscode.CompletionItemKind.Value);
+                const spoonItem = new vscode.CompletionItem(
+                    spoon,
+                    vscode.CompletionItemKind.Value
+                );
                 spoonItem.detail = dir;
 
                 const matchDoc = /^---.+?(?=local)/s.exec(file);
@@ -99,7 +112,10 @@ function parseModule(name: string): {
  * should return every but methods.
  * @returns a list of completion suggestions or null
  */
-function getCompletion(name: string, isMethod: boolean): vscode.CompletionItem[] | null {
+function getCompletion(
+    name: string,
+    isMethod: boolean
+): vscode.CompletionItem[] | null {
     const moduleData = parseModule(name);
     if (!moduleData) {
         return null;
@@ -115,7 +131,10 @@ function getCompletion(name: string, isMethod: boolean): vscode.CompletionItem[]
             continue;
         }
 
-        const submodule = new vscode.CompletionItem(module, dataTypes[data.type.toLowerCase()]);
+        const submodule = new vscode.CompletionItem(
+            module,
+            dataTypes[data.type.toLowerCase()]
+        );
 
         submodule.documentation = data.doc;
         items.push(submodule);
@@ -130,7 +149,9 @@ function getCompletion(name: string, isMethod: boolean): vscode.CompletionItem[]
  * @param name name of the module
  * @returns a list of completion suggestions or null
  */
-export function getModuleCompletion(name: string): vscode.CompletionItem[] | null {
+export function getModuleCompletion(
+    name: string
+): vscode.CompletionItem[] | null {
     return getCompletion(name, false);
 }
 
@@ -140,7 +161,9 @@ export function getModuleCompletion(name: string): vscode.CompletionItem[] | nul
  * @param name name of the module
  * @returns a list of completion suggestions or null
  */
-export function getMethodCompletion(name: string): vscode.CompletionItem[] | null {
+export function getMethodCompletion(
+    name: string
+): vscode.CompletionItem[] | null {
     return getCompletion(name, true);
 }
 
@@ -158,7 +181,9 @@ function parseReturn(text: string): string | null {
     if (/->/.test(text)) {
         const hsReturn = text.replace(/(.+?)?->/, "");
 
-        const searchHsModule = /(hs(?:\.(?:\w+))+)(?=.+\bobject\b)/.exec(hsReturn);
+        const searchHsModule = /(hs(?:\.(?:\w+))+)(?=.+\bobject\b)/.exec(
+            hsReturn
+        );
         if (searchHsModule) {
             return searchHsModule[0];
         }
@@ -181,7 +206,10 @@ function parseReturn(text: string): string | null {
  * @param identifier name of the module method/attribute/function/property
  * @returns the hs constructor or null.
  */
-export function getConstructor(base: string, identifier: string): string | null {
+export function getConstructor(
+    base: string,
+    identifier: string
+): string | null {
     const moduleData = parseModule(base);
     if (!moduleData) {
         return null;
@@ -208,7 +236,10 @@ export function getConstructor(base: string, identifier: string): string | null 
  * @param identifier method to search in the base module
  * @returns the documentation or null
  */
-export function getDocumentation(base: string, identifier: string): string | null {
+export function getDocumentation(
+    base: string,
+    identifier: string
+): string | null {
     const moduleData = parseModule(base);
     if (!moduleData) {
         return null;

@@ -1,25 +1,32 @@
-import * as vscode from "vscode";
-import * as lua from "./lua_parser";
 import * as fs from "fs";
+import * as vscode from "vscode";
 
-import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
-import { HSStringCompletionProvider } from "./providers/hs_string_completion";
+import * as lua from "./providers/lua_parser";
+import { createNewDocs } from "./providers/generate_hs_docs";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
-
+import { HSStringCompletionProvider } from "./providers/hs_string_completion";
+import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
 
 import { logPath } from "./logger";
-import { createNewDocs } from "./generate_hs_docs";
+import { runSync } from "./run_cmd";
+import { getConfig } from "./config";
+import { hammerspoonToVscode } from "./console";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
-import { runSync } from "./run_cmd";
-import { hammerspoonToVscode } from "./console";
 
-export function activate(context: vscode.ExtensionContext): void {
-    !fs.existsSync(logPath) && fs.mkdirSync(logPath);
-
-    createStatusBar();
-
+/**
+ * Register the legacy provider for the extension.
+ *
+ * The legacy providers are the original providers that were created for the extension.
+ * However, it they been replaced by the new stubs EmmyLua.spoon. This method is
+ * only called if the user has the setting `suggestions.enableLegacyProvider` set
+ * to true. One reason might be that the user does not want to install the Lua
+ * Language Server and EmmyLua.spoon (highly unlikely, but possible).
+ *
+ * @param context vscode extension context.
+ */
+function legacyProvider(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(
             "lua",
@@ -64,6 +71,28 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.updateDatabase", () => {
+            createNewDocs();
+        })
+    );
+}
+
+export function activate(context: vscode.ExtensionContext): void {
+    !fs.existsSync(logPath) && fs.mkdirSync(logPath);
+
+    createStatusBar();
+
+    if (getConfig("suggestions.enableLegacyProvider") as boolean) {
+        legacyProvider(context);
+    }
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("hammerspoon.addStubs", () => {
+            console.log("addStubs");
+        })
+    );
+
+    context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.connect", () => {
             connectHammerspoon();
         })
@@ -78,12 +107,6 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.generateSpoonDoc", () => {
             generateSpoonDoc();
-        })
-    );
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.updateDatabase", () => {
-            createNewDocs();
         })
     );
 

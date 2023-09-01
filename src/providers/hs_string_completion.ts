@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as hs from "../hammerspoon";
+import * as hs from "./hammerspoon";
 
 import { Logger } from "../logger";
 
@@ -8,7 +8,9 @@ const logger = new Logger("hsStringCompletion", "hsStringCompletion");
 /**
  * Hammerspoon string completion provider class.
  */
-export class HSStringCompletionProvider implements vscode.CompletionItemProvider {
+export class HSStringCompletionProvider
+    implements vscode.CompletionItemProvider
+{
     position: vscode.Position = new vscode.Position(0, 0);
 
     /**
@@ -24,7 +26,9 @@ export class HSStringCompletionProvider implements vscode.CompletionItemProvider
     ): vscode.ProviderResult<vscode.CompletionItem[]> {
         logger.cleanFile();
         logger.debug(" -*- Init HSStringCompletionProvider -*-");
-        const linePrefix = document.lineAt(position).text.substring(0, position.character);
+        const linePrefix = document
+            .lineAt(position)
+            .text.substring(0, position.character);
 
         /**
          * Suggest string completion if line is `hs.loadSpoon(`
