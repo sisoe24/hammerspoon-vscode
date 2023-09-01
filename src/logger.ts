@@ -1,5 +1,6 @@
-import { appendFileSync, writeFileSync } from "fs";
 import * as path from "path";
+
+import { appendFileSync, writeFileSync } from "fs";
 
 export const logPath = path.join(path.resolve(__dirname, ".."), "log");
 
@@ -14,7 +15,7 @@ export class Logger {
     constructor(logName: string, logFile?: string) {
         this.logName = logName;
 
-        logFile = logFile ? logFile : "log";
+        logFile = logFile || "log";
         this.logFile = path.join(logPath, `${logFile}.log`);
     }
 

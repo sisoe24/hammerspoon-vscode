@@ -28,7 +28,6 @@ export function debugNetwork(text: string): void {
  * Create the status bar action.
  */
 export function createStatusBar() {
-    // statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     statusBarItem.text = hsDisconnect;
     statusBarItem.command = "hammerspoon.connect";
     statusBarItem.show();
