@@ -69,7 +69,7 @@ export function createNewDocs(): void {
 
     for (const [key, value] of Object.entries(newDocs)) {
         const file = path.join(
-            path.resolve(__dirname, "../"),
+            path.resolve(__dirname, "../../"),
             "resources",
             "hs_docs",
             key + ".json"
