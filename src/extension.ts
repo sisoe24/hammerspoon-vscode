@@ -38,15 +38,6 @@ function legacyProvider(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(
-            "lua",
-            new HSStringCompletionProvider(),
-            '"',
-            "'"
-        )
-    );
-
-    context.subscriptions.push(
         vscode.languages.registerHoverProvider("lua", new HsHoverProvider())
     );
 
@@ -83,9 +74,18 @@ export function activate(context: vscode.ExtensionContext): void {
 
     createStatusBar();
 
-    if (getConfig("suggestions.enableLegacyProvider") as boolean) {
+    if (getConfig("enableLegacyProvider") as boolean) {
         legacyProvider(context);
     }
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(
+            "lua",
+            new HSStringCompletionProvider(),
+            '"',
+            "'"
+        )
+    );
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.addStubs", () => {
