@@ -2,8 +2,8 @@ import * as fs from "fs";
 import * as os from "os";
 import * as vscode from "vscode";
 
-import { getSpoonRootDir } from "../spoons";
 import { Logger } from "../logger";
+import { getSpoonRootDir } from "../spoons";
 
 const logger = new Logger("hsStringCompletion", "hsStringCompletion");
 
@@ -38,7 +38,7 @@ export function getSpoonsDirectory() {
                 );
                 spoonItem.detail = dir;
 
-                const matchDoc = /^---.+?(?=local)/s.exec(file);
+                const matchDoc = /^---.+?(?=^[^---])/s.exec(file);
                 if (matchDoc) {
                     spoonItem.documentation = matchDoc[0];
                 }
