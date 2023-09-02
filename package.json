@@ -7,6 +7,9 @@
   "engines": {
     "vscode": "^1.63.0"
   },
+  "extensionPack": [
+    "sumneko.lua"
+  ],
   "categories": [
     "Other"
   ],
@@ -72,6 +75,7 @@
       "properties": {
         "hammerspoon.suggestions.enableLegacyProvider": {
           "type": "boolean",
+          "default": true,
           "markdownDescription": "Enable legacy suggestions from Hammerspoon documentation. Not as accurate or complete as stubs with Lua LSP."
         },
         "hammerspoon.console.focusOutputWindow": {
