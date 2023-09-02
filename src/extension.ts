@@ -14,6 +14,7 @@ import { getConfig } from "./config";
 import { hammerspoonToVscode } from "./console";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
+import { addStubs } from "./stubs";
 
 /**
  * Register the legacy provider for the extension.
@@ -88,7 +89,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand("hammerspoon.addStubs", () => {
-            console.log("addStubs");
+            addStubs();
         })
     );
 
