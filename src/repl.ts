@@ -58,11 +58,12 @@ function evaluateCode(command: string): string | null {
         if (getConfig("console.focusOutputWindow")) {
             outputWindow.show();
         }
+
         outputWindow.appendLine(`${command}`);
         outputWindow.appendLine(`=> ${output}`);
-    }
 
-    return output;
+        return output;
+    }
 }
 
 /**
