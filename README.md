@@ -17,6 +17,7 @@
   - [1.1. Features](#11-features)
   - [1.2. Requirements](#12-requirements)
   - [1.3. Stubs](#13-stubs)
+  - [Evaluate Hammerspoon code](#evaluate-hammerspoon-code)
   - [1.4. Socket connection](#14-socket-connection)
   - [1.5. Available Commands](#15-available-commands)
     - [1.5.1. Notes](#151-notes)
@@ -60,6 +61,18 @@ The extension now uses the [Lua Language Server](https://marketplace.visualstudi
 Once the stubs are added, you might need to reload VSCode for the changes to take effect.
 
 > NOTE: The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.useLegacyProviders` setting.
+
+## Evaluate Hammerspoon code
+
+You can evaluate Hammerspoon code from vscode without reloading the configuration. This is useful for testing code without having to reload the configuration each time. To do so, you need to have the `hs.ipc` module installed. See [Requirements](#16-requirements) for more information.
+
+To evaluate code, you can use one of the following commands:
+
+- `Hammerspoon: Evaluate Line`: Evaluate the current line.
+- `Hammerspoon: Evaluate File`: Evaluate the entire file.
+- `Hammerspoon: Evaluate Selection`: Evaluate the selected code.
+
+> The commands are also available in the editor context menu.
 
 ## 1.4. Socket connection
 
