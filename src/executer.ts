@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as util from "./utilities";
 import { runSync } from "./run_cmd";
 import { outputWindow } from "./console";
 
@@ -6,15 +7,27 @@ import { outputWindow } from "./console";
  * Get the selected text
  * @returns The selected text
  */
+function getCurrentFileText(): string | null {
+    const editor = util.getActiveTextEditor();
+    return editor.document.getText();
+}
+
+/**
+ * Get the selected text
+ * @returns The selected text
+ */
 function getSelectedText(): string | null {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-        return null;
-    }
+    const editor = util.getActiveTextEditor();
+    return editor.document.getText(editor.selection);
+}
 
-    const selectedText = editor.document.getText(editor.selection);
-
-    return selectedText;
+/**
+ * Get the selected text
+ * @returns The selected text
+ */
+function getCurrentLineText(): string | null {
+    const editor = util.getActiveTextEditor();
+    return editor.document.lineAt(editor.selection.active.line).text;
 }
 
 /**
@@ -46,11 +59,31 @@ function executeCode(command: string): string | null {
 }
 
 /**
+ * Send current file text to Hammerspoon Console
+ */
+export function executeCurrentFile(): void {
+    const textToExecute = getCurrentFileText();
+    if (textToExecute) {
+        executeCode(textToExecute);
+    }
+}
+
+/**
  * Send selected text to Hammerspoon Console
  */
 export function executeSelectedText(): void {
-    const selectedText = getSelectedText();
-    if (selectedText) {
-        executeCode(selectedText);
+    const textToExecute = getSelectedText();
+    if (textToExecute) {
+        executeCode(textToExecute);
+    }
+}
+
+/**
+ * Send current line text to Hammerspoon Console
+ */
+export function executeCurrentLine(): void {
+    const textToExecute = getCurrentLineText();
+    if (textToExecute) {
+        executeCode(textToExecute);
     }
 }

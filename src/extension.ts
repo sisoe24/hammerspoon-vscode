@@ -13,7 +13,11 @@ import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
 import { runSync } from "./run_cmd";
 import { hammerspoonToVscode } from "./console";
-import { executeSelectedText } from "./executer";
+import {
+    executeCurrentFile,
+    executeSelectedText,
+    executeCurrentLine,
+} from "./executer";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
@@ -104,9 +108,27 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand(
+            "hammerspoon.executeCurrentFile",
+            () => {
+                executeCurrentFile();
+            }
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
             "hammerspoon.executeSelectedText",
             () => {
                 executeSelectedText();
+            }
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            "hammerspoon.executeCurrentLine",
+            () => {
+                executeCurrentLine();
             }
         )
     );

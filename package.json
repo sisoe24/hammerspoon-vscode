@@ -62,8 +62,18 @@
         }
       },
       {
+        "command": "hammerspoon.executeCurrentFile",
+        "title": "Execute current file in hammerspoon console",
+        "category": "Hammerspoon"
+      },
+      {
         "command": "hammerspoon.executeSelectedText",
         "title": "Execute selected text in hammerspoon console",
+        "category": "Hammerspoon"
+      },
+      {
+        "command": "hammerspoon.executeCurrentLine",
+        "title": "Execute current line in hammerspoon console",
         "category": "Hammerspoon"
       }
     ],
@@ -109,7 +119,17 @@
       ],
       "editor/context": [
         {
+          "command": "hammerspoon.executeCurrentFile",
+          "group": "navigation",
+          "when": "editorTextFocus"
+        },
+        {
           "command": "hammerspoon.executeSelectedText",
+          "group": "navigation",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "hammerspoon.executeCurrentLine",
           "group": "navigation",
           "when": "editorTextFocus"
         }
