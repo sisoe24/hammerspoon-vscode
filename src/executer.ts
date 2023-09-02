@@ -7,7 +7,6 @@ import { outputWindow } from "./console";
  * @returns The selected text
  */
 function getSelectedText(): string | null {
-    // Get the current editor
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         return null;
@@ -33,7 +32,6 @@ export function escapeString(s: string) {
  * @returns The output of the command
  */
 function executeCode(command: string): string | null {
-    // run the command in the shell and get the output
     const luaScript = escapeString(command);
     const shellCommand = `hs -c "${luaScript}"`;
     let output = runSync(shellCommand);
