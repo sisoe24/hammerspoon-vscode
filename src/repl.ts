@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as util from "./utilities";
 import { runSync } from "./run_cmd";
 import { outputWindow } from "./console";
+import { getConfig } from "./config";
 
 /**
  * Get text of whole current file
@@ -49,7 +50,14 @@ function evaluateCode(command: string): string | null {
     const shellCommand = `hs -c "${luaScript}"`;
     let output = runSync(shellCommand);
 
+    if (output === null) {
+        return null;
+    }
+
     if (output !== null) {
+        if (getConfig("console.focusOutputWindow")) {
+            outputWindow.show();
+        }
         outputWindow.appendLine(`${command}`);
         outputWindow.appendLine(`=> ${output}`);
     }
