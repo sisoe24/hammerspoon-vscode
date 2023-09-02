@@ -7,7 +7,6 @@ import { HSStringCompletionProvider } from "./providers/hs_string_completion";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
-
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
@@ -104,9 +103,12 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("hammerspoon.executeSelectedText", () => {
-            executeSelectedText();
-        })
+        vscode.commands.registerCommand(
+            "hammerspoon.executeSelectedText",
+            () => {
+                executeSelectedText();
+            }
+        )
     );
 }
 

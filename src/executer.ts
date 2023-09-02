@@ -24,9 +24,8 @@ function getSelectedText(): string | null {
  * @returns Escaped string
  */
 function escapeString(s: string) {
-    return s.replace(/["[\]\\]/g, '\\$&');
+    return s.replace(/["[\]\\]/g, "\\$&");
 }
-
 
 /**
  * Execute the selected text
