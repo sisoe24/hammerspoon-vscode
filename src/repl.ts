@@ -36,7 +36,7 @@ function getCurrentLineText(): string | null {
  * @returns Escaped string
  */
 export function escapeString(s: string) {
-    return s.replace(/["[\]\\]/g, "\\$&");
+    return s.replace(/["\\]/g, "\\$&");
 }
 
 /**
