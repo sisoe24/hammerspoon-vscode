@@ -13,7 +13,7 @@ function getSelectedText(): string | null {
         return null;
     }
 
-    const selectedText = editor?.document.getText(editor.selection);
+    const selectedText = editor.document.getText(editor.selection);
 
     return selectedText;
 }
