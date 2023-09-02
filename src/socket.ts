@@ -55,12 +55,10 @@ function executeVscodeCommand(command: string) {
 }
 
 function startServer() {
-    // TODO: save port value in settings
     const port = getConfig("network.port") as number;
 
     statusBarItem.tooltip = `${statusBarItem.tooltip} - localhost:${port}`;
 
-    // TODO: add custom host
     server.listen(port);
 
     debugNetwork(`Connecting to 'localhost:${port}'`);

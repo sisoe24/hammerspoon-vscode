@@ -1,17 +1,16 @@
+import * as fs from "fs";
 import * as os from "os";
+import * as path from "path";
 import * as vscode from "vscode";
 
-import path = require("path");
 import extract = require("extract-zip");
-
-import fs = require("fs");
 const axios = require("axios");
 
 import { getConfig } from "./config";
 import { writeStatement } from "./spoons";
 import { runSync } from "./run_cmd";
 
-const _tmpStubsDownload = path.join(os.tmpdir(), "EmmyLua.zip");
+const tmpStubsDownload = path.join(os.tmpdir(), "EmmyLua.zip");
 
 /**
  * Download the EmmyLua.spoon ZIP file from GitHub.
@@ -29,7 +28,7 @@ async function downloadZip() {
         responseType: "stream",
     });
 
-    const writer = fs.createWriteStream(_tmpStubsDownload);
+    const writer = fs.createWriteStream(tmpStubsDownload);
 
     response.data.pipe(writer);
 
@@ -98,7 +97,7 @@ export function addStubs(): boolean {
     downloadZip()
         .then(async () => {
             try {
-                await extract(_tmpStubsDownload, { dir: getSpoonRootDir() });
+                await extract(tmpStubsDownload, { dir: getSpoonRootDir() });
                 writeStatement("hs.loadSpoon('EmmyLua')");
                 runSync("hs -c 'hs.reload()'", true);
                 updateLuaLspConfig();
