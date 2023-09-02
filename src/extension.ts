@@ -10,11 +10,12 @@ import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
 
 import { logPath } from "./logger";
 import { runSync } from "./run_cmd";
+import { addStubs } from "./stubs";
 import { getConfig } from "./config";
+import { showNotification } from "./notification";
 import { hammerspoonToVscode } from "./console";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
-import { addStubs } from "./stubs";
 
 /**
  * Register the legacy provider for the extension.
@@ -71,6 +72,8 @@ function legacyProvider(context: vscode.ExtensionContext): void {
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
+
+    showNotification(context);
 
     createStatusBar();
 
