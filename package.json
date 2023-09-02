@@ -2,7 +2,7 @@
   "name": "hammerspoon",
   "displayName": "Hammerspoon",
   "publisher": "virgilsisoe",
-  "description": "Autocomplete, hover and function signature helper for the Hammerspoon framework.",
+  "description": "Hammerspoon extension for Visual Studio Code",
   "version": "0.4.1",
   "engines": {
     "vscode": "^1.63.0"
@@ -40,12 +40,6 @@
         "category": "Hammerspoon"
       },
       {
-        "command": "hammerspoon.updateDatabase",
-        "title": "Update completion documentation.",
-        "shortTitle": "HS Update Docs",
-        "category": "Hammerspoon"
-      },
-      {
         "command": "hammerspoon.createSpoon",
         "title": "Create Spoon",
         "category": "Hammerspoon"
@@ -73,14 +67,14 @@
     "configuration": {
       "title": "Hammerspoon",
       "properties": {
-        "hammerspoon.suggestions.enableLegacyProvider": {
+        "hammerspoon.enableLegacyProvider": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable legacy suggestions from Hammerspoon documentation. Not as accurate or complete as stubs with Lua LSP."
+          "markdownDescription": "Enable legacy suggestions from Hammerspoon documentation. Discountinued and discorage."
         },
         "hammerspoon.console.focusOutputWindow": {
           "type": "boolean",
-          "markdownDescription": "Focus on output window when reloading Hammerspoon from extension.",
+          "markdownDescription": "Focus the output window when a command is executed",
           "default": true
         },
         "hammerspoon.console.filterOutput": {
