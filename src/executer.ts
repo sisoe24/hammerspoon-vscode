@@ -23,7 +23,7 @@ function getSelectedText(): string | null {
  * @param s String for escaping
  * @returns Escaped string
  */
-function escapeString(s: string) {
+export function escapeString(s: string) {
     return s.replace(/["[\]\\]/g, "\\$&");
 }
 
