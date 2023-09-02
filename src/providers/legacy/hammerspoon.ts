@@ -4,10 +4,8 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { getSpoonRootDir } from "../spoons";
-
 const hsDocsPath = path.join(
-    path.resolve(__dirname, "../.."),
+    path.resolve(__dirname, "../../.."),
     "resources",
     "hs_docs"
 );
@@ -21,49 +19,6 @@ const dataTypes: { [key: string]: vscode.CompletionItemKind } = {
     constant: vscode.CompletionItemKind.Constant,
     constructor: vscode.CompletionItemKind.Constructor,
 };
-
-/**
- * Show the Spoons directories suggestion.
- *
- * @returns a list of completion suggestions
- */
-export function getSpoonsDirectory() {
-    const items: vscode.CompletionItem[] = [];
-
-    // getSpoonRootDir might be the same as the default, so use a Set to avoid duplicate
-    const spoonsDir = new Set([
-        getSpoonRootDir(),
-        `${os.homedir()}/.hammerspoon/Spoons`,
-    ]);
-
-    for (const dir of spoonsDir) {
-        const spoonDir = fs.readdirSync(dir);
-
-        spoonDir.forEach((spoon) => {
-            if (spoon.endsWith(".spoon")) {
-                const file = fs.readFileSync(
-                    `${dir}/${spoon}/init.lua`,
-                    "utf-8"
-                );
-                spoon = spoon.replace(".spoon", "");
-
-                const spoonItem = new vscode.CompletionItem(
-                    spoon,
-                    vscode.CompletionItemKind.Value
-                );
-                spoonItem.detail = dir;
-
-                const matchDoc = /^---.+?(?=local)/s.exec(file);
-                if (matchDoc) {
-                    spoonItem.documentation = matchDoc[0];
-                }
-
-                items.push(spoonItem);
-            }
-        });
-    }
-    return items;
-}
 
 /**
  * Get the list of all hs modules.
@@ -176,8 +131,6 @@ export function getMethodCompletion(
  * @returns the parsed return string.
  */
 function parseReturn(text: string): string | null {
-    // TODO: setting that allows to return guessed return
-
     if (/->/.test(text)) {
         const hsReturn = text.replace(/(.+?)?->/, "");
 

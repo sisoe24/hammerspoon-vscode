@@ -6,7 +6,7 @@ import * as vscode from "vscode";
 import * as lua from "luaparse";
 import * as hs from "./hammerspoon";
 
-import { Logger } from "../logger";
+import { Logger } from "../../logger";
 const logger = new Logger("lua_parser", "lua_parser");
 
 /**
@@ -17,7 +17,7 @@ let astChunk: lua.Chunk;
 export const luaKeywords = JSON.parse(
     readFileSync(
         path.join(
-            path.resolve(__dirname, "../.."),
+            path.resolve(__dirname, "../../.."),
             "resources",
             "lua_keywords.json"
         ),

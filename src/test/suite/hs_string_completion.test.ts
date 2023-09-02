@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as assert from "assert";
 
 import * as testUtils from "./test_utils";
-import { HSStringCompletionProvider } from "../../providers/hs_string_completion";
+import { HSStringCompletionProvider } from "../../providers/hs_spoons_completion";
 
 const demoFile = "hs_spoon_demo.lua";
 

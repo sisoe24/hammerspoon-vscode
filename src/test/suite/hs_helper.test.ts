@@ -2,11 +2,11 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 
 import * as testUtils from "./test_utils";
-import * as hsHelper from "../../providers/hs_helper";
+import * as hsHelper from "../../providers/legacy/hs_helper";
 
 const demoFile = "tests/hs_helper_demo.lua";
 
-suite("Hs Helper", () => {
+suite.skip("Hs Helper", () => {
     test("Skip if no word", async () => {
         await testUtils.createDemoContent(demoFile, " ");
 

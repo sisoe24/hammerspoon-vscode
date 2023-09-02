@@ -4,7 +4,7 @@ import * as hs from "./hammerspoon";
 import * as lua from "./lua_parser";
 import * as utils from "./utils";
 
-import { Logger } from "../logger";
+import { Logger } from "../../logger";
 
 const logger = new Logger("hsHover", "hsHover");
 

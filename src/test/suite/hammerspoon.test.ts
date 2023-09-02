@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import * as hs from "../../providers/hammerspoon";
+import * as hs from "../../providers/legacy/hammerspoon";
 import * as testUtils from "./test_utils";
 
 import * as console from "../../console";

@@ -1,12 +1,13 @@
 import * as fs from "fs";
 import * as vscode from "vscode";
 
-import * as lua from "./providers/lua_parser";
-import { createNewDocs } from "./providers/generate_hs_docs";
-import { HsHoverProvider } from "./providers/hs_hover";
-import { HsSignatureHelpProvider } from "./providers/hs_helper";
-import { HSStringCompletionProvider } from "./providers/hs_string_completion";
-import { HSModulesCompletionProvider } from "./providers/hs_module_completion";
+import * as lua from "./providers/legacy/lua_parser";
+import { createNewDocs } from "./providers/legacy/generate_hs_docs";
+import { HsHoverProvider } from "./providers/legacy/hs_hover";
+import { HsSignatureHelpProvider } from "./providers/legacy/hs_helper";
+import { HSModulesCompletionProvider } from "./providers/legacy/hs_module_completion";
+
+import { HSStringCompletionProvider } from "./providers/hs_spoons_completion";
 
 import { logPath } from "./logger";
 import { runSync } from "./run_cmd";
