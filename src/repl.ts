@@ -50,7 +50,6 @@ function evaluateCode(command: string): string | null {
     let output = runSync(shellCommand);
 
     if (output !== null) {
-        outputWindow.show();
         outputWindow.append(`${command}\n`);
         outputWindow.append(`=> ${output}\n`);
     }
