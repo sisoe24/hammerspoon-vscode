@@ -4,7 +4,7 @@ import { runSync } from "./run_cmd";
 import { outputWindow } from "./console";
 
 /**
- * Get the selected text
+ * Get text of whole current file
  * @returns The selected text
  */
 function getCurrentFileText(): string | null {
@@ -22,7 +22,7 @@ function getSelectedText(): string | null {
 }
 
 /**
- * Get the selected text
+ * Get the text of current line
  * @returns The selected text
  */
 function getCurrentLineText(): string | null {
@@ -31,7 +31,7 @@ function getCurrentLineText(): string | null {
 }
 
 /**
- * Escape string before execute as command
+ * Escape string before evaluate as command
  * @param s String for escaping
  * @returns Escaped string
  */
@@ -40,11 +40,11 @@ export function escapeString(s: string) {
 }
 
 /**
- * Execute the selected text
- * @param command The command to execute
+ * Evaluate the selected text
+ * @param command The command to evaluate
  * @returns The output of the command
  */
-function executeCode(command: string): string | null {
+function evaluateCode(command: string): string | null {
     const luaScript = escapeString(command);
     const shellCommand = `hs -c "${luaScript}"`;
     let output = runSync(shellCommand);
@@ -61,29 +61,29 @@ function executeCode(command: string): string | null {
 /**
  * Send current file text to Hammerspoon Console
  */
-export function executeCurrentFile(): void {
-    const textToExecute = getCurrentFileText();
-    if (textToExecute) {
-        executeCode(textToExecute);
+export function evaluateCurrentFileText(): void {
+    const evaluatedText = getCurrentFileText();
+    if (evaluatedText) {
+        evaluateCode(evaluatedText);
     }
 }
 
 /**
  * Send selected text to Hammerspoon Console
  */
-export function executeSelectedText(): void {
-    const textToExecute = getSelectedText();
-    if (textToExecute) {
-        executeCode(textToExecute);
+export function evaluateSelectedText(): void {
+    const evaluatedText = getSelectedText();
+    if (evaluatedText) {
+        evaluateCode(evaluatedText);
     }
 }
 
 /**
  * Send current line text to Hammerspoon Console
  */
-export function executeCurrentLine(): void {
-    const textToExecute = getCurrentLineText();
-    if (textToExecute) {
-        executeCode(textToExecute);
+export function evaluateCurrentLineText(): void {
+    const evaluatedText = getCurrentLineText();
+    if (evaluatedText) {
+        evaluateCode(evaluatedText);
     }
 }

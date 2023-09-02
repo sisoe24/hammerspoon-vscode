@@ -14,10 +14,10 @@ import { connectHammerspoon, createStatusBar } from "./socket";
 import { runSync } from "./run_cmd";
 import { hammerspoonToVscode } from "./console";
 import {
-    executeCurrentFile,
-    executeSelectedText,
-    executeCurrentLine,
-} from "./executer";
+    evaluateCurrentFileText,
+    evaluateSelectedText,
+    evaluateCurrentLineText,
+} from "./repl";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
@@ -108,27 +108,27 @@ export function activate(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand(
-            "hammerspoon.executeCurrentFile",
+            "hammerspoon.evaluateCurrentFileText",
             () => {
-                executeCurrentFile();
+                evaluateCurrentFileText();
             }
         )
     );
 
     context.subscriptions.push(
         vscode.commands.registerCommand(
-            "hammerspoon.executeSelectedText",
+            "hammerspoon.evaluateSelectedText",
             () => {
-                executeSelectedText();
+                evaluateSelectedText();
             }
         )
     );
 
     context.subscriptions.push(
         vscode.commands.registerCommand(
-            "hammerspoon.executeCurrentLine",
+            "hammerspoon.evaluateCurrentLineText",
             () => {
-                executeCurrentLine();
+                evaluateCurrentLineText();
             }
         )
     );

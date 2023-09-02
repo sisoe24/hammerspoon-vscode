@@ -1,6 +1,6 @@
 import * as assert from "assert";
 
-import { escapeString } from "../../executer";
+import { escapeString } from "../../repl";
 
 suite("Test Escape String", () => {
     test("Test string with dobule quotes", async () => {

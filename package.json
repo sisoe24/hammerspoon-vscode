@@ -62,18 +62,18 @@
         }
       },
       {
-        "command": "hammerspoon.executeCurrentFile",
-        "title": "Execute current file in hammerspoon console",
+        "command": "hammerspoon.evaluateCurrentFileText",
+        "title": "Load/Evaluate current file",
         "category": "Hammerspoon"
       },
       {
-        "command": "hammerspoon.executeSelectedText",
-        "title": "Execute selected text in hammerspoon console",
+        "command": "hammerspoon.evaluateSelectedText",
+        "title": "Evaluate selected text",
         "category": "Hammerspoon"
       },
       {
-        "command": "hammerspoon.executeCurrentLine",
-        "title": "Execute current line in hammerspoon console",
+        "command": "hammerspoon.evaluateCurrentLineText",
+        "title": "Evaluate current line",
         "category": "Hammerspoon"
       }
     ],
@@ -119,17 +119,17 @@
       ],
       "editor/context": [
         {
-          "command": "hammerspoon.executeCurrentFile",
+          "command": "hammerspoon.evaluateCurrentFileText",
           "group": "navigation",
           "when": "editorTextFocus"
         },
         {
-          "command": "hammerspoon.executeSelectedText",
+          "command": "hammerspoon.evaluateSelectedText",
           "group": "navigation",
           "when": "editorTextFocus"
         },
         {
-          "command": "hammerspoon.executeCurrentLine",
+          "command": "hammerspoon.evaluateCurrentLineText",
           "group": "navigation",
           "when": "editorTextFocus"
         }
