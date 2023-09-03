@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
 
 const _msg = `
-Hammerspoon extension now uses the EmmyLua.spoons for completion.
-Please use the new command \`Hammerspoon: Add Stubs\` to generate the completion stubs.
+New in version 0.5.0: Evalute Hammerspoon code directly from VSCode and new and improved completion.
 More information can be found in the
-[README](https://github.com/sisoe24/hammerspoon-vscode/blob/main/README.md#13-stubs)
+[README](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.hammerspoon)
 `;
 
 /**
