@@ -17,6 +17,7 @@
   - [1.1. Features](#11-features)
   - [1.2. Requirements](#12-requirements)
   - [1.3. Stubs](#13-stubs)
+    - [1.3.1. Notes:](#131-notes)
   - [1.4. Evaluate Hammerspoon code](#14-evaluate-hammerspoon-code)
   - [1.5. Socket connection](#15-socket-connection)
   - [1.6. Available Commands](#16-available-commands)
@@ -42,7 +43,7 @@ Unofficial Hammerspoon extension for Visual Studio Code.
 
 ## 1.2. Requirements
 
-- [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension.
+- [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension (it is included with the extension pack by default).
 - [hs.ipc](http://www.hammerspoon.org/docs/hs.ipc.html) module installed.
   Some commands depend on the `hs.ipc` module. To install it, execute `hs.ipc.cliInstall()` in your Hammerspoon environment and call it at the beginning of your `init.lua` with `require('hs.ipc')` (more on [module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)).
   If you are on an Apple silicon Mac, you might need to follow [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
@@ -60,19 +61,28 @@ The extension now uses the [Lua Language Server](https://marketplace.visualstudi
 
 Once the stubs are added, you might need to reload VSCode for the changes to take effect.
 
-> NOTE: The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.useLegacyProviders` setting.
+### 1.3.1. Notes:
+
+- Some stubs might fail to load especially when constructors are involved. In that case, you can add always add the type annotation manually:
+
+  ```lua
+  ---@type hs.application
+  local app = hs.application("Safari")
+  ```
+- The `EmmyLua.spoon` will try to compile the stubs also for your custom spoons. This can cause an error if there is something wrong with your spoon `docs.json`.
+- The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.useLegacyProviders` setting.
 
 ## 1.4. Evaluate Hammerspoon code
 
-You can evaluate Hammerspoon code from vscode without reloading the configuration. This is useful for testing code without having to reload the configuration each time. To do so, you need to have the `hs.ipc` module installed. See [Requirements](#16-requirements) for more information.
+You can evaluate Hammerspoon code from vscode without reloading the configuration. To do so, you need to have the `hs.ipc` module installed. See [Requirements](#16-requirements) for more information.
 
 To evaluate code, you can use one of the following commands:
 
-- `Hammerspoon: Evaluate current line`: Evaluate the current line.
-- `Hammerspoon: Load/Evaluate current file`: Evaluate the entire file.
-- `Hammerspoon: Evaluate selected text`: Evaluate the selected code.
+- `Hammerspoon: Evaluate Line`: Evaluate the current line.
+- `Hammerspoon: Evaluate File`: Evaluate the entire file.
+- `Hammerspoon: Evaluate Selection`: Evaluate the selected code.
 
-> The commands are also available in the editor right-click context menu.
+> The commands are also available in the editor context menu.
 
 ## 1.5. Socket connection
 
@@ -93,7 +103,9 @@ You can also write arguments inside curly brackets and delimit them by a comma: 
 socket:send('workbench.action.tasks.runTask {My Task}')
 ```
 
-To accept incoming data, start the server via `Hammerspoon: Toggle server connection` or the status bar button; specify the port in the extension settings (default: 54321).
+For the extension to accept incoming data, you need to start the server
+via the command: `Hammerspoon: Toggle server connection` or via the button in lower the
+status bar and specify the port in the extension settings (default: `54321`).
 
 ## 1.6. Available Commands
 
@@ -102,9 +114,6 @@ typing in one of the following Command Name:
 
 | Command Name                                    | Command ID                        | Description                                                                   |
 | ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
-| `Hammerspoon: Evaluate current line`            | `hammerspoon.evaluateCurrentLine` | Evaluate the current line                                                     |
-| `Hammerspoon: Load/Evaluate current file`       | `hammerspoon.evaluateCurrentFile` | Evaluate the entire file                                                      |
-| `Hammerspoon: Evaluate selected text`           | `hammerspoon.evaluateSelectedText`| Evaluate the selected code                                                    |
 | `Hammerspoon: Add Stubs`                        | `hammerspoon.addStubs`            | Add EmmyLua stubs to the Hammerspoon Spoons directory                         |
 | `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration                                              |
 | `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`         | Show Hammerspoon console                                                      |
@@ -113,6 +122,10 @@ typing in one of the following Command Name:
 | `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon                                        |
 
 ### 1.6.1. Notes
+
+- `Hammerspoon: Reload Hammerspoon configuration` command can be executed via a button in the Editor Toolbar.
+
+  ![HsReload](images/hsReload.gif)
 
 - The Spoon template will get created in the `Hammerspoon: Spoons: Path` configuration
 value which defaults to `.hammerspoon/Spoons`.
@@ -190,8 +203,9 @@ value which defaults to `.hammerspoon/Spoons`.
 ## 1.8. Known Issues
 
 - The legacy providers are incomplete and might not work as expected.
+- When executing code from VSCode, the command might fail if you have convoluted escaping quotes in your code. (e.g. `hs.alert.show("Hello \"World "MY" \"")`).
 
 ## 1.9. Acknowledgment
 
-- [luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
-- [EmmyLua.spoon](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip) for the stubs.
+[luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
+[EmmyLua](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip) for the stubs.
