@@ -88,9 +88,10 @@ function updateLuaLspConfig() {
  */
 export function addStubs(): boolean {
     if (!isLuaLspInstalled()) {
-        vscode.window.showInformationMessage(
-            "Lua Language Server is not installed. Please install before adding the stubs."
-        );
+        vscode.window.showInformationMessage(`
+            Lua Language Server is not installed.
+            Please install before adding the stubs. [sumneko.lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
+        `);
         return false;
     }
 
