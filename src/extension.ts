@@ -7,13 +7,17 @@ import { HSStringCompletionProvider } from "./providers/hs_string_completion";
 import { HsHoverProvider } from "./providers/hs_hover";
 import { HsSignatureHelpProvider } from "./providers/hs_helper";
 
-
 import { logPath } from "./logger";
 import { createNewDocs } from "./generate_hs_docs";
 import { createSpoon, generateSpoonDoc } from "./spoons";
 import { connectHammerspoon, createStatusBar } from "./socket";
 import { runSync } from "./run_cmd";
 import { hammerspoonToVscode } from "./console";
+import {
+    evaluateCurrentFileText,
+    evaluateSelectedText,
+    evaluateCurrentLineText,
+} from "./repl";
 
 export function activate(context: vscode.ExtensionContext): void {
     !fs.existsSync(logPath) && fs.mkdirSync(logPath);
@@ -100,6 +104,33 @@ export function activate(context: vscode.ExtensionContext): void {
         vscode.commands.registerCommand("hammerspoon.showConsole", () => {
             runSync("hs -c 'hs.openConsole()'");
         })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            "hammerspoon.evaluateCurrentFileText",
+            () => {
+                evaluateCurrentFileText();
+            }
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            "hammerspoon.evaluateSelectedText",
+            () => {
+                evaluateSelectedText();
+            }
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            "hammerspoon.evaluateCurrentLineText",
+            () => {
+                evaluateCurrentLineText();
+            }
+        )
     );
 }
 
