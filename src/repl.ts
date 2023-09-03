@@ -1,68 +1,49 @@
 import * as vscode from "vscode";
-import * as util from "./utilities";
 import { runSync } from "./run_cmd";
 import { outputWindow } from "./console";
 import { getConfig } from "./config";
 
 /**
- * Get text of whole current file
- * @returns The selected text
+ * Prepare command before send to Hammerspoon
+ * @param command Original command
+ * @returns Prepared command
  */
-function getCurrentFileText(): string | null {
-    const editor = util.getActiveTextEditor();
-    return editor.document.getText();
+export function prepareCommand(command: string) {
+    return command.replace(/["\\]/g, "\\$&");
 }
 
 /**
- * Get the selected text
- * @returns The selected text
- */
-function getSelectedText(): string | null {
-    const editor = util.getActiveTextEditor();
-    return editor.document.getText(editor.selection);
-}
-
-/**
- * Get the text of current line
- * @returns The selected text
- */
-function getCurrentLineText(): string | null {
-    const editor = util.getActiveTextEditor();
-    return editor.document.lineAt(editor.selection.active.line).text;
-}
-
-/**
- * Escape string before evaluate as command
- * @param s String for escaping
- * @returns Escaped string
- */
-export function escapeString(s: string) {
-    return s.replace(/["\\]/g, "\\$&");
-}
-
-/**
- * Evaluate the selected text
- * @param command The command to evaluate
- * @returns The output of the command
+ * Evaluate command in Hammerspoon
+ * @param command Command to evaluate
+ * @returns Output of the command
  */
 function evaluateCode(command: string): string | null {
-    const luaScript = escapeString(command);
+    const luaScript = prepareCommand(command);
     const shellCommand = `hs -c "${luaScript}"`;
-    let output = runSync(shellCommand);
+    return runSync(shellCommand);
+}
 
-    if (output === null) {
-        return null;
-    }
+type GetTextFn = (editor: vscode.TextEditor) => string | null;
 
-    if (output !== null) {
-        if (getConfig("console.focusOutputWindow")) {
-            outputWindow.show();
+/**
+ * Wrapper for evaluate text from editor process
+ * @param getTextFn Function which returns text from editor window
+ */
+function tryEvaluateText(getTextFn: GetTextFn): void {
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+        const textToEvaluate = getTextFn(editor);
+        if (textToEvaluate) {
+            const output = evaluateCode(textToEvaluate);
+            if (output) {
+                if (getConfig("console.focusOutputWindow")) {
+                    outputWindow.show();
+                }
+
+                outputWindow.appendLine(`${textToEvaluate}`);
+                outputWindow.appendLine(`=> ${output}`);
+            }
         }
-
-        outputWindow.appendLine(`${command}`);
-        outputWindow.appendLine(`=> ${output}`);
-
-        return output;
     }
 }
 
@@ -70,28 +51,25 @@ function evaluateCode(command: string): string | null {
  * Send current file text to Hammerspoon Console
  */
 export function evaluateCurrentFileText(): void {
-    const evaluatedText = getCurrentFileText();
-    if (evaluatedText) {
-        evaluateCode(evaluatedText);
-    }
+    tryEvaluateText((editor) => {
+        return editor.document.getText();
+    });
 }
 
 /**
- * Send selected text to Hammerspoon Console
+ * Send current selection text to Hammerspoon Console
  */
 export function evaluateSelectedText(): void {
-    const evaluatedText = getSelectedText();
-    if (evaluatedText) {
-        evaluateCode(evaluatedText);
-    }
+    tryEvaluateText((editor) => {
+        return editor.document.getText(editor.selection);
+    });
 }
 
 /**
  * Send current line text to Hammerspoon Console
  */
 export function evaluateCurrentLineText(): void {
-    const evaluatedText = getCurrentLineText();
-    if (evaluatedText) {
-        evaluateCode(evaluatedText);
-    }
+    tryEvaluateText((editor) => {
+        return editor.document.lineAt(editor.selection.active.line).text;
+    });
 }

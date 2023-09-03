@@ -1,24 +1,25 @@
 import * as assert from "assert";
 
-import { escapeString } from "../../repl";
+import { prepareCommand } from "../../repl";
 
 suite("Test Escape String", () => {
     test("Test string with dobule quotes", async () => {
         assert.ok(
-            escapeString(`hs.alert.show("Hello")`) ===
+            prepareCommand(`hs.alert.show("Hello")`) ===
                 `hs.alert.show(\\"Hello\\")`
         );
     });
 
     test("Test string with single quotes", async () => {
         assert.ok(
-            escapeString(`hs.alert.show('Hello')`) === `hs.alert.show('Hello')`
+            prepareCommand(`hs.alert.show('Hello')`) ===
+                `hs.alert.show('Hello')`
         );
     });
 
     test("Test complex string escaping", async () => {
         assert.ok(
-            escapeString(
+            prepareCommand(
                 `local foo = 'hello'
             local bar = "from \\"Lua\\""
             hs.alert.show(foo .. ' ' .. bar)`
