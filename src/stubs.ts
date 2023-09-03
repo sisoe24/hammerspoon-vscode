@@ -114,5 +114,7 @@ export function addStubs(): boolean {
             return false;
         });
 
+    vscode.window.showInformationMessage("Stubs added.");
+
     return true;
 }
