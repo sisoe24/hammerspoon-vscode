@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 
-import * as lua from "../lua_parser";
-import * as hs from "../hammerspoon";
+import * as lua from "./lua_parser";
+import * as hs from "./hammerspoon";
 import * as utils from "./utils";
 
-import { Logger } from "../logger";
+import { Logger } from "../../logger";
 
 const logger = new Logger("hsCompletion", "hsCompletion");
 const hsModules = hs.hsModules();
@@ -12,7 +12,9 @@ const hsModules = hs.hsModules();
 /**
  * Hammerspoon completion provider class.
  */
-export class HSModulesCompletionProvider implements vscode.CompletionItemProvider {
+export class HSModulesCompletionProvider
+    implements vscode.CompletionItemProvider
+{
     position: vscode.Position = new vscode.Position(0, 0);
 
     /**
@@ -31,7 +33,9 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
 
         this.position = position;
 
-        const linePrefix = document.lineAt(position).text.substring(0, position.character);
+        const linePrefix = document
+            .lineAt(position)
+            .text.substring(0, position.character);
         logger.debug(`Line Prefix :: ${linePrefix}`);
 
         /**
@@ -49,7 +53,10 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
          */
         const hsModuleMethod = /(hs.+?)(\w+)(?=\()/.exec(linePrefix);
         if (hsModuleMethod) {
-            return this.getMethodSuggestion(hsModuleMethod[1], hsModuleMethod[2]);
+            return this.getMethodSuggestion(
+                hsModuleMethod[1],
+                hsModuleMethod[2]
+            );
         }
 
         /**
@@ -78,7 +85,10 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
          */
         const methodExpression = /(\w+):(\w+)[^:]+:$/.exec(linePrefix);
         if (methodExpression) {
-            return this.extractMethodExpression(methodExpression[1], methodExpression[2]);
+            return this.extractMethodExpression(
+                methodExpression[1],
+                methodExpression[2]
+            );
         }
 
         /**
@@ -106,7 +116,9 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
      * @param statement string to parse for the completion
      * @returns a list of module suggestions or null
      */
-    private getModuleSuggestion(statement: string): vscode.CompletionItem[] | null {
+    private getModuleSuggestion(
+        statement: string
+    ): vscode.CompletionItem[] | null {
         logger.debug("Get Module Suggestion:", statement);
 
         if (hsModules.includes(statement)) {
@@ -138,7 +150,9 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
      * @param tableMatch text to parse for the expression
      * @returns a list of module suggestions or null
      */
-    private extractIndexTable(tableMatch: RegExpMatchArray): vscode.CompletionItem[] | null {
+    private extractIndexTable(
+        tableMatch: RegExpMatchArray
+    ): vscode.CompletionItem[] | null {
         logger.debug("Extract Table Index Expression:", tableMatch);
 
         const multiDimensional = tableMatch[2].match(/\d+/g) ?? [1];
@@ -199,7 +213,10 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
      * @param identifier identifier to search inside the base module.
      * @returns a list of module suggestions or null
      */
-    private getMethodSuggestion(base: string, identifier: string): vscode.CompletionItem[] | null {
+    private getMethodSuggestion(
+        base: string,
+        identifier: string
+    ): vscode.CompletionItem[] | null {
         logger.debug("Get Method Suggestion:", base, identifier);
 
         const constructor = hs.getConstructor(base, identifier);
@@ -226,7 +243,10 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
     ): vscode.CompletionItem[] | null {
         logger.debug("Extract Method Expression:", base, identifier);
 
-        const declaration = lua.findDeclaration({ name: base, line: this.position.line });
+        const declaration = lua.findDeclaration({
+            name: base,
+            line: this.position.line,
+        });
         if (declaration) {
             return this.getMethodSuggestion(declaration, identifier);
         }
@@ -245,7 +265,10 @@ export class HSModulesCompletionProvider implements vscode.CompletionItemProvide
     private extractBaseMethod(caller: string): vscode.CompletionItem[] | null {
         logger.debug("Extract Base Method:", caller);
 
-        const declaration = lua.findDeclaration({ name: caller, line: this.position.line });
+        const declaration = lua.findDeclaration({
+            name: caller,
+            line: this.position.line,
+        });
         if (declaration) {
             return hs.getMethodCompletion(declaration);
         }

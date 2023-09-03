@@ -6,7 +6,7 @@ import * as vscode from "vscode";
 import * as lua from "luaparse";
 import * as hs from "./hammerspoon";
 
-import { Logger } from "./logger";
+import { Logger } from "../../logger";
 const logger = new Logger("lua_parser", "lua_parser");
 
 /**
@@ -16,7 +16,11 @@ let astChunk: lua.Chunk;
 
 export const luaKeywords = JSON.parse(
     readFileSync(
-        path.join(path.resolve(__dirname, ".."), "resources", "lua_keywords.json"),
+        path.join(
+            path.resolve(__dirname, "../../.."),
+            "resources",
+            "lua_keywords.json"
+        ),
         "utf-8"
     )
 );
@@ -60,7 +64,11 @@ export function createAst(code: string, writeToFile = false): void {
 
     if (writeToFile) {
         const demo = path.resolve(__dirname, "../demo");
-        writeFileSync(path.join(demo, "astChunk.json"), JSON.stringify(astChunk), "utf8");
+        writeFileSync(
+            path.join(demo, "astChunk.json"),
+            JSON.stringify(astChunk),
+            "utf8"
+        );
     }
 }
 
@@ -90,7 +98,8 @@ export function updateAst(writeToFile = false): void {
  */
 class LuaParser {
     private declaration: LuaDeclaration = { name: "", line: 0 };
-    private declarationTree: (lua.AssignmentStatement | lua.LocalStatement)[] = [];
+    private declarationTree: (lua.AssignmentStatement | lua.LocalStatement)[] =
+        [];
     private expressionMembers: string[] = [];
     private tableDepth = 1;
 
@@ -117,7 +126,8 @@ class LuaParser {
 
             if (
                 itemRangeStart <= this.declaration.line &&
-                (item.type === "AssignmentStatement" || item.type === "LocalStatement")
+                (item.type === "AssignmentStatement" ||
+                    item.type === "LocalStatement")
             ) {
                 this.declarationTree.push(item);
             }
@@ -181,7 +191,9 @@ class LuaParser {
                     });
 
                     if (statement) {
-                        this.expressionMembers.push(`${statement.base}.${statement.identifier}`);
+                        this.expressionMembers.push(
+                            `${statement.base}.${statement.identifier}`
+                        );
                     }
                 }
                 return true;
@@ -216,7 +228,10 @@ class LuaParser {
                 const joinExpression = this.expressionMembers.join(".");
 
                 // when expression calls expression, clean the last expression caller
-                const cleanMultipleCalls = joinExpression.replace(`.${last}`, "");
+                const cleanMultipleCalls = joinExpression.replace(
+                    `.${last}`,
+                    ""
+                );
 
                 return { base: cleanMultipleCalls, identifier: last };
             }
@@ -243,7 +258,8 @@ class LuaParser {
 
             // if item is a table and is more than one depth level then recursively search in it
             if (
-                (field.type === "TableKeyString" || field.type === "TableValue") &&
+                (field.type === "TableKeyString" ||
+                    field.type === "TableValue") &&
                 field.value.type === "TableConstructorExpression" &&
                 this.tableDepth + 1 <= this.declaration.tableDepthLevel!
             ) {
@@ -252,7 +268,10 @@ class LuaParser {
                 return this.tableExpression(field.value.fields);
             }
 
-            if (field.type === "TableKeyString" && field.key.name === this.declaration.tableKey) {
+            if (
+                field.type === "TableKeyString" &&
+                field.key.name === this.declaration.tableKey
+            ) {
                 if (field.value.type === "CallExpression") {
                     return this.callExpression(field.value.base);
                 } else if (field.value.type === "Identifier") {
@@ -264,11 +283,20 @@ class LuaParser {
                 }
             } else if (field.type === "TableValue") {
                 const indexMatch = index + 1 === this.declaration.tableIndex;
-                const depthLevel = this.tableDepth === this.declaration.tableDepthLevel;
+                const depthLevel =
+                    this.tableDepth === this.declaration.tableDepthLevel;
 
-                if (depthLevel && indexMatch && field.value.type === "CallExpression") {
+                if (
+                    depthLevel &&
+                    indexMatch &&
+                    field.value.type === "CallExpression"
+                ) {
                     return this.callExpression(field.value.base);
-                } else if (depthLevel && indexMatch && field.value.type === "Identifier") {
+                } else if (
+                    depthLevel &&
+                    indexMatch &&
+                    field.value.type === "Identifier"
+                ) {
                     return this.recursiveSearch({
                         name: field.value.name,
                         tableKey: this.declaration.tableKey,
@@ -336,7 +364,9 @@ class LuaParser {
             const result = this.parseVariables(item);
 
             if (result) {
-                logger.info("FindStatement result:", result, { console: false });
+                logger.info("FindStatement result:", result, {
+                    console: false,
+                });
                 return result;
             }
         }
@@ -366,7 +396,10 @@ export function findDeclaration(declaration: LuaDeclaration): string | null {
 
         const statement = parser.findStatement();
         if (statement) {
-            const constructor = hs.getConstructor(statement.base, statement.identifier);
+            const constructor = hs.getConstructor(
+                statement.base,
+                statement.identifier
+            );
             if (constructor) {
                 return constructor;
             }

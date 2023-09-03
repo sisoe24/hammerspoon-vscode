@@ -4,8 +4,8 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { getConfig } from "./config";
 import { runSync } from "./run_cmd";
+import { getConfig } from "./config";
 
 /**
  * Check if path exists.
@@ -73,7 +73,7 @@ export function generateExtraDocs(dir: string): void {
 export function generateSpoonDoc(): void | false {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
-        const fileName = editor.document.fileName;
+        const { fileName } = editor.document;
         if (!fileName.endsWith("init.lua")) {
             vscode.window.showWarningMessage("Active file must be a init.lua");
             return false;
@@ -193,7 +193,8 @@ export function writeStatement(text: string): void {
     const hsInit = path.join(os.homedir(), ".hammerspoon", "init.lua");
 
     if (fs.existsSync(hsInit)) {
-        if (!fs.readFileSync(hsInit, "utf-8").match(text)) {
+        const fileContent = fs.readFileSync(hsInit, "utf-8");
+        if (!fileContent.includes(text)) {
             fs.appendFileSync(hsInit, `\n${text}\n`);
         }
     } else {

@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 
-import * as hs from "../hammerspoon";
-import * as lua from "../lua_parser";
+import * as hs from "./hammerspoon";
+import * as lua from "./lua_parser";
 import * as utils from "./utils";
 
-import { Logger } from "../logger";
+import { Logger } from "../../logger";
 
 const logger = new Logger("hsHover", "hsHover");
 
@@ -44,7 +44,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
             return;
         }
 
-        let linePrefix = document.lineAt(position).text.substring(0, hoverWord.end.character);
+        let linePrefix = document
+            .lineAt(position)
+            .text.substring(0, hoverWord.end.character);
 
         // clean parenthesis
         linePrefix = linePrefix.replace(/\(.*?\)/g, "");
@@ -96,7 +98,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
          * Show doc hover when line is a method with a call expression:
          * `caller:method():method`
          */
-        const methodCallExpression = /(?<!\.)\b(\w+):(\w+):(\w+)/.exec(linePrefix);
+        const methodCallExpression = /(?<!\.)\b(\w+):(\w+):(\w+)/.exec(
+            linePrefix
+        );
         if (methodCallExpression) {
             return this.extractMethodCallExpression(methodCallExpression);
         }
@@ -106,7 +110,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
          */
         const methodExpression = /(?<!\.)\b(\w+):(\w+)$/.exec(linePrefix);
         if (methodExpression) {
-            return this.extractMethodExpression(methodExpression[1], methodExpression[2]);
+            return this.extractMethodExpression(
+                methodExpression[1],
+                methodExpression[2]
+            );
         }
 
         /**
@@ -121,7 +128,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
         /**
          * Show doc hover when line has table.key:method
          */
-        const tableMethodExpression = /(\w+)\.(.+?\b)?(\w+):(\w+)/.exec(linePrefix);
+        const tableMethodExpression = /(\w+)\.(.+?\b)?(\w+):(\w+)/.exec(
+            linePrefix
+        );
         if (tableMethodExpression) {
             return this.extractTableMethodExpression(tableMethodExpression);
         }
@@ -151,7 +160,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param identifier method to search in the base module
      * @returns a vscode hover information or null
      */
-    private extractHsModule(base: string, identifier: string): vscode.Hover | null {
+    private extractHsModule(
+        base: string,
+        identifier: string
+    ): vscode.Hover | null {
         logger.debug("Extract HS Module:", base, identifier);
 
         // clean parenthesis and arguments if any
@@ -186,10 +198,16 @@ export class HsHoverProvider implements vscode.HoverProvider {
         });
 
         if (declaration) {
-            const constructor = hs.getConstructor(declaration, methodCallExpression[2]);
+            const constructor = hs.getConstructor(
+                declaration,
+                methodCallExpression[2]
+            );
             if (constructor) {
                 if (this.isVariableInitialization) {
-                    return this.getConstructor(constructor, methodCallExpression[3]);
+                    return this.getConstructor(
+                        constructor,
+                        methodCallExpression[3]
+                    );
                 }
 
                 return this.getHoverDocs(constructor, methodCallExpression[3]);
@@ -211,10 +229,16 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param identifier method to search in the base module
      * @returns a vscode hover information or null
      */
-    private extractMethodExpression(base: string, identifier: string): vscode.Hover | null {
+    private extractMethodExpression(
+        base: string,
+        identifier: string
+    ): vscode.Hover | null {
         logger.debug("Extract Method Expression:", base, identifier);
 
-        const declaration = lua.findDeclaration({ name: base, line: this.position.line });
+        const declaration = lua.findDeclaration({
+            name: base,
+            line: this.position.line,
+        });
 
         if (declaration) {
             if (this.isVariableInitialization) {
@@ -236,7 +260,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param statement text to parse for the expression
      * @returns the documentation hover or null.
      */
-    private extractIndexTable(tableMatch: RegExpMatchArray): vscode.Hover | null {
+    private extractIndexTable(
+        tableMatch: RegExpMatchArray
+    ): vscode.Hover | null {
         logger.debug("Extract Table Index Expression:", tableMatch);
 
         const multiDimensional = tableMatch[2].match(/\d+/g) ?? [1];
@@ -271,7 +297,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param tableMatch regex match array with the expression
      * @returns
      */
-    private extractTableMethodExpression(tableMatch: RegExpMatchArray): vscode.Hover | null {
+    private extractTableMethodExpression(
+        tableMatch: RegExpMatchArray
+    ): vscode.Hover | null {
         logger.debug("Extract Table Method Expression", tableMatch);
 
         const declaration = lua.findDeclaration({
@@ -307,7 +335,9 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param tableMatch regex match array with the expression
      * @returns
      */
-    private extractTableExpression(tableMatch: RegExpMatchArray): vscode.Hover | null {
+    private extractTableExpression(
+        tableMatch: RegExpMatchArray
+    ): vscode.Hover | null {
         logger.debug("Extract Table Expression", tableMatch);
 
         const declaration = lua.findDeclaration({
@@ -331,7 +361,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
      */
     private variableDeclaration(base: string): vscode.Hover | null {
         logger.debug("Search variable declaration:", base);
-        const declaration = lua.findDeclaration({ name: base, line: this.position.line });
+        const declaration = lua.findDeclaration({
+            name: base,
+            line: this.position.line,
+        });
 
         if (declaration) {
             return this.convertToCodeBlock(declaration);
@@ -347,7 +380,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param identifier method inside the base module
      * @returns The hover documentation or null.
      */
-    private getHoverDocs(base: string, identifier: string): vscode.Hover | null {
+    private getHoverDocs(
+        base: string,
+        identifier: string
+    ): vscode.Hover | null {
         const docs = hs.getDocumentation(base, identifier);
         if (docs) {
             return new vscode.Hover(docs);
@@ -382,7 +418,10 @@ export class HsHoverProvider implements vscode.HoverProvider {
      * @param identifier method to search in the base module.
      * @returns
      */
-    private getConstructor(base: string, identifier: string): vscode.Hover | null {
+    private getConstructor(
+        base: string,
+        identifier: string
+    ): vscode.Hover | null {
         const constructor = hs.getConstructor(base, identifier);
         if (constructor) {
             return this.convertToCodeBlock(constructor);

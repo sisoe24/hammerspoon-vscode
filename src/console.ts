@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
-import { getConfig } from "./config";
+
 import { runSync } from "./run_cmd";
+import { getConfig } from "./config";
 
 export const outputWindow = vscode.window.createOutputChannel("Hammerspoon");
 

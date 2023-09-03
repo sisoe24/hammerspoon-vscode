@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 
-import * as hs from "../hammerspoon";
-import * as lua from "../lua_parser";
+import * as hs from "./hammerspoon";
+import * as lua from "./lua_parser";
 import * as utils from "./utils";
 
-import { Logger } from "../logger";
+import { Logger } from "../../logger";
 const logger = new Logger("hsHelper", "hsHelper");
 
 /**
@@ -30,7 +30,9 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
 
         this.position = position;
 
-        const linePrefix = document.lineAt(position).text.substring(0, position.character);
+        const linePrefix = document
+            .lineAt(position)
+            .text.substring(0, position.character);
         logger.debug("linePrefix:", linePrefix);
 
         this.setArgsCursorPosition(linePrefix, document);
@@ -46,7 +48,8 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         /**
          * caller:method():method()
          */
-        const methodCallExpression = /(?<!\.)\b(\w+):(?:(\w+)[^:]+:)(\w+)[^\)]+$/.exec(linePrefix);
+        const methodCallExpression =
+            /(?<!\.)\b(\w+):(?:(\w+)[^:]+:)(\w+)[^\)]+$/.exec(linePrefix);
         if (methodCallExpression) {
             return this.extractMethodCallExpression(methodCallExpression);
         }
@@ -54,16 +57,23 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         /**
          * Show doc hover when line has caller:method
          */
-        const methodExpression = /(?<!\.)\b(\w+):(\w+)(?!.+\()/.exec(linePrefix);
+        const methodExpression = /(?<!\.)\b(\w+):(\w+)(?!.+\()/.exec(
+            linePrefix
+        );
         if (methodExpression) {
-            return this.extractMethodExpression(methodExpression[1], methodExpression[2]);
+            return this.extractMethodExpression(
+                methodExpression[1],
+                methodExpression[2]
+            );
         }
 
         /**
          * Show doc hover when method call is from indexable table:
          * local window = app[1]:getWindow()
          */
-        const indexTable = /(\w+)((?:\[(\d+)\])+):(\w+)(?!.+\()/.exec(linePrefix);
+        const indexTable = /(\w+)((?:\[(\d+)\])+):(\w+)(?!.+\()/.exec(
+            linePrefix
+        );
         if (indexTable) {
             return this.extractIndexTable(indexTable);
         }
@@ -71,7 +81,9 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         /**
          * Show doc hover when line has table.key:method
          */
-        const tableMethodExpression = /(\w+)\.(.+?\b)?(\w+):(\w+)/.exec(linePrefix);
+        const tableMethodExpression = /(\w+)\.(.+?\b)?(\w+):(\w+)/.exec(
+            linePrefix
+        );
         if (tableMethodExpression) {
             return this.extractTableMethodExpression(tableMethodExpression);
         }
@@ -89,7 +101,10 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param identifier method to search in the base module
      * @returns a vscode signature helper or null
      */
-    private extractHsModule(base: string, identifier: string): vscode.SignatureHelp | null {
+    private extractHsModule(
+        base: string,
+        identifier: string
+    ): vscode.SignatureHelp | null {
         logger.debug("Extract HS Module:", base, identifier);
 
         // clean parenthesis and arguments if any
@@ -120,7 +135,10 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
         });
 
         if (declaration) {
-            const constructor = hs.getConstructor(declaration, methodCallExpression[2]);
+            const constructor = hs.getConstructor(
+                declaration,
+                methodCallExpression[2]
+            );
             if (constructor) {
                 return this.getHoverDocs(constructor, methodCallExpression[3]);
             }
@@ -138,10 +156,16 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param identifier method to search in the base module
      * @returns a vscode signature help information or null
      */
-    private extractMethodExpression(base: string, identifier: string): vscode.SignatureHelp | null {
+    private extractMethodExpression(
+        base: string,
+        identifier: string
+    ): vscode.SignatureHelp | null {
         logger.debug("Extract Method Expression:", base, identifier);
 
-        const declaration = lua.findDeclaration({ name: base, line: this.position.line });
+        const declaration = lua.findDeclaration({
+            name: base,
+            line: this.position.line,
+        });
 
         if (declaration) {
             return this.getHoverDocs(declaration, identifier);
@@ -160,7 +184,9 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param statement text to parse for the expression
      * @returns the documentation hover or null.
      */
-    private extractIndexTable(tableMatch: RegExpMatchArray): vscode.SignatureHelp | null {
+    private extractIndexTable(
+        tableMatch: RegExpMatchArray
+    ): vscode.SignatureHelp | null {
         logger.debug("Extract Table Index Expression:", tableMatch);
 
         const multiDimensional = tableMatch[2].match(/\d+/g) ?? [1];
@@ -224,14 +250,23 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param linePrefix current text linde under the cursor position.
      * @param document vscode text editor document object.
      */
-    private setArgsCursorPosition(linePrefix: string, document: vscode.TextDocument): void {
+    private setArgsCursorPosition(
+        linePrefix: string,
+        document: vscode.TextDocument
+    ): void {
         // BUG: fails when there is a anonymous function inside parenthesis :
         // `foo(foo, function() foo end)
         const parenthesisIndex = /\((?!.+\()/.exec(linePrefix);
 
         if (parenthesisIndex && parenthesisIndex.index) {
-            const start = new vscode.Position(this.position.line, parenthesisIndex.index + 1);
-            const end = new vscode.Position(this.position.line, this.position.character);
+            const start = new vscode.Position(
+                this.position.line,
+                parenthesisIndex.index + 1
+            );
+            const end = new vscode.Position(
+                this.position.line,
+                this.position.character
+            );
 
             const argsRange = new vscode.Selection(start, end);
             const word = document.getText(argsRange).split(",");
@@ -246,7 +281,10 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
      * @param identifier  method to search in the base module.
      * @returns the signature helper or null.
      */
-    private getHoverDocs(base: string, identifier: string): vscode.SignatureHelp | null {
+    private getHoverDocs(
+        base: string,
+        identifier: string
+    ): vscode.SignatureHelp | null {
         const data = hs.getHelperData(base, identifier);
 
         if (data) {
@@ -262,7 +300,9 @@ export class HsSignatureHelpProvider implements vscode.SignatureHelpProvider {
                 const argDoc = /(?<=\*\s.+-\s)(.+)/.exec(param);
 
                 if (argName && argDoc) {
-                    argsParameters.push(new vscode.ParameterInformation(argName[1], argDoc[0]));
+                    argsParameters.push(
+                        new vscode.ParameterInformation(argName[1], argDoc[0])
+                    );
                 }
             }
 

@@ -2,11 +2,14 @@
     "name": "hammerspoon",
     "displayName": "Hammerspoon",
     "publisher": "virgilsisoe",
-    "description": "Autocomplete, hover and function signature helper for the Hammerspoon framework.",
+    "description": "Hammerspoon extension for Visual Studio Code",
     "version": "0.4.1",
     "engines": {
         "vscode": "^1.63.0"
     },
+    "extensionPack": [
+        "sumneko.lua"
+    ],
     "categories": [
         "Other"
     ],
@@ -27,14 +30,13 @@
     "contributes": {
         "commands": [
             {
-                "command": "hammerspoon.connect",
-                "title": "Toggle server connection",
+                "command": "hammerspoon.addStubs",
+                "title": "Add Hammerspoon stubs",
                 "category": "Hammerspoon"
             },
             {
-                "command": "hammerspoon.updateDatabase",
-                "title": "Update completion documentation.",
-                "shortTitle": "HS Update Docs",
+                "command": "hammerspoon.connect",
+                "title": "Toggle server connection",
                 "category": "Hammerspoon"
             },
             {
@@ -80,9 +82,14 @@
         "configuration": {
             "title": "Hammerspoon",
             "properties": {
+                "hammerspoon.enableLegacyProvider": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Enable legacy suggestions. Discontinued and discouraged."
+                },
                 "hammerspoon.console.focusOutputWindow": {
                     "type": "boolean",
-                    "markdownDescription": "Focus on output window when reloading Hammerspoon from extension.",
+                    "markdownDescription": "Focus the output window when a command is executed",
                     "default": true
                 },
                 "hammerspoon.console.filterOutput": {
@@ -176,13 +183,14 @@
         "eslint": "^8.1.0",
         "glob": "^7.1.7",
         "mocha": "^9.1.3",
-        "nyc": "^15.1.0",
         "source-map-support": "^0.5.21",
         "ts-node": "^10.4.0",
         "typescript": "^4.4.4"
     },
     "dependencies": {
         "@types/luaparse": "^0.2.8",
+        "axios": "^1.5.0",
+        "extract-zip": "^2.0.1",
         "luaparse": "^0.3.1"
     }
 }
