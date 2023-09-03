@@ -17,13 +17,13 @@
   - [1.1. Features](#11-features)
   - [1.2. Requirements](#12-requirements)
   - [1.3. Stubs](#13-stubs)
-  - [Evaluate Hammerspoon code](#evaluate-hammerspoon-code)
-  - [1.4. Socket connection](#14-socket-connection)
-  - [1.5. Available Commands](#15-available-commands)
-    - [1.5.1. Notes](#151-notes)
-  - [1.6. Extension settings](#16-extension-settings)
-  - [1.7. Known Issues](#17-known-issues)
-  - [1.8. Acknowledgment](#18-acknowledgment)
+  - [1.4. Evaluate Hammerspoon code](#14-evaluate-hammerspoon-code)
+  - [1.5. Socket connection](#15-socket-connection)
+  - [1.6. Available Commands](#16-available-commands)
+    - [1.6.1. Notes](#161-notes)
+  - [1.7. Extension settings](#17-extension-settings)
+  - [1.8. Known Issues](#18-known-issues)
+  - [1.9. Acknowledgment](#19-acknowledgment)
 
 # 1. Hammerspoon-vscode README
 
@@ -62,19 +62,19 @@ Once the stubs are added, you might need to reload VSCode for the changes to tak
 
 > NOTE: The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.useLegacyProviders` setting.
 
-## Evaluate Hammerspoon code
+## 1.4. Evaluate Hammerspoon code
 
 You can evaluate Hammerspoon code from vscode without reloading the configuration. This is useful for testing code without having to reload the configuration each time. To do so, you need to have the `hs.ipc` module installed. See [Requirements](#16-requirements) for more information.
 
 To evaluate code, you can use one of the following commands:
 
-- `Hammerspoon: Evaluate Line`: Evaluate the current line.
-- `Hammerspoon: Evaluate File`: Evaluate the entire file.
-- `Hammerspoon: Evaluate Selection`: Evaluate the selected code.
+- `Hammerspoon: Evaluate current line`: Evaluate the current line.
+- `Hammerspoon: Load/Evaluate current file`: Evaluate the entire file.
+- `Hammerspoon: Evaluate selected text`: Evaluate the selected code.
 
-> The commands are also available in the editor context menu.
+> The commands are also available in the editor right-click context menu.
 
-## 1.4. Socket connection
+## 1.5. Socket connection
 
 You can execute vscode commands from Hammerspoon by sending data via the `socket` module.
 
@@ -93,17 +93,18 @@ You can also write arguments inside curly brackets and delimit them by a comma: 
 socket:send('workbench.action.tasks.runTask {My Task}')
 ```
 
-For the extension to accept incoming data, you need to start the server
-via the command: `Hammerspoon: Toggle server connection` or via the button in lower the
-status bar and specify the port in the extension settings (default: `54321`).
+To accept incoming data, start the server via `Hammerspoon: Toggle server connection` or the status bar button; specify the port in the extension settings (default: 54321).
 
-## 1.5. Available Commands
+## 1.6. Available Commands
 
 All commands are available by opening the Command Palette `Command+Shift+P` and
 typing in one of the following Command Name:
 
 | Command Name                                    | Command ID                        | Description                                                                   |
 | ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
+| `Hammerspoon: Evaluate current line`            | `hammerspoon.evaluateCurrentLine` | Evaluate the current line                                                     |
+| `Hammerspoon: Load/Evaluate current file`       | `hammerspoon.evaluateCurrentFile` | Evaluate the entire file                                                      |
+| `Hammerspoon: Evaluate selected text`           | `hammerspoon.evaluateSelectedText`| Evaluate the selected code                                                    |
 | `Hammerspoon: Add Stubs`                        | `hammerspoon.addStubs`            | Add EmmyLua stubs to the Hammerspoon Spoons directory                         |
 | `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration                                              |
 | `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`         | Show Hammerspoon console                                                      |
@@ -111,18 +112,14 @@ typing in one of the following Command Name:
 | `Hammerspoon: Create Spoon`                     | `hammerspoon.createSpoon`         | Quick Spoon startup template                                                  |
 | `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon                                        |
 
-### 1.5.1. Notes
-
-- `Hammerspoon: Reload Hammerspoon configuration` command can be executed via a button in the Editor Toolbar.
-
-  ![HsReload](images/hsReload.gif)
+### 1.6.1. Notes
 
 - The Spoon template will get created in the `Hammerspoon: Spoons: Path` configuration
 value which defaults to `.hammerspoon/Spoons`.
 - When generating documentation for the Spoon, the editor's current active file must be a `init.lua`.
 - By default, the extension does not provide any shortcut. But you can assign each command to one. (see Key Bindings for Visual Studio Code for more information).
 
-## 1.6. Extension settings
+## 1.7. Extension settings
 
 - `Console: Focus Output Window` - `hammerspoon.console.focusOutputWindow`
 
@@ -190,12 +187,11 @@ value which defaults to `.hammerspoon/Spoons`.
   > package.path = package.path .. ";" ..  hs.configdir .. "/MySpoons/?.spoon/init.lua"
   > ```
 
-## 1.7. Known Issues
+## 1.8. Known Issues
 
 - The legacy providers are incomplete and might not work as expected.
-- When executing code from VSCode, the command might fail if you have convoluted escaping quotes in your code. (e.g. `hs.alert.show("Hello \"World "MY" \"")`).
 
-## 1.8. Acknowledgment
+## 1.9. Acknowledgment
 
-[luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
-[EmmyLua](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip) for the stubs.
+- [luaparse](https://github.com/fstirlitz/luaparse) for generating the symbol table.
+- [EmmyLua.spoon](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip) for the stubs.
