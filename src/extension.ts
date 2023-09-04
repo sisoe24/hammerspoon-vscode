@@ -28,7 +28,7 @@ import {
  *
  * The legacy providers are the original providers that were created for the extension.
  * However, it they been replaced by the new stubs EmmyLua.spoon. This method is
- * only called if the user has the setting `suggestions.enableLegacyProvider` set
+ * only called if the user has the setting `suggestions.enableLegacyProviders` set
  * to true. One reason might be that the user does not want to install the Lua
  * Language Server and EmmyLua.spoon (highly unlikely, but possible).
  *
@@ -83,7 +83,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     createStatusBar();
 
-    if (getConfig("enableLegacyProvider") as boolean) {
+    if (getConfig("enableLegacyProviders") as boolean) {
         legacyProvider(context);
     }
 

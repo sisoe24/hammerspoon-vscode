@@ -82,7 +82,7 @@
         "configuration": {
             "title": "Hammerspoon",
             "properties": {
-                "hammerspoon.enableLegacyProvider": {
+                "hammerspoon.enableLegacyProviders": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Enable legacy suggestions. Discontinued and discouraged."

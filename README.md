@@ -70,7 +70,7 @@ Once the stubs are added, you might need to reload VSCode for the changes to tak
   local app = hs.application("Safari")
   ```
 - The `EmmyLua.spoon` will try to compile the stubs also for your custom spoons. This can cause an error if there is something wrong with your spoon `docs.json`.
-- The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.useLegacyProviders` setting.
+- The extension still supports the old way of providing the API, but it is highly recommended to use the new method. The old method can be enabled/disabled via the `hammerspoon.enableLegacyProviders` setting.
 
 ## 1.4. Evaluate Hammerspoon code
 
