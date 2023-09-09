@@ -65,17 +65,17 @@
             },
             {
                 "command": "hammerspoon.evaluateCurrentFileText",
-                "title": "Load/Evaluate current file",
+                "title": "Load/Evaluate File",
                 "category": "Hammerspoon"
             },
             {
                 "command": "hammerspoon.evaluateSelectedText",
-                "title": "Evaluate selected text",
+                "title": "Evaluate Selection",
                 "category": "Hammerspoon"
             },
             {
                 "command": "hammerspoon.evaluateCurrentLineText",
-                "title": "Evaluate current line",
+                "title": "Evaluate Line",
                 "category": "Hammerspoon"
             }
         ],
