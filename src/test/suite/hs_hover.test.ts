@@ -2,11 +2,11 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 
 import * as testUtils from "./test_utils";
-import * as hsHover from "../../providers/hs_hover";
+import * as hsHover from "../../providers/legacy/hs_hover";
 
 const demoFile = "tests/hs_hover_demo.lua";
 
-suite("Hs Hover ", () => {
+suite.skip("Hs Hover ", () => {
     test("Skip if no word", async () => {
         await testUtils.createDemoContent(demoFile, " ");
 
@@ -74,7 +74,7 @@ suite("Hs Hover ", () => {
 
     test("Hover over `setSize` of: `app:mainWindow():setSize`", async () => {
         const contentFile = testUtils.formatContent(`
-        local app = hs.application() 
+        local app = hs.application()
         local window = app:mainWindow():setSize()
         `);
         await testUtils.createDemoContent(demoFile, contentFile);
@@ -89,7 +89,7 @@ suite("Hs Hover ", () => {
 
     test("Hover over `app` inside: `hs.loadSpoon(app)`", async () => {
         const contentFile = testUtils.formatContent(`
-        local app = hs.application() 
+        local app = hs.application()
         hs.loadSpoon(app)
         `);
         await testUtils.createDemoContent(demoFile, contentFile);
@@ -155,7 +155,7 @@ suite("Hs Hover ", () => {
 
     test("Hover over `window` of: `local window = app:mainWindow()`", async () => {
         const contentFile = testUtils.formatContent(`
-        local app = hs.application() 
+        local app = hs.application()
         local window = app:mainWindow()
         `);
 

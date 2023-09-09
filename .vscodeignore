@@ -10,9 +10,12 @@ vsc-extension-quickstart.md
 **/*.ts
 **/*.vsix
 
-other/**
-demo/**
+.pre-commit-config.yaml
+CHANGELOG.md
+other/
+demo/
 .nyc_output/
 coverage/
 todo.md
 .deepsource.toml
+.tests/

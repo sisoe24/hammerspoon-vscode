@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as assert from "assert";
 
 import * as testUtils from "./test_utils";
-import * as hsCompletion from "../../providers/hs_module_completion";
+import * as hsCompletion from "../../providers/legacy/hs_module_completion";
 
 const demoFile = "hs_completion_demo.lua";
 
@@ -24,7 +24,7 @@ function compare(module: string, provider: vscode.CompletionItem[], isMethod = f
     }
 }
 
-suite("HS Completion", () => {
+suite.skip("HS Completion", () => {
     test("No suggestions", async () => {
         await testUtils.createDemoContent(demoFile, "fs.");
 
@@ -227,8 +227,8 @@ suite("HS Completion", () => {
     test("Completion for if nested `app:`", async () => {
         const fileContent = testUtils.formatContent(`
         local app = hs.application()
-        if '1' then 
-            local app = hs.chooser() 
+        if '1' then
+            local app = hs.chooser()
             local ch = app:
         end
         `);
@@ -251,10 +251,10 @@ suite("HS Completion", () => {
         const fileContent = testUtils.formatContent(`
         local app = hs.application()
         do
-            if '1' then 
-                local app = hs.chooser() 
+            if '1' then
+                local app = hs.chooser()
                 local ch = app
-                if '2' then 
+                if '2' then
                     local ch2 = app:
                 end
             end

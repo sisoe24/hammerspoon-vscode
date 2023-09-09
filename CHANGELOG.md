@@ -1,5 +1,21 @@
 # Change Log
 
+## [0.5.0] - 2023-09-09
+
+### Added
+
+- New command to add the EmmyLua.spoon stubs.
+- New commands to execute Hammerspoon code from the editor.
+- New context to execute Hammerspoon code from the editor.
+
+### Changed
+
+- The previous suggestions providers have been replaced with the EmmyLua stubs. The old providers are now considered legacy and might be removed in the future.
+
+### Removed
+
+- Removed the update suggestions database command. This is part of the legacy providers and is no longer needed.
+
 ## [0.4.1] - 2023-01-26
 
 ### Changed

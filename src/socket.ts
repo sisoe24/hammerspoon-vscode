@@ -1,6 +1,7 @@
 import * as net from "net";
 import * as vscode from "vscode";
-import { hammerspoonConfig } from "./utils";
+
+import { getConfig } from "./config";
 
 // TODO: Test module
 
@@ -27,7 +28,6 @@ export function debugNetwork(text: string): void {
  * Create the status bar action.
  */
 export function createStatusBar() {
-    // statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     statusBarItem.text = hsDisconnect;
     statusBarItem.command = "hammerspoon.connect";
     statusBarItem.show();
@@ -55,12 +55,10 @@ function executeVscodeCommand(command: string) {
 }
 
 function startServer() {
-    // TODO: save port value in settings
-    const port = hammerspoonConfig("network.port") as number;
+    const port = getConfig("network.port") as number;
 
     statusBarItem.tooltip = `${statusBarItem.tooltip} - localhost:${port}`;
 
-    // TODO: add custom host
     server.listen(port);
 
     debugNetwork(`Connecting to 'localhost:${port}'`);
