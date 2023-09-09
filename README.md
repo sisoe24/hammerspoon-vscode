@@ -1,5 +1,5 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6897046c215944daa78d15189ecaaa82)](https://www.codacy.com/gh/sisoe24/hammerspoon-vscode/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sisoe24/hammerspoon-vscode&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/6897046c215944daa78d15189ecaaa82)](https://www.codacy.com/gh/sisoe24/hammerspoon-vscode/dashboard?utm_source=github.com&utm_medium=referral&utm_content=sisoe24/hammerspoon-vscode&utm_campaign=Badge_Coverage)
+<!-- [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/6897046c215944daa78d15189ecaaa82)](https://www.codacy.com/gh/sisoe24/hammerspoon-vscode/dashboard?utm_source=github.com&utm_medium=referral&utm_content=sisoe24/hammerspoon-vscode&utm_campaign=Badge_Coverage) -->
 <!-- [![DeepSource](https://deepsource.io/gh/sisoe24/hammerspoon-vscode.svg/?label=active+issues&show_trend=true&token=l76-w7k_5dsHJqrTU2kueH4F)](https://deepsource.io/gh/sisoe24/hammerspoon-vscode/?ref=repository-badge) -->
 
 [![vscode-marketplace](https://img.shields.io/badge/vscode-marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.hammerspoon)
@@ -47,7 +47,6 @@ Unofficial Hammerspoon extension for Visual Studio Code.
 - [hs.ipc](http://www.hammerspoon.org/docs/hs.ipc.html) module installed.
   Some commands depend on the `hs.ipc` module. To install it, execute `hs.ipc.cliInstall()` in your Hammerspoon environment and call it at the beginning of your `init.lua` with `require('hs.ipc')` (more on [module documentation](http://www.hammerspoon.org/docs/hs.ipc.html)).
   If you are on an Apple silicon Mac, you might need to follow [those instructions](https://github.com/Hammerspoon/hammerspoon/issues/2930#issuecomment-899092002) to properly install the module.
-- [EmmyLua.spoon](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip): The extensions offers a quick utility command to download and generate the stubs. See [Stubs](#13-stubs) for more information.
 
 ## 1.3. Stubs
 
@@ -56,7 +55,7 @@ The extension now uses the [Lua Language Server](https://marketplace.visualstudi
 1. Download the EmmyLua stubs.
 2. Place them in the Hammerspoon spoons directory (default: `~/.hammerspoon/Spoons`).
 3. Import them in the `init.lua` file.
-4. Add them to the `Lua.workspace.library` setting.
+4. Add them to the `Lua.workspace.library` user setting.
 5. Reload the Hammerspoon configuration.
 
 Once the stubs are added, you might need to reload VSCode for the changes to take effect.
@@ -82,7 +81,7 @@ To evaluate code, you can use one of the following commands:
 - `Hammerspoon: Evaluate File`: Evaluate the entire file.
 - `Hammerspoon: Evaluate Selection`: Evaluate the selected code.
 
-> The commands are also available in the editor context menu.
+> The commands are also available in the editor right-click context menu.
 
 ## 1.5. Socket connection
 
@@ -112,14 +111,18 @@ status bar and specify the port in the extension settings (default: `54321`).
 All commands are available by opening the Command Palette `Command+Shift+P` and
 typing in one of the following Command Name:
 
-| Command Name                                    | Command ID                        | Description                                                                   |
-| ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
-| `Hammerspoon: Add Stubs`                        | `hammerspoon.addStubs`            | Add EmmyLua stubs to the Hammerspoon Spoons directory                         |
-| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration` | Reload Hammerspoon configuration                                              |
-| `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`         | Show Hammerspoon console                                                      |
-| `Hammerspoon: Toggle server connection`         | `hammerspoon.createSpoon`         | Toggle connection that allows incoming data to be executed as vscode commands |
-| `Hammerspoon: Create Spoon`                     | `hammerspoon.createSpoon`         | Quick Spoon startup template                                                  |
-| `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`    | Generate `docs.json` for current spoon                                        |
+| Command Name                                    | Command ID                            | Description                                                                   |
+| ----------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------- |
+| `Hammerspoon: Add Stubs`                        | `hammerspoon.addStubs`                | Add EmmyLua stubs to the Hammerspoon Spoons directory                         |
+| `Hammerspoon: Evaluate Line`                    | `hammerspoon.evaluateCurrentLineText` | Evaluate the current line                                                     |
+| `Hammerspoon: Evaluate File`                    | `hammerspoon.evaluateCurrentFileText` | Evaluate the entire file                                                      |
+| `Hammerspoon: Evaluate Selection`               | `hammerspoon.evaluateSelectedText`    | Evaluate the selected code                                                    |
+| `Hammerspoon: Add Stubs`                        | `hammerspoon.addStubs`                | Add EmmyLua stubs                                                             |
+| `Hammerspoon: Reload Hammerspoon configuration` | `hammerspoon.reloadConfiguration`     | Reload Hammerspoon configuration                                              |
+| `Hammerspoon: Show Hammerspoon Console`         | `hammerspoon.showConsole`             | Show Hammerspoon console                                                      |
+| `Hammerspoon: Toggle server connection`         | `hammerspoon.createSpoon`             | Toggle connection that allows incoming data to be executed as vscode commands |
+| `Hammerspoon: Create Spoon`                     | `hammerspoon.createSpoon`             | Quick Spoon startup template                                                  |
+| `Hammerspoon: Generate Spoon Documentation`     | `hammerspoon.generateSpoonDoc`        | Generate `docs.json` for current spoon                                        |
 
 ### 1.6.1. Notes
 
@@ -155,8 +158,6 @@ value which defaults to `.hammerspoon/Spoons`.
     ]
   }
   ```
-
-  ![FilterOutput](/images/filter_output.jpg)
 
   > Tip: I use the extension [Python EasyPrint](https://marketplace.visualstudio.com/items?itemName=virgilsisoe.python-easy-print) (which also works on Lua) to quickly print debug statements. The print statement always starts with a Unicode char `➡`, which I can use in the regex filter.
 
@@ -203,7 +204,6 @@ value which defaults to `.hammerspoon/Spoons`.
 ## 1.8. Known Issues
 
 - The legacy providers are incomplete and might not work as expected.
-- When executing code from VSCode, the command might fail if you have convoluted escaping quotes in your code. (e.g. `hs.alert.show("Hello \"World "MY" \"")`).
 
 ## 1.9. Acknowledgment
 

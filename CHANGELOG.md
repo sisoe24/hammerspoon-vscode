@@ -1,11 +1,12 @@
 # Change Log
 
-## [0.5.0] -
+## [0.5.0] - 2023-09-09
 
 ### Added
 
 - New command to add the EmmyLua.spoon stubs.
 - New commands to execute Hammerspoon code from the editor.
+- New context to execute Hammerspoon code from the editor.
 
 ### Changed
 
