@@ -23,7 +23,6 @@
   - [1.6. Available Commands](#16-available-commands)
     - [1.6.1. Notes](#161-notes)
   - [1.7. Extension settings](#17-extension-settings)
-  - [1.8. Known Issues](#18-known-issues)
   - [1.9. Acknowledgment](#19-acknowledgment)
 
 # 1. Hammerspoon-vscode README
@@ -62,7 +61,7 @@ Once the stubs are added, you might need to reload VSCode for the changes to tak
 
 ### 1.3.1. Notes:
 
-- Some stubs might fail to load especially when constructors are involved. In that case, you can add always add the type annotation manually:
+- Some stubs might fail to load especially when constructors are involved. In that case, you can always add the type annotation manually:
 
   ```lua
   ---@type hs.application
@@ -134,8 +133,21 @@ typing in one of the following Command Name:
 value which defaults to `.hammerspoon/Spoons`.
 - When generating documentation for the Spoon, the editor's current active file must be a `init.lua`.
 - By default, the extension does not provide any shortcut. But you can assign each command to one. (see Key Bindings for Visual Studio Code for more information).
+  ```json
+  {
+    "key": "cmd+shift+e",
+    "command": "hammerspoon.evaluateCurrentLineText",
+    "when": "editorTextFocus && resourceLangId == lua"
+  }
+  ```
 
 ## 1.7. Extension settings
+
+- `Enable Legacy Providers` - `hammerspoon.enableLegacyProviders`
+
+  Enable the legacy providers. Defaults to `true`.
+
+  > Note: The legacy providers are incomplete and might not work as expected. It is highly recommended to use the stubs instead.
 
 - `Console: Focus Output Window` - `hammerspoon.console.focusOutputWindow`
 
@@ -200,10 +212,6 @@ value which defaults to `.hammerspoon/Spoons`.
   > -- Look for Spoons in ~/.hammerspoon/MySpoons as well
   > package.path = package.path .. ";" ..  hs.configdir .. "/MySpoons/?.spoon/init.lua"
   > ```
-
-## 1.8. Known Issues
-
-- The legacy providers are incomplete and might not work as expected.
 
 ## 1.9. Acknowledgment
 
